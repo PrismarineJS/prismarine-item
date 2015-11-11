@@ -56,4 +56,8 @@ Buffer.
 Return true if items are equal.
 
 
+## History
 
+### 0.0.0
+
+* Import from mineflayer
