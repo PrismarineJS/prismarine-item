@@ -1,0 +1,30 @@
+{
+  "name": "prismarine-item",
+  "version": "0.0.0",
+  "description": "Represent a minecraft item with its associated data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrismarineJS/prismarine-item.git"
+  },
+  "peerDependencies": {
+    "minecraft-data":"0.x"
+  },
+  "devDependencies": {
+    "minecraft-data":"0.x"
+  },
+  "keywords": [
+    "minecraft",
+    "item",
+    "prismarine"
+  ],
+  "author": "Romain Beaumont <romain.rom1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrismarineJS/prismarine-item/issues"
+  },
+  "homepage": "https://github.com/PrismarineJS/prismarine-item#readme"
+}

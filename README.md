@@ -1,0 +1,59 @@
+# prismarine-item
+[![NPM version](https://img.shields.io/npm/v/prismarine-item.svg)](http://npmjs.com/package/prismarine-item)
+
+Represent a minecraft item with its associated data
+
+## Usage
+
+```js
+var Item=require("prismarine-item")("1.8");
+
+var ironShovelItem=new Item(256,1);
+
+console.log(ironShovelItem);
+
+var notchItem=Item.toNotch(ironShovelItem);
+console.log(notchItem);
+
+console.log(Item.fromNotch(notchItem));
+```
+
+## API
+
+### Item(type, count, metadata, nbt)
+
+#### Item.toNotch(item)
+
+Take an `item` in the format of the minecraft packets and return an `Item` instance.
+
+#### Item.fromNotch(item)
+
+Take an `Item` instance and return it in the format of the minecraft packets.
+
+#### item.type
+
+Numerical id.
+
+#### item.count
+
+#### item.metadata
+
+Number which represents different things depending on the item.
+See http://www.minecraftwiki.net/wiki/Data_values#Data
+
+#### item.nbt
+
+Buffer.
+
+#### item.name
+
+#### item.displayName
+
+#### item.stackSize
+
+#### item.equal(otherItem)
+
+Return true if items are equal.
+
+
+
