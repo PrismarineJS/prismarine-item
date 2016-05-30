@@ -58,6 +58,10 @@ Return true if items are equal.
 
 ## History
 
+### 1.0.1
+
+* bump mcdata
+
 ### 1.0.0
 
 * bump dependencies
