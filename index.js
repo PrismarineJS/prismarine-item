@@ -19,7 +19,7 @@ function Item(type, count, metadata, nbt) {
   this.nbt = nbt || new Buffer(0);
 
   var itemEnum = findItemOrBlockById(type);
-  assert.ok(itemEnum);
+  assert.ok(itemEnum,"item with id "+type+" not found");
   this.name = itemEnum.name;
   this.displayName = itemEnum.displayName;
   if("variations" in itemEnum)
