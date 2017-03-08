@@ -58,6 +58,11 @@ Return true if items are equal.
 
 ## History
 
+### 1.0.2
+
+* make nbt default to null
+* display the item id if it is not found in minecraft data
+
 ### 1.0.1
 
 * bump mcdata
