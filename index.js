@@ -16,7 +16,7 @@ function Item(type, count, metadata, nbt) {
   this.type = type;
   this.count = count;
   this.metadata = metadata == null ? 0 : metadata;
-  this.nbt = nbt || new Buffer(0);
+  this.nbt = nbt || null;
 
   var itemEnum = findItemOrBlockById(type);
   assert.ok(itemEnum,"item with id "+type+" not found");
