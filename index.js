@@ -1,62 +1,60 @@
-module.exports = loader;
+module.exports = loader
 
-function loader(mcVersion)
-{
-  var mcData=require('minecraft-data')(mcVersion);
-  findItemOrBlockById=mcData.findItemOrBlockById;
-  return Item;
+function loader (mcVersion) {
+  const mcData = require('minecraft-data')(mcVersion)
+  findItemOrBlockById = mcData.findItemOrBlockById
+  return Item
 }
 
-var findItemOrBlockById;
-var assert = require('assert');
+let findItemOrBlockById
+const assert = require('assert')
 
-function Item(type, count, metadata, nbt) {
-  if(type == null) return;
+function Item (type, count, metadata, nbt) {
+  if (type == null) return
 
-  this.type = type;
-  this.count = count;
-  this.metadata = metadata == null ? 0 : metadata;
-  this.nbt = nbt || null;
+  this.type = type
+  this.count = count
+  this.metadata = metadata == null ? 0 : metadata
+  this.nbt = nbt || null
 
-  var itemEnum = findItemOrBlockById(type);
-  assert.ok(itemEnum,"item with id "+type+" not found");
-  this.name = itemEnum.name;
-  this.displayName = itemEnum.displayName;
-  if("variations" in itemEnum)
-    for(var i in itemEnum["variations"]) {
-      if(itemEnum["variations"][i].metadata === metadata)
-        this.displayName = itemEnum["variations"][i].displayName;
+  const itemEnum = findItemOrBlockById(type)
+  assert.ok(itemEnum, 'item with id ' + type + ' not found')
+  this.name = itemEnum.name
+  this.displayName = itemEnum.displayName
+  if ('variations' in itemEnum) {
+    for (var i in itemEnum['variations']) {
+      if (itemEnum['variations'][i].metadata === metadata) { this.displayName = itemEnum['variations'][i].displayName }
     }
-  this.stackSize = itemEnum.stackSize;
+  }
+  this.stackSize = itemEnum.stackSize
 }
 
-Item.equal = function(item1, item2) {
-  if(item1 == null && item2 == null) {
-    return true;
-  } else if(item1 == null) {
-    return false;
-  } else if(item2 == null) {
-    return false;
+Item.equal = function (item1, item2) {
+  if (item1 == null && item2 == null) {
+    return true
+  } else if (item1 == null) {
+    return false
+  } else if (item2 == null) {
+    return false
   } else {
     return item1.type === item2.type &&
       item1.count === item2.count &&
-      item1.metadata === item2.metadata;
+      item1.metadata === item2.metadata
   }
-};
+}
 
-Item.toNotch = function(item) {
-  if(item == null) return {blockId: -1};
-  var notchItem = {
+Item.toNotch = function (item) {
+  if (item == null) return {blockId: -1}
+  const notchItem = {
     blockId: item.type,
     itemCount: item.count,
     itemDamage: item.metadata
-  };
-  if(item.nbt && item.nbt.length !== 0)
-    notchItem.nbtData = item.nbt;
-  return notchItem;
-};
+  }
+  if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
+  return notchItem
+}
 
-Item.fromNotch = function(item) {
-  if(item.blockId === -1) return null;
-  return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData);
-};
+Item.fromNotch = function (item) {
+  if (item.blockId === -1) return null
+  return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
+}
