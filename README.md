@@ -1,5 +1,6 @@
 # prismarine-item
 [![NPM version](https://img.shields.io/npm/v/prismarine-item.svg)](http://npmjs.com/package/prismarine-item)
+[![Build Status](https://circleci.com/gh/PrismarineJS/prismarine-item/tree/master.svg?style=shield)](https://circleci.com/gh/PrismarineJS/prismarine-item/tree/master)
 
 Represent a minecraft item with its associated data
 
