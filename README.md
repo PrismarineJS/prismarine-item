@@ -59,6 +59,10 @@ Return true if items are equal.
 
 ## History
 
+### 1.1.0
+
+* 1.13 support
+
 ### 1.0.2
 
 * make nbt default to null
