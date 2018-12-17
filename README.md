@@ -21,7 +21,7 @@ console.log(Item.fromNotch(notchItem));
 
 ## API
 
-### Item(type, count, metadata, nbt)
+### Item(type, count[, metadata], nbt)
 
 #### Item.toNotch(item)
 

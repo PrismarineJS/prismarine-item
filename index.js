@@ -3,14 +3,21 @@ module.exports = loader
 function loader (mcVersion) {
   const mcData = require('minecraft-data')(mcVersion)
   findItemOrBlockById = mcData.findItemOrBlockById
+  version = mcData.version.majorVersion
   return Item
 }
 
 let findItemOrBlockById
+let version
 const assert = require('assert')
 
 function Item (type, count, metadata, nbt) {
   if (type == null) return
+
+  if (metadata instanceof Object && metadata !== null) {
+    nbt = metadata
+    metadata = 0
+  }
 
   this.type = type
   this.count = count
@@ -44,17 +51,33 @@ Item.equal = function (item1, item2) {
 }
 
 Item.toNotch = function (item) {
-  if (item == null) return {blockId: -1}
-  const notchItem = {
-    blockId: item.type,
-    itemCount: item.count,
-    itemDamage: item.metadata
+  if (version === '1.13') {
+    if (item == null) return {present: false}
+    const notchItem = {
+      present: true,
+      itemId: item.type,
+      itemCount: item.count
+    }
+    if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
+    return notchItem
+  } else {
+    if (item == null) return {blockId: -1}
+    const notchItem = {
+      blockId: item.type,
+      itemCount: item.count,
+      itemDamage: item.metadata
+    }
+    if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
+    return notchItem
   }
-  if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
-  return notchItem
 }
 
 Item.fromNotch = function (item) {
-  if (item.blockId === -1) return null
-  return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
+  if (version === '1.13') {
+    if (item.present === false) return null
+    return new Item(item.itemId, item.itemCount, item.nbtData)
+  } else {
+    if (item.blockId === -1) return null
+    return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
+  }
 }
