@@ -36,7 +36,6 @@ function Item (type, count, metadata, nbt) {
     this.stackSize = itemEnum.stackSize
   }
   else {
-    console.log("unknown, but ok")
     this.name        = "unknown"
     this.displayName = "unknown"
     this.stackSize   = 1 
