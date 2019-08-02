@@ -25,15 +25,22 @@ function Item (type, count, metadata, nbt) {
   this.nbt = nbt || null
 
   const itemEnum = findItemOrBlockById(type)
-  assert.ok(itemEnum, 'item with id ' + type + ' not found')
-  this.name = itemEnum.name
-  this.displayName = itemEnum.displayName
-  if ('variations' in itemEnum) {
-    for (var i in itemEnum['variations']) {
-      if (itemEnum['variations'][i].metadata === metadata) { this.displayName = itemEnum['variations'][i].displayName }
+  if (itemEnum) {
+    this.name = itemEnum.name
+    this.displayName = itemEnum.displayName
+    if ('variations' in itemEnum) {
+      for (var i in itemEnum['variations']) {
+        if (itemEnum['variations'][i].metadata === metadata) { this.displayName = itemEnum['variations'][i].displayName }
+      }
     }
+    this.stackSize = itemEnum.stackSize
   }
-  this.stackSize = itemEnum.stackSize
+  else {
+    console.log("unknown, but ok")
+    this.name        = "unknown"
+    this.displayName = "unknown"
+    this.stackSize   = 1 
+  }
 }
 
 Item.equal = function (item1, item2) {
