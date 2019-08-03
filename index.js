@@ -9,7 +9,6 @@ function loader (mcVersion) {
 
 let findItemOrBlockById
 let version
-const assert = require('assert')
 
 function Item (type, count, metadata, nbt) {
   if (type == null) return
@@ -34,11 +33,10 @@ function Item (type, count, metadata, nbt) {
       }
     }
     this.stackSize = itemEnum.stackSize
-  }
-  else {
-    this.name        = "unknown"
-    this.displayName = "unknown"
-    this.stackSize   = 1 
+  } else {
+    this.name = 'unknown'
+    this.displayName = 'unknown'
+    this.stackSize = 1
   }
 }
 
