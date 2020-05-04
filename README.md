@@ -59,6 +59,10 @@ Return true if items are equal.
 
 ## History
 
+### 1.2.0
+
+* 1.14 support
+
 ### 1.1.1
 
 * allow unknown items
