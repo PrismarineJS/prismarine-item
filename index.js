@@ -55,7 +55,7 @@ Item.equal = function (item1, item2) {
 }
 
 Item.toNotch = function (item) {
-  if (version === '1.13' || version === '1.14') {
+  if (version === '1.13' || version === '1.14' || version === '1.15') {
     if (item == null) return {present: false}
     const notchItem = {
       present: true,
@@ -77,7 +77,7 @@ Item.toNotch = function (item) {
 }
 
 Item.fromNotch = function (item) {
-  if (version === '1.13' || version === '1.14') {
+  if (version === '1.13' || version === '1.14' || version === '1.15') {
     if (item.present === false) return null
     return new Item(item.itemId, item.itemCount, item.nbtData)
   } else {
