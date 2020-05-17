@@ -28,8 +28,8 @@ function Item (type, count, metadata, nbt) {
     this.name = itemEnum.name
     this.displayName = itemEnum.displayName
     if ('variations' in itemEnum) {
-      for (var i in itemEnum['variations']) {
-        if (itemEnum['variations'][i].metadata === metadata) { this.displayName = itemEnum['variations'][i].displayName }
+      for (var i in itemEnum.variations) {
+        if (itemEnum.variations[i].metadata === metadata) { this.displayName = itemEnum.variations[i].displayName }
       }
     }
     this.stackSize = itemEnum.stackSize
@@ -56,7 +56,7 @@ Item.equal = function (item1, item2) {
 
 Item.toNotch = function (item) {
   if (version === '1.13' || version === '1.14' || version === '1.15') {
-    if (item == null) return {present: false}
+    if (item == null) return { present: false }
     const notchItem = {
       present: true,
       itemId: item.type,
@@ -65,7 +65,7 @@ Item.toNotch = function (item) {
     if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
     return notchItem
   } else {
-    if (item == null) return {blockId: -1}
+    if (item == null) return { blockId: -1 }
     const notchItem = {
       blockId: item.type,
       itemCount: item.count,
