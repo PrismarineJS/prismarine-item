@@ -59,6 +59,10 @@ Return true if items are equal.
 
 ## History
 
+### 1.5.0
+
+* 1.16 support (thanks @DrakoTrogdor)
+
 ### 1.4.0
 
 * typescripts definitions (thanks @IdanHo)
