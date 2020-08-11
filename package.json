@@ -36,5 +36,10 @@
   "homepage": "https://prismarinejs.org/prismarine-item",
   "dependencies": {
     "prismarine-jsdoc-theme": "^2.3.12"
+  },
+  "standard": {
+    "ignore": [
+     "docs/"
+    ]
   }
 }

@@ -74,7 +74,6 @@ Item.equal = function (item1, item2) {
   }
 }
 
-
 /**
  * Take an item in the format of the minecraft packets and return an `Item` instance.
  * @param Item in the form of minecraft packets
