@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/prismarine_js.svg"/>
+    
+    <title>Home</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/search.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.5/fuse.min.js"></script> -->
+    <script src="scripts/fuse.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/variables.css">
+    <link type="text/css" rel="stylesheet" href="styles/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/clean-jsdoc-theme.css">
+    
+    
+    
+<svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none">
+    <defs>
+        <symbol id="copy-icon" viewbox="0 0 488.3 488.3">
+            <g>
+                <path d="M314.25,85.4h-227c-21.3,0-38.6,17.3-38.6,38.6v325.7c0,21.3,17.3,38.6,38.6,38.6h227c21.3,0,38.6-17.3,38.6-38.6V124    C352.75,102.7,335.45,85.4,314.25,85.4z M325.75,449.6c0,6.4-5.2,11.6-11.6,11.6h-227c-6.4,0-11.6-5.2-11.6-11.6V124    c0-6.4,5.2-11.6,11.6-11.6h227c6.4,0,11.6,5.2,11.6,11.6V449.6z"/>
+                <path d="M401.05,0h-227c-21.3,0-38.6,17.3-38.6,38.6c0,7.5,6,13.5,13.5,13.5s13.5-6,13.5-13.5c0-6.4,5.2-11.6,11.6-11.6h227    c6.4,0,11.6,5.2,11.6,11.6v325.7c0,6.4-5.2,11.6-11.6,11.6c-7.5,0-13.5,6-13.5,13.5s6,13.5,13.5,13.5c21.3,0,38.6-17.3,38.6-38.6    V38.6C439.65,17.3,422.35,0,401.05,0z"/>
+            </g>
+        </symbol>
+    </defs>
+</svg>
+
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html"><div class="text">prismarine-item</div></a></h2><div class="search-box"><input type="text" placeholder="Search..." id="search-box" /><div class="search-item-container" id="search-item-container"><ul class="search-item-ul" id="search-item-ul"></ul></div></div><div class="sidebar-list-div"><h3>Classes</h3><ul><li><a href="Item.html">Item</a><ul class='methods'><li data-type='method'><a href="Item.html#.equal">equal</a></li><li data-type='method'><a href="Item.html#.fromNotch">fromNotch</a></li><li data-type='method'><a href="Item.html#.toNotch">toNotch</a></li></ul></li></ul></div>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>prismarine-item</h1>
+<p><a href="http://npmjs.com/package/prismarine-item"><img src="https://img.shields.io/npm/v/prismarine-item.svg" alt="NPM version"></a>
+<a href="https://github.com/PrismarineJS/prismarine-item/actions?query=workflow%3A%22CI%22"><img src="https://github.com/PrismarineJS/prismarine-item/workflows/CI/badge.svg" alt="Build Status"></a></p>
+<p>Represent a minecraft item with its associated data</p>
+<h2>Usage</h2>
+<pre class="prettyprint source lang-js"><code>const Item=require(&quot;prismarine-item&quot;)(&quot;1.8&quot;);
+
+const ironShovelItem=new Item(256,1);
+
+console.log(ironShovelItem);
+
+const notchItem=Item.toNotch(ironShovelItem);
+console.log(notchItem);
+
+console.log(Item.fromNotch(notchItem));
+</code></pre>
+<h2>API</h2>
+<p>View the API documentation <a href="#">here</a></p>
+<h3>Item(type, count[, metadata], nbt)</h3>
+<h4>Item.toNotch(item)</h4>
+<p>Take an <code>item</code> in the format of the minecraft packets and return an <code>Item</code> instance.</p>
+<h4>Item.fromNotch(item)</h4>
+<p>Take an <code>Item</code> instance and return it in the format of the minecraft packets.</p>
+<h4>item.type</h4>
+<p>Numerical id.</p>
+<h4>item.count</h4>
+<h4>item.metadata</h4>
+<p>Number which represents different things depending on the item.
+See http://www.minecraftwiki.net/wiki/Data_values#Data</p>
+<h4>item.nbt</h4>
+<p>Buffer.</p>
+<h4>item.name</h4>
+<h4>item.displayName</h4>
+<h4>item.stackSize</h4>
+<h4>item.equal(otherItem)</h4>
+<p>Return true if items are equal.</p>
+<h2>History</h2>
+<h3>1.5.0</h3>
+<ul>
+<li>1.16 support (thanks @DrakoTrogdor)</li>
+</ul>
+<h3>1.4.0</h3>
+<ul>
+<li>typescripts definitions (thanks @IdanHo)</li>
+</ul>
+<h3>1.3.0</h3>
+<ul>
+<li>1.15 support</li>
+</ul>
+<h3>1.2.0</h3>
+<ul>
+<li>1.14 support</li>
+</ul>
+<h3>1.1.1</h3>
+<ul>
+<li>allow unknown items</li>
+</ul>
+<h3>1.1.0</h3>
+<ul>
+<li>1.13 support</li>
+</ul>
+<h3>1.0.2</h3>
+<ul>
+<li>make nbt default to null</li>
+<li>display the item id if it is not found in minecraft data</li>
+</ul>
+<h3>1.0.1</h3>
+<ul>
+<li>bump mcdata</li>
+</ul>
+<h3>1.0.0</h3>
+<ul>
+<li>bump dependencies</li>
+</ul>
+<h3>0.0.0</h3>
+<ul>
+<li>Import from mineflayer</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+  Fork: <a href='https://github.com/ranguli/prismarine-docjs-theme'>https://github.com/ranguli/prismarine-docjs-theme
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script>
+var list = [{"title":"Item","link":"<a href=\"Item.html\">Item</a>"},{"title":"Item.equal","link":"<a href=\"Item.html#.equal\">Item.equal &rtrif; undefined</a>"},{"title":"Item.fromNotch","link":"<a href=\"Item.html#.fromNotch\">Item.fromNotch &rtrif; undefined</a>"},{"title":"Item.toNotch","link":"<a href=\"Item.html#.toNotch\">Item.toNotch &rtrif; undefined</a>"}];
+setupSearch(list)
+</script>
+
+ 
+<script type="text/javascript" src="scripts/misc.js"></script>
+</body>
+</html>

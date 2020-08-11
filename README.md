@@ -21,41 +21,7 @@ console.log(Item.fromNotch(notchItem));
 
 ## API
 
-### Item(type, count[, metadata], nbt)
-
-#### Item.toNotch(item)
-
-Take an `item` in the format of the minecraft packets and return an `Item` instance.
-
-#### Item.fromNotch(item)
-
-Take an `Item` instance and return it in the format of the minecraft packets.
-
-#### item.type
-
-Numerical id.
-
-#### item.count
-
-#### item.metadata
-
-Number which represents different things depending on the item.
-See http://www.minecraftwiki.net/wiki/Data_values#Data
-
-#### item.nbt
-
-Buffer.
-
-#### item.name
-
-#### item.displayName
-
-#### item.stackSize
-
-#### item.equal(otherItem)
-
-Return true if items are equal.
-
+View the API documentation [here](https://prismarine.github.io/prismarine-item)
 
 ## History
 

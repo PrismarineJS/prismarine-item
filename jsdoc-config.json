@@ -1,0 +1,31 @@
+{
+    "source": {
+        "include": ["./README.md", "./index.js"],
+        "includePattern": ".js$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+
+    "plugins": [
+        "plugins/markdown"
+    ],
+	"templates": {
+		"cleverLinks": false,
+		"monospaceLinks": false,
+		"default": {
+			"outputSourceFiles": true
+		}
+	},
+    "opts": {
+        "encoding": "utf8",
+        "readme": "./README.md",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true,
+        "template": "./node_modules/prismarine-jsdoc-theme",
+		"theme_opts": {
+			"title": "prismarine-item",
+			"footer": "Fork: <a href='https://github.com/ranguli/prismarine-docjs-theme'>https://github.com/ranguli/prismarine-docjs-theme"
+		}
+
+    }
+}
