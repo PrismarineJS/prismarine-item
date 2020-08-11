@@ -7,7 +7,8 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "standard",
-    "fix": "standard --fix"
+    "fix": "standard --fix",
+    "build-docs": "jsdoc -c jsdoc-config.json -t node_modules/prismarine-jsdoc-theme"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/PrismarineJS/prismarine-item/issues"
   },
-  "homepage": "https://github.com/PrismarineJS/prismarine-item#readme",
+  "homepage": "https://prismarinejs.org/prismarine-item",
   "dependencies": {
     "prismarine-jsdoc-theme": "^2.3.12"
   }
