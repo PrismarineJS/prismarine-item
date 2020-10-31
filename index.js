@@ -28,7 +28,7 @@ function Item (type, count, metadata, nbt) {
     this.name = itemEnum.name
     this.displayName = itemEnum.displayName
     if ('variations' in itemEnum) {
-      for (var i in itemEnum.variations) {
+      for (const i in itemEnum.variations) {
         if (itemEnum.variations[i].metadata === metadata) { this.displayName = itemEnum.variations[i].displayName }
       }
     }
