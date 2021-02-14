@@ -3,6 +3,7 @@
 declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
     type: number;
+    slot: number;
     count: number;
     metadata: number;
     nbt: Buffer | null;
