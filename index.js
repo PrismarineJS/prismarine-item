@@ -92,7 +92,7 @@ function loader (mcVersion) {
     }
 
     function renameCost (item) {
-      if (item?.nbt?.value?.RepairCost?.value === 2147483647) {
+      if (item?.nbt?.value?.RepairCost?.value === 0x7fffffff) {
         throw new Error('Renaming impossible')
       }
       return 1
