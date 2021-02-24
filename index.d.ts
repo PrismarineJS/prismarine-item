@@ -13,6 +13,7 @@ declare class Item {
     static equal(item1: Item, item2: Item): boolean;
     static toNotch(item: Item): NotchItem;
     static fromNotch(item: NotchItem): Item;
+    static anvil (item: Item, item2: Item, gameMode: string, rename: boolean)
 }
 declare interface NotchItem {
     // 1.8 - 1.12
