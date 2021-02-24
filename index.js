@@ -213,18 +213,18 @@ function loader (mcVersion) {
       const finalEnchs = []
       let xpLevelCost = 0
       for (const ench of itemTwoEnch) {
-        const enchOnItemOne = itemOneEnch.find(x => x.id === ench.id)
-        let { exclude, itemMultiplier, bookMultiplier, maxLevel, category } = findEnchantBy(ench.id, 'id')
+        const enchOnItemOne = itemOneEnch.find(x => x.name === ench.name)
+        let { exclude, itemMultiplier, bookMultiplier, maxLevel, category } = findEnchantBy(ench.name, 'name')
         const categoryItems = armorMapping[category]
         if (!bothAreBooks && !categoryItems.includes(itemOne.name) && !creative) continue
         if (enchOnItemOne === undefined) { // first item doesn't have this ench
           exclude = exclude.map(name => findEnchantBy(name, 'name'))
-          if (exclude.some(({ id }) => itemOneEnch.find(x => x.id === id))) { // has an excluded enchant
+          if (exclude.some(({ name }) => itemOneEnch.find(x => x.name === name))) { // has an excluded enchant
             xpLevelCost++
           } else {
             const finalLevel = ench.lvl
             xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
-            finalEnchs.push({ id: ench.id, lvl: ench.lvl })
+            finalEnchs.push({ id: ench.name, lvl: ench.lvl })
           }
         } else {
           let finalLevel = 0
@@ -233,17 +233,17 @@ function loader (mcVersion) {
           if (itemOneLevel === itemTwoLevel) { // add check for max level > combined level
             if (itemOneLevel === maxLevel) finalLevel = itemOneLevel
             else finalLevel = itemOneLevel + 1
-            finalEnchs.push({ id: ench.id, lvl: finalLevel })
+            finalEnchs.push({ id: ench.name, lvl: finalLevel })
             // return
           } else if (itemTwoLevel > itemOneLevel) {
             finalLevel = itemTwoLevel
-            finalEnchs.push({ id: ench.id, lvl: finalLevel })
+            finalEnchs.push({ id: ench.name, lvl: finalLevel })
           }
           xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
         }
       }
       for (const ench of itemOneEnch) {
-        if (!finalEnchs.find(x => x.id === ench.id)) {
+        if (!finalEnchs.find(x => x.name === ench.name)) {
           finalEnchs.push(ench)
         }
       }
