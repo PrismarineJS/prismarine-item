@@ -1,8 +1,7 @@
 module.exports = loader
 
 function loader (mcVersion) {
-  mcData = require('minecraft-data')(mcVersion)
-  let mcData
+  const mcData = require('minecraft-data')(mcVersion)
 
   function Item (type, count, metadata, nbt) {
     if (type == null) return
