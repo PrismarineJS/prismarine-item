@@ -84,6 +84,18 @@ function loader (mcVersion) {
     }
   }
 
+  Item.getEnchants = (item) => {
+    let itemEnch
+    if (item.name === 'enchanted_book' && item.nbt !== null) {
+      itemEnch = nbt.simplify(item.nbt).StoredEnchantments
+    } else if (item.nbt !== null) {
+      itemEnch = item = nbt.simplify(item.nbt).ench
+    } else {
+      itemEnch = []
+    }
+    return itemEnch
+  }
+
   Item.anvil = (itemOne, itemTwo, creative, rename) => {
     function baseCost (item) {
       if (item.name === 'enchanted_book') return 0
@@ -172,17 +184,6 @@ function loader (mcVersion) {
         return 0 // errors should be handled by returning 0
       }
     }
-    function getEnchants (item) {
-      let itemEnch
-      if (item.name === 'enchanted_book' && item.nbt !== null) {
-        itemEnch = nbt.simplify(item.nbt).StoredEnchantments
-      } else if (item.nbt !== null) {
-        itemEnch = item = nbt.simplify(item.nbt).ench
-      } else {
-        itemEnch = []
-      }
-      return itemEnch
-    }
     /**
      *
      * @param {Item} itemOne left hand item
@@ -196,8 +197,8 @@ function loader (mcVersion) {
       const rightIsBook = itemTwo.name === 'enchanted_book'
       const bothAreBooks = itemOne.name === 'enchanted_book' && rightIsBook
       const findEnchantBy = (val, by) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x[by] === val)
-      const itemOneEnch = getEnchants(itemOne)
-      const itemTwoEnch = getEnchants(itemTwo)
+      const itemOneEnch = Item.getEnchants(itemOne)
+      const itemTwoEnch = Item.getEnchants(itemTwo)
       if (itemOneEnch === null && itemTwoEnch === null) throw new Error('Both items are unenchanted')
       const finalEnchs = []
       let xpLevelCost = 0
