@@ -85,7 +85,7 @@ function loader (mcVersion) {
   }
 
   Item.getEnchants = (item) => {
-    const normalize = (enchList, ix) => enchList.map(ench => {
+    const normalize = (enchList) => enchList.map(ench => {
       return { lvl: ench.lvl, name: mcData.enchantments[ench.id].name }
     })
 
@@ -103,6 +103,11 @@ function loader (mcVersion) {
     // } else {
 
     // }
+  }
+  // denormalize converts normalized enchants back to 1.8 enchant format with {id, lvl}
+  Item.denormalize = (enchantList) => {
+    const findEnch = (name) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x.name === name)
+    return enchantList.map(ench => ({ lvl: ench.lvl, id: findEnch(ench.name).id }))
   }
 
   Item.anvil = (itemOne, itemTwo, creative, rename) => {
@@ -203,7 +208,6 @@ function loader (mcVersion) {
      * finalEnchs is the array of enchants on the final object
      */
     function combineEnchants (itemOne, itemTwo, creative) {
-      // TODO: Account for when nbt changed to using enchant names instead of id's, this assumes id's
       const rightIsBook = itemTwo.name === 'enchanted_book'
       const bothAreBooks = itemOne.name === 'enchanted_book' && rightIsBook
       const findEnchantBy = (val, by) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x[by] === val)
