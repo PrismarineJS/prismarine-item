@@ -86,7 +86,7 @@ function loader (mcVersion) {
 
   Item.anvil = (itemOne, itemTwo, creative, rename) => {
     function baseCost (item) {
-      if (item.displayName === 'Enchanted Book') return 0
+      if (item.name === 'enchanted_book') return 0
 
       return item?.nbt?.value?.RepairCost?.value ?? 0
     }
@@ -99,11 +99,11 @@ function loader (mcVersion) {
     }
 
     function combinePossible (itemOne, itemTwo) {
-      if (itemOne.displayName === 'Enchanted Book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
-      else if (itemOne.displayName === 'Enchanted Book') return // return here because this func will throw because enchanted book isnt fixable
+      if (itemOne.name === 'enchanted_book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
+      else if (itemOne.name === 'enchanted_book') return // return here because this func will throw because enchanted book isnt fixable
       let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.displayName))
       fixMaterials = fixMaterials.concat(['Enchanted Book', itemOne.displayName])
-      // if (itemOne.displayName === 'Enchanted Book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
+      // if (itemOne.name === 'enchanted_book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
       if (!fixMaterials.includes(itemTwo.displayName)) throw new Error('Not able to be combined')
     }
     /**
@@ -123,12 +123,12 @@ function loader (mcVersion) {
       if (!fixMaterials.includes(fixMaterial) && toolToBeFixed !== fixMaterial) {
         return 0 // Enchanted book can't fix
       }
-      if (toolToBeFixed === 'Enchanted Book') return 0 // not fixable
+      if (itemOne.name === 'enchanted_book') return 0 // not fixable
       // result vars
       let fixedDurability = 0
       let xpLevelCost = 0
       let usedMats = 0
-      if (itemTwo.displayName === itemOne.displayName) {
+      if (itemTwo.name === itemOne.name) {
         fixedDurability = (0.12 * MAX_DURABILITY) + itemTwo.metadata
         xpLevelCost = 2
         usedMats = 1
@@ -162,7 +162,7 @@ function loader (mcVersion) {
         if (itemOne.metadata !== 0) {
           cost += repairCost(itemOne, itemTwo)[0]
         }
-        if (itemTwo.displayName === itemOne.displayName || itemTwo.displayName === 'Enchanted Book') {
+        if (itemTwo.displayName === itemOne.displayName || itemTwo.name === 'enchanted_book') {
           const enchantCost = combineEnchants(itemOne, itemTwo, creative)[0]
           if (enchantCost === 0 && !rename && itemOne.metadata === 0) throw new Error('No change')
           cost += enchantCost
@@ -174,7 +174,7 @@ function loader (mcVersion) {
     }
     function getEnchants (item) {
       let itemEnch
-      if (item.displayName === 'Enchanted Book' && item.nbt !== null) {
+      if (item.name === 'enchanted_book' && item.nbt !== null) {
         itemEnch = nbt.simplify(item.nbt).StoredEnchantments
       } else if (item.nbt !== null) {
         itemEnch = item = nbt.simplify(item.nbt).ench
@@ -193,8 +193,8 @@ function loader (mcVersion) {
      */
     function combineEnchants (itemOne, itemTwo, creative) {
       // TODO: Account for when nbt changed to using enchant names instead of id's, this assumes id's
-      const rightIsBook = itemTwo.displayName === 'Enchanted Book'
-      const bothAreBooks = itemOne.displayName === 'Enchanted Book' && rightIsBook
+      const rightIsBook = itemTwo.name === 'enchanted_book'
+      const bothAreBooks = itemOne.name === 'enchanted_book' && rightIsBook
       const findEnchantBy = (val, by) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x[by] === val)
       const itemOneEnch = getEnchants(itemOne)
       const itemTwoEnch = getEnchants(itemTwo)
