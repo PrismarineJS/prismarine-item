@@ -33,7 +33,7 @@ function loader (mcVersion) {
     }
   }
 
-  Item.equal = function (item1, item2) {
+  Item.equal = (item1, item2) => {
     if (item1 == null && item2 == null) {
       return true
     } else if (item1 == null) {
@@ -47,7 +47,7 @@ function loader (mcVersion) {
     }
   }
 
-  Item.toNotch = function (item) {
+  Item.toNotch = (item) => {
     if (mcData.version.majorVersion === '1.13' || mcData.version.majorVersion === '1.14' || mcData.version.majorVersion === '1.15' || mcData.version.majorVersion === '1.16') {
       if (item == null) return { present: false }
       const notchItem = {
@@ -69,7 +69,7 @@ function loader (mcVersion) {
     }
   }
 
-  Item.fromNotch = function (item) {
+  Item.fromNotch = (item) => {
     if (mcData.version.majorVersion === '1.13' || mcData.version.majorVersion === '1.14' || mcData.version.majorVersion === '1.15' || mcData.version.majorVersion === '1.16') {
       if (item.present === false) return null
       return new Item(item.itemId, item.itemCount, item.nbtData)
