@@ -88,21 +88,20 @@ function loader (mcVersion) {
     const normalize = (enchList) => enchList.map(ench => {
       return { lvl: ench.lvl, name: mcData.enchantments[ench.id].name }
     })
-
     if (mcData.isOlderThan('1.13')) {
       let itemEnch
       if (item.name === 'enchanted_book' && item.nbt !== null) {
         itemEnch = nbt.simplify(item.nbt).StoredEnchantments
       } else if (item.nbt !== null) {
-        itemEnch = item = nbt.simplify(item.nbt).ench
+        itemEnch = nbt.simplify(item.nbt).ench
       } else {
         itemEnch = []
       }
       return normalize(itemEnch)
     }
-    // } else {
-
-    // }
+    const gg = nbt.simplify(item.nbt)
+    console.log(gg)
+    return 1
   }
   // denormalize converts normalized enchants back to 1.8 enchant format with {id, lvl}
   Item.denormalize = (enchantList) => {
@@ -182,21 +181,27 @@ function loader (mcVersion) {
      * @param {boolean} rename
      */
     function combine (itemOne, itemTwo, creative, rename) {
+      const data = {}
       try {
         combinePossible(itemOne, itemTwo) // throws if not possible
         let cost = baseCost(itemOne) + baseCost(itemTwo)
         if (rename) cost += renameCost(itemOne)
         if (itemOne.metadata !== 0) {
-          cost += repairCost(itemOne, itemTwo)[0]
+          // cost +=
+          const [xpLevelCost, fixedDurability, usedMats] = repairCost(itemOne, itemTwo)
+          data.fixedDurability = fixedDurability
+          data.usedMats = usedMats
+          cost += xpLevelCost
         }
         if (itemTwo.displayName === itemOne.displayName || itemTwo.name === 'enchanted_book') {
-          const enchantCost = combineEnchants(itemOne, itemTwo, creative)[0]
+          const [enchantCost, finalEnchs] = combineEnchants(itemOne, itemTwo, creative)
+          data.finalEnchs = finalEnchs
           if (enchantCost === 0 && !rename && itemOne.metadata === 0) throw new Error('No change')
           cost += enchantCost
         }
-        return cost
+        return { xpCost: cost, ...data }
       } catch (err) {
-        return 0 // errors should be handled by returning 0
+        return { xpCost: 0, invalid: true, err: err.message } // errors should be handled by returning 0
       }
     }
     /**

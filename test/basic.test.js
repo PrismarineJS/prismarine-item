@@ -81,6 +81,9 @@ describe('test enchant functions', () => {
         expect(enchs).toStrictEqual([{ lvl: 3, name: 'luck_of_the_sea' }, { lvl: 3, name: 'lure' }])
       })
     })
+    describe('1.16.5 test', () => {
+
+    })
   })
 
   describe('Item.deNormalize', () => {
