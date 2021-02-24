@@ -35,7 +35,7 @@ function loader (version) {
         }
       }
 
-      equal (item1, item2) {
+      static equal (item1, item2) {
         if (item1 == null && item2 == null) {
           return true
         } else if (item1 == null) {
