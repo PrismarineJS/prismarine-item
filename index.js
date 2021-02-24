@@ -85,15 +85,24 @@ function loader (mcVersion) {
   }
 
   Item.getEnchants = (item) => {
-    let itemEnch
-    if (item.name === 'enchanted_book' && item.nbt !== null) {
-      itemEnch = nbt.simplify(item.nbt).StoredEnchantments
-    } else if (item.nbt !== null) {
-      itemEnch = item = nbt.simplify(item.nbt).ench
-    } else {
-      itemEnch = []
+    const normalize = (enchList, ix) => enchList.map(ench => {
+      return { lvl: ench.lvl, name: mcData.enchantments[ench.id].name }
+    })
+
+    if (mcData.isOlderThan('1.13')) {
+      let itemEnch
+      if (item.name === 'enchanted_book' && item.nbt !== null) {
+        itemEnch = nbt.simplify(item.nbt).StoredEnchantments
+      } else if (item.nbt !== null) {
+        itemEnch = item = nbt.simplify(item.nbt).ench
+      } else {
+        itemEnch = []
+      }
+      return normalize(itemEnch)
     }
-    return itemEnch
+    // } else {
+
+    // }
   }
 
   Item.anvil = (itemOne, itemTwo, creative, rename) => {
@@ -164,6 +173,7 @@ function loader (mcVersion) {
      *
      * @param {Item} itemOne
      * @param {Item} itemTwo
+     * @param {boolean} creative
      * @param {boolean} rename
      */
     function combine (itemOne, itemTwo, creative, rename) {
