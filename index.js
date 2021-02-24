@@ -48,7 +48,7 @@ function loader (mcVersion) {
   }
 
   Item.toNotch = (item) => {
-    if (mcData.isNewerOrEqualTo('1.13') || mcData.isNewerOrEqualTo('1.14') || mcData.isNewerOrEqualTo('1.15') || mcData.isNewerOrEqualTo('1.16')) {
+    if (mcData.isNewerOrEqualTo('1.13')) {
       if (item == null) return { present: false }
       const notchItem = {
         present: true,
@@ -70,7 +70,7 @@ function loader (mcVersion) {
   }
 
   Item.fromNotch = (item) => {
-    if (mcData.isNewerOrEqualTo('1.13') || mcData.isNewerOrEqualTo('1.14') || mcData.isNewerOrEqualTo('1.15') || mcData.isNewerOrEqualTo('1.16')) {
+    if (mcData.isNewerOrEqualTo('1.13')) {
       if (item.present === false) return null
       return new Item(item.itemId, item.itemCount, item.nbtData)
     } else {
