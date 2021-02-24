@@ -5,9 +5,10 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "npm run lint",
-    "lint": "standard",
-    "fix": "standard --fix"
+    "test": "jest --verbose",
+    "pretest": "npm run lint",
+    "fix": "standard --fix",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,8 @@
   "devDependencies": {
     "@types/node": "^14.0.1",
     "minecraft-data": "^2.35.0",
-    "standard": "^16.0.1"
+    "standard": "^16.0.1",
+    "jest": "^26.1.0"
   },
   "keywords": [
     "minecraft",
