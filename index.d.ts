@@ -30,6 +30,6 @@ declare interface NotchItem {
 declare interface AnvilOutput {
     xpLevelCost: number;
     finalEnchs: [string, number][]
-
 }
+
 export declare function loader(mcVersion: string): keyof Item;
