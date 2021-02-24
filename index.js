@@ -1,3 +1,8 @@
+const nbt = require('prismarine-nbt')
+const canFixData = require('./data/repairable_items.json')
+const maxItemDura = require('./data/max_item_durability.json')
+const armorMapping = require('./data/armor_category_mapping.json')
+
 module.exports = loader
 
 function loader (mcVersion) {
@@ -77,6 +82,163 @@ function loader (mcVersion) {
       if (item.blockId === -1) return null
       return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
     }
+  }
+
+  Item.anvil = (itemOne, itemTwo, creative, rename) => {
+    function baseCost (item) {
+      if (item.displayName === 'Enchanted Book') return 0
+
+      return item?.nbt?.value?.RepairCost?.value ?? 0
+    }
+
+    function renameCost (item) {
+      if (item?.nbt?.value?.RepairCost?.value === 2147483647) {
+        throw new Error('Renaming impossible')
+      }
+      return 1
+    }
+
+    function combinePossible (itemOne, itemTwo) {
+      if (itemOne.displayName === 'Enchanted Book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
+      else if (itemOne.displayName === 'Enchanted Book') return // return here because this func will throw because enchanted book isnt fixable
+      let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.displayName))
+      fixMaterials = fixMaterials.concat(['Enchanted Book', itemOne.displayName])
+      // if (itemOne.displayName === 'Enchanted Book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
+      if (!fixMaterials.includes(itemTwo.displayName)) throw new Error('Not able to be combined')
+    }
+    /**
+     *
+     * @param {Item} itemOne left hand item
+     * @param {Item} itemTwo right hand item
+     * @returns {[xpLevelCost, fixedDurability, usedMats]}
+     * xpLevelCost is the number of xp levels used for repair (if any)
+     * fixedDurability is duribility after using the anvil
+     * usedMats is the number of materials used to fix the broken item (if many mats is used)
+     */
+    function repairCost (itemOne, itemTwo) {
+      const MAX_DURABILITY = maxItemDura[itemOne.name]
+      const { metadata: DURABILITY_LOST, displayName: toolToBeFixed } = itemOne
+      const { displayName: fixMaterial } = itemTwo
+      const [, fixMaterials] = canFixData.find(([items]) => items.includes(toolToBeFixed)) // can always be fixed by another of itself
+      if (!fixMaterials.includes(fixMaterial) && toolToBeFixed !== fixMaterial) {
+        return 0 // Enchanted book can't fix
+      }
+      if (toolToBeFixed === 'Enchanted Book') return 0 // not fixable
+      // result vars
+      let fixedDurability = 0
+      let xpLevelCost = 0
+      let usedMats = 0
+      if (itemTwo.displayName === itemOne.displayName) {
+        fixedDurability = (0.12 * MAX_DURABILITY) + itemTwo.metadata
+        xpLevelCost = 2
+        usedMats = 1
+      } else if (DURABILITY_LOST !== 0) {
+        const durabilityFixedPerMat = Math.floor(MAX_DURABILITY * 0.25)
+        const matsToFullyRepair = Math.ceil(DURABILITY_LOST / durabilityFixedPerMat)
+        if (itemTwo.count > matsToFullyRepair) { // takeall of itemTwo
+          fixedDurability = MAX_DURABILITY
+          xpLevelCost = matsToFullyRepair // 1 exp lvl per mat used
+          usedMats = matsToFullyRepair
+        } else {
+          fixedDurability = DURABILITY_LOST + (durabilityFixedPerMat * itemTwo.count)
+          xpLevelCost = itemTwo.count // 1 exp lvl per mat used
+          usedMats = itemTwo.count
+        }
+      }
+      return [xpLevelCost, fixedDurability, usedMats]
+    }
+
+    /**
+     *
+     * @param {Item} itemOne
+     * @param {Item} itemTwo
+     * @param {boolean} rename
+     */
+    function combine (itemOne, itemTwo, creative, rename) {
+      try {
+        combinePossible(itemOne, itemTwo) // throws if not possible
+        let cost = baseCost(itemOne) + baseCost(itemTwo)
+        if (rename) cost += renameCost(itemOne)
+        if (itemOne.metadata !== 0) {
+          cost += repairCost(itemOne, itemTwo)[0]
+        }
+        if (itemTwo.displayName === itemOne.displayName || itemTwo.displayName === 'Enchanted Book') {
+          const enchantCost = combineEnchants(itemOne, itemTwo, creative)[0]
+          if (enchantCost === 0 && !rename && itemOne.metadata === 0) throw new Error('No change')
+          cost += enchantCost
+        }
+        return cost
+      } catch (err) {
+        return 0 // errors should be handled by returning 0
+      }
+    }
+    function getEnchants (item) {
+      let itemEnch
+      if (item.displayName === 'Enchanted Book' && item.nbt !== null) {
+        itemEnch = nbt.simplify(item.nbt).StoredEnchantments
+      } else if (item.nbt !== null) {
+        itemEnch = item = nbt.simplify(item.nbt).ench
+      } else {
+        itemEnch = []
+      }
+      return itemEnch
+    }
+    /**
+     *
+     * @param {Item} itemOne left hand item
+     * @param {Item} itemTwo right hand item
+     * @returns {[xpLevelCost, finalEnchs]}
+     * xpLevelCost is enchant data that is strictly from combining enchants
+     * finalEnchs is the array of enchants on the final object
+     */
+    function combineEnchants (itemOne, itemTwo, creative) {
+      // TODO: Account for when nbt changed to using enchant names instead of id's, this assumes id's
+      const rightIsBook = itemTwo.displayName === 'Enchanted Book'
+      const bothAreBooks = itemOne.displayName === 'Enchanted Book' && rightIsBook
+      const findEnchantBy = (val, by) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x[by] === val)
+      const itemOneEnch = getEnchants(itemOne)
+      const itemTwoEnch = getEnchants(itemTwo)
+      if (itemOneEnch === null && itemTwoEnch === null) throw new Error('Both items are unenchanted')
+      const finalEnchs = []
+      let xpLevelCost = 0
+      for (const ench of itemTwoEnch) {
+        const enchOnItemOne = itemOneEnch.find(x => x.id === ench.id)
+        let { exclude, itemMultiplier, bookMultiplier, maxLevel, category } = findEnchantBy(ench.id, 'id')
+        const categoryItems = armorMapping[category]
+        if (!bothAreBooks && !categoryItems.includes(itemOne.name) && !creative) continue
+        if (enchOnItemOne === undefined) { // first item doesn't have this ench
+          exclude = exclude.map(name => findEnchantBy(name, 'name'))
+          if (exclude.some(({ id }) => itemOneEnch.find(x => x.id === id))) { // has an excluded enchant
+            xpLevelCost++
+          } else {
+            const finalLevel = ench.lvl
+            xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
+            finalEnchs.push({ id: ench.id, lvl: ench.lvl })
+          }
+        } else {
+          let finalLevel = 0
+          const itemOneLevel = enchOnItemOne.lvl
+          const itemTwoLevel = ench.lvl
+          if (itemOneLevel === itemTwoLevel) { // add check for max level > combined level
+            if (itemOneLevel === maxLevel) finalLevel = itemOneLevel
+            else finalLevel = itemOneLevel + 1
+            finalEnchs.push({ id: ench.id, lvl: finalLevel })
+            // return
+          } else if (itemTwoLevel > itemOneLevel) {
+            finalLevel = itemTwoLevel
+            finalEnchs.push({ id: ench.id, lvl: finalLevel })
+          }
+          xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
+        }
+      }
+      for (const ench of itemOneEnch) {
+        if (!finalEnchs.find(x => x.id === ench.id)) {
+          finalEnchs.push(ench)
+        }
+      }
+      return [xpLevelCost, finalEnchs]
+    }
+    return combine(itemOne, itemTwo, creative, rename)
   }
   return Item
 }

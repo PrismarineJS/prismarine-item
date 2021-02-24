@@ -1,0 +1,11 @@
+[
+    [["Wooden Sword", "Wooden Pickaxe", "Wooden Axe", "Wooden Shovel", "Wooden Hoe", "Shield"], ["Planks"]],
+    [["Leather Cap", "Leather Tunic", "Leather Pants", "Leather Boots"], ["Leather"]],
+    [["Stone Sword", "Stone Pickaxe", "Stone Axe", "Stone Shovel", "Stone Hoe"], ["Cobblestone", "Blackstone", "Grimstone"]],
+    [["Iron Helmet", "Iron Chestplate", "Iron Leggings", "Iron Boots", "Chainmail Helmet", "Chainmail Chestplate", "Chainmail Leggings", "Chainmail Boots", "Iron Sword", "Iron Pickaxe", "Iron Axe", "Iron Shovel", "Iron Hoe"], ["Iron Ingot"]],
+    [["Golden Helmet", "Golden Chestplate", "Golden Leggings", "Golden Boots", "Golden Sword", "Golden Pickaxe", "Golden Axe", "Golden Shovel", "Golden Hoe"], ["Gold Ingot"]],
+    [["Diamond Helmet", "Diamond Chestplate", "Diamond Leggings", "Diamond Boots", "Diamond Sword", "Diamond Pickaxe", "Diamond Axe", "Diamond Shovel", "Diamond Hoe"], ["Diamond"]],
+    [["Netherite Helmet", "Netherite Chestplate", "Netherite Leggings", "Netherite Boots", "Netherite Sword", "Netherite Pickaxe", "Netherite Axe", "Netherite Shovel", "Netherite Hoe"], ["Netherite Ingot"]],
+    [["Turtle Shell"], ["Scute"]],
+    [["Elytra"], ["Phantom Membrane"]]
+  ]
