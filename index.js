@@ -195,7 +195,7 @@ function loader (version) {
             cost += xpLevelCost
           }
           if (itemTwo.displayName === itemOne.displayName || itemTwo.name === 'enchanted_book') {
-            const [enchantCost, finalEnchs] = combineEnchants(itemOne, itemTwo, creative)
+            const { xpLevelCost: enchantCost, finalEnchs } = combineEnchants(itemOne, itemTwo, creative)
             data.finalEnchs = finalEnchs
             if (enchantCost === 0 && !rename && itemOne.metadata === 0) throw new Error('No change')
             cost += enchantCost
@@ -269,7 +269,7 @@ function loader (version) {
             finalEnchs.push(ench)
           }
         }
-        return [xpLevelCost, finalEnchs]
+        return { xpLevelCost, finalEnchs }
       }
       return combine(itemOne, itemTwo, creative, rename)
     }
