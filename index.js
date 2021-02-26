@@ -125,8 +125,8 @@ function loader (version) {
       function combinePossible (itemOne, itemTwo) {
         if (itemOne.name === 'enchanted_book' && itemTwo.name !== 'enchanted_book') throw new Error('Can only combine book with book')
         else if (itemOne.name === 'enchanted_book') return // return here because this func will throw because enchanted book isnt fixable
-        let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.displayName))
-        fixMaterials = fixMaterials.concat(['Enchanted Book', itemOne.displayName])
+        let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.name))
+        fixMaterials = fixMaterials.concat(['enchanted_book', itemOne.name])
         // if (itemOne.name === 'enchanted_book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
         if (!fixMaterials.includes(itemTwo.displayName)) throw new Error('Not able to be combined')
       }
@@ -141,10 +141,9 @@ function loader (version) {
          */
       function repairCost (itemOne, itemTwo) {
         const MAX_DURABILITY = maxItemDura[itemOne.name]
-        const { metadata: DURABILITY_LOST, displayName: toolToBeFixed } = itemOne
-        const { displayName: fixMaterial } = itemTwo
-        const [, fixMaterials] = canFixData.find(([items]) => items.includes(toolToBeFixed)) // can always be fixed by another of itself
-        if (!fixMaterials.includes(fixMaterial) && toolToBeFixed !== fixMaterial) {
+        const { metadata: DURABILITY_LOST } = itemOne
+        const [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.name)) // can always be fixed by another of itself
+        if (!fixMaterials.includes(itemTwo.name) && itemOne.name !== itemTwo.name) {
           return 0 // Enchanted book can't fix
         }
         if (itemOne.name === 'enchanted_book') return 0 // not fixable

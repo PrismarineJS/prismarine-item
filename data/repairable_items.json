@@ -1,11 +1,11 @@
 [
-    [["Wooden Sword", "Wooden Pickaxe", "Wooden Axe", "Wooden Shovel", "Wooden Hoe", "Shield"], ["Planks"]],
-    [["Leather Cap", "Leather Tunic", "Leather Pants", "Leather Boots"], ["Leather"]],
-    [["Stone Sword", "Stone Pickaxe", "Stone Axe", "Stone Shovel", "Stone Hoe"], ["Cobblestone", "Blackstone", "Grimstone"]],
-    [["Iron Helmet", "Iron Chestplate", "Iron Leggings", "Iron Boots", "Chainmail Helmet", "Chainmail Chestplate", "Chainmail Leggings", "Chainmail Boots", "Iron Sword", "Iron Pickaxe", "Iron Axe", "Iron Shovel", "Iron Hoe"], ["Iron Ingot"]],
-    [["Golden Helmet", "Golden Chestplate", "Golden Leggings", "Golden Boots", "Golden Sword", "Golden Pickaxe", "Golden Axe", "Golden Shovel", "Golden Hoe"], ["Gold Ingot"]],
-    [["Diamond Helmet", "Diamond Chestplate", "Diamond Leggings", "Diamond Boots", "Diamond Sword", "Diamond Pickaxe", "Diamond Axe", "Diamond Shovel", "Diamond Hoe"], ["Diamond"]],
-    [["Netherite Helmet", "Netherite Chestplate", "Netherite Leggings", "Netherite Boots", "Netherite Sword", "Netherite Pickaxe", "Netherite Axe", "Netherite Shovel", "Netherite Hoe"], ["Netherite Ingot"]],
-    [["Turtle Shell"], ["Scute"]],
-    [["Elytra"], ["Phantom Membrane"]]
-  ]
+  [["wooden_sword", "wooden_pickaxe", "wooden_axe", "wooden_shovel", "wooden_hoe", "shield"], ["oak_planks", "spruce_planks", "birch_planks", "jungle_planks", "acacia_planks", "dark_oak_planks", "crimson_planks", "warped_planks"]],
+  [["leather_helmet", "leather_chestplate", "leather_leggings", "leather_boots"], ["leather"]],
+  [["stone_sword", "stone_pickaxe", "stone_axe", "stone_shovel", "stone_hoe"], ["cobblestone", "blackstone"]], // grimstone/deepslate ?
+  [["iron_helmet", "iron_chestplate", "iron_leggings", "iron_boots", "chainmail_helmet", "chainmail_chestplate", "chainmail_leggings", "chainmail_boots", "iron_sword", "iron_pickaxe", "iron_axe", "iron_shovel", "iron_hoe"], ["iron_ingot"]],
+  [["golden_helmet", "golden_chestplate", "golden_leggings", "golden_boots", "golden_sword", "golden_pickaxe", "golden_axe", "golden_shovel", "golden_hoe"], ["gold_ingot"]],
+  [["diamond_helmet", "diamond_chestplate", "diamond_leggings", "diamond_boots", "diamond_sword", "diamond_pickaxe", "diamond_axe", "diamond_shovel", "diamond_hoe"], ["diamond"]],
+  [["netherite_helmet", "netherite_chestplate", "netherite_leggings", "netherite_boots", "netherite_sword", "netherite_pickaxe", "netherite_axe", "netherite_shovel", "netherite_hoe"], ["netherite_ingot"]],
+  [["turtle_helmet"], ["scute"]],
+  [["elytra"], ["phantom_membrane"]]
+]
