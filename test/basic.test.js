@@ -81,8 +81,19 @@ describe('test enchant functions', () => {
         expect(enchs).toStrictEqual([{ lvl: 3, name: 'luck_of_the_sea' }, { lvl: 3, name: 'lure' }])
       })
     })
-    describe('1.16.5 test', () => {
+    describe('1.12.2 test', () => {
+      const Item = require('../')('1.12.2')
 
+      test('sharp 5 dia sword', () => {
+        const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
+        const enchs = Item.getEnchants(item)
+        expect(enchs).toStrictEqual([{ lvl: 5, name: 'sharpness' }])
+      })
+      test('mending 1 elytra', () => {
+        const item = Item.fromNotch({ blockId: 443, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'int', value: 1 }, id: { type: 'int', value: 70 } }] } } } } })
+        const enchs = Item.getEnchants(item)
+        expect(enchs).toStrictEqual([{ lvl: 1, name: 'mending' }])
+      })
     })
   })
 

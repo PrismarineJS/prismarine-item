@@ -21,3 +21,15 @@ describe('1.8.9 anvil', () => {
     expect(inverse).toStrictEqual({ finalEnchs: [{ id: 'power', lvl: 5 }, { lvl: 1, name: 'aqua_affinity' }], xpCost: 5 })
   })
 })
+
+// describe('1.16.5 anvil', () => {
+//   const Item = require('../')('1.16.5')
+//   test('rename', () => {
+//     const itemOne = Item.fromNotch({ blockId: 603, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, display: { type: 'compound', value: { Name: { type: 'string', value: '{"text":"1111 111"}' } } }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
+//     const itemTwo = Item.fromNotch({ blockId: -1 })
+//     const res = Item.anvil(itemOne, itemTwo, false, false)
+//     const inverse = Item.anvil(itemOne, itemTwo, false, false)
+//     expect(res).toStrictEqual()
+//     expect(inverse).toStrictEqual()
+//   })
+// })
