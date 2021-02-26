@@ -128,7 +128,7 @@ function loader (version) {
         let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.name))
         fixMaterials = fixMaterials.concat(['enchanted_book', itemOne.name])
         // if (itemOne.name === 'enchanted_book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
-        if (!fixMaterials.includes(itemTwo.displayName)) throw new Error('Not able to be combined')
+        if (!fixMaterials.includes(itemTwo.name)) throw new Error('Not able to be combined')
       }
       /**
          *
