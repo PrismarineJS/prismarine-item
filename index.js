@@ -123,7 +123,7 @@ function loader (version) {
       }
 
       function combinePossible (itemOne, itemTwo) {
-        if (itemOne.name === 'enchanted_book' && itemTwo.displayName !== 'Enchanted Book') throw new Error('Can only combine book with book')
+        if (itemOne.name === 'enchanted_book' && itemTwo.name !== 'enchanted_book') throw new Error('Can only combine book with book')
         else if (itemOne.name === 'enchanted_book') return // return here because this func will throw because enchanted book isnt fixable
         let [, fixMaterials] = canFixData.find(([items]) => items.includes(itemOne.displayName))
         fixMaterials = fixMaterials.concat(['Enchanted Book', itemOne.displayName])
@@ -192,7 +192,7 @@ function loader (version) {
             data.usedMats = usedMats
             cost += xpLevelCost
           }
-          if (itemTwo.displayName === itemOne.displayName || itemTwo.name === 'enchanted_book') {
+          if (itemTwo.name === itemOne.name || itemTwo.name === 'enchanted_book') {
             const { xpLevelCost: enchantCost, finalEnchs } = combineEnchants(itemOne, itemTwo, creative)
             data.finalEnchs = finalEnchs
             if (enchantCost === 0 && !rename && itemOne.metadata === 0) throw new Error('No change')
