@@ -85,9 +85,6 @@ function loader (version) {
     }
 
     static getEnchants (item) {
-      const normalize = (enchList) => enchList.map(ench => {
-        return { lvl: ench.lvl, name: mcData.enchantments[ench.id].name }
-      })
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
         if (item.name === 'enchanted_book' && item.nbt !== null) {
@@ -97,8 +94,9 @@ function loader (version) {
         } else {
           itemEnch = []
         }
-        return normalize(itemEnch)
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id].name }))
       }
+      // NOT DONE
       const gg = nbt.simplify(item.nbt)
       console.log(gg)
       return 1
