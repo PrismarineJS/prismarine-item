@@ -185,7 +185,6 @@ function loader (version) {
           let cost = baseCost(itemOne) + baseCost(itemTwo)
           if (rename) cost += renameCost(itemOne)
           if (itemOne.metadata !== 0) {
-            // cost +=
             const [xpLevelCost, fixedDurability, usedMats] = repairCost(itemOne, itemTwo)
             data.fixedDurability = fixedDurability
             data.usedMats = usedMats
