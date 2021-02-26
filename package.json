@@ -19,9 +19,9 @@
   },
   "devDependencies": {
     "@types/node": "^14.0.1",
-    "minecraft-data": "^2.35.0",
-    "standard": "^16.0.1",
-    "jest": "^26.1.0"
+    "jest": "^26.1.0",
+    "minecraft-data": "^2.78.0",
+    "standard": "^16.0.1"
   },
   "keywords": [
     "minecraft",

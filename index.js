@@ -205,6 +205,17 @@ function loader (version) {
           return { xpCost: 0, invalid: true, err: err.message } // errors should be handled by returning 0
         }
       }
+
+      function getMultipliers (weight) {
+        const itemMultiplier = {
+          10: 1,
+          5: 2,
+          2: 4,
+          1: 8
+        }[weight]
+        return { itemMultiplier, bookMultiplier: Math.max(1, itemMultiplier / 2) }
+      }
+
       /**
          *
          * @param {Item} itemOne left hand item
@@ -224,7 +235,8 @@ function loader (version) {
         let xpLevelCost = 0
         for (const ench of itemTwoEnch) {
           const enchOnItemOne = itemOneEnch.find(x => x.name === ench.name)
-          let { exclude, itemMultiplier, bookMultiplier, maxLevel, category } = findEnchantBy(ench.name, 'name')
+          let { exclude, maxLevel, category, weight } = findEnchantBy(ench.name, 'name')
+          const { itemMultiplier, bookMultiplier } = getMultipliers(weight)
           const categoryItems = armorMapping[category]
           if (!bothAreBooks && !categoryItems.includes(itemOne.name) && !creative) continue
           if (enchOnItemOne === undefined) { // first item doesn't have this ench
