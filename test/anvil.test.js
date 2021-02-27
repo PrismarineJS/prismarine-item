@@ -9,8 +9,8 @@ describe('1.8.9 anvil', () => {
     const sword2 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
     const res = Item.anvil(sword1, sword2, false, false)
     const inverse = Item.anvil(sword2, sword1, false, false)
-    expect(res).toStrictEqual({ finalEnchs: [{ lvl: 1, name: 'unbreaking' }], fixedDurability: 190.32, usedMats: 1, xpCost: 3 })
-    expect(inverse).toStrictEqual({ finalEnchs: [{ id: 'unbreaking', lvl: 1 }], fixedDurability: 192.32, usedMats: 1, xpCost: 5 })
+    expect(res).toStrictEqual({ finalEnchs: [{ lvl: 1, name: 'unbreaking' }], fixedDurability: 190, usedMats: 1, xpCost: 3 })
+    expect(inverse).toStrictEqual({ finalEnchs: [{ id: 'unbreaking', lvl: 1 }], fixedDurability: 192, usedMats: 1, xpCost: 5 })
   })
   test('combine two books', () => {
     const book1 = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }] } } } } })
