@@ -99,6 +99,27 @@ function loader (version) {
       return 1
     }
 
+    setEnchants (normalizedEnchArray, uses) {
+      const ANVIL_USES_MAP = { 0: 0, 1: 1, 2: 3, 3: 7, 4: 15, 5: 31 }
+      let enchs = []
+      const isBook = this.name === 'enchanted_book'
+      if (mcData.isOlderThan('1.13')) {
+        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } }))
+        if (!this.nbt) {
+          this.nbt = {
+            name: '', type: 'compound', value: { RepairCost: { type: 'int', value: ANVIL_USES_MAP[uses] } }
+          }
+        }
+        this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
+        // this.nbt.name = ''
+        // this.nbt.type = 'compound'
+        // this.nbt.value = { RepairCost: { type: 'int', value: ANVIL_USES_MAP[uses] } }
+      } else {
+        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: name, lvl }))
+        // TODO
+      }
+    }
+
     // denormalize converts normalized enchants back to 1.8 enchant format with {id, lvl}
     static denormalize (enchantList) {
       const findEnch = (name) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x.name === name)
