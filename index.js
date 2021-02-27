@@ -1,7 +1,7 @@
 module.exports = loader
 
 const nbt = require('prismarine-nbt')
-const anvilUses = require('./data/anvil_uses.json').regular
+const anvilUsesData = require('./data/anvil_uses.json').regular
 
 function loader (version) {
   const mcData = require('minecraft-data')(version)
@@ -85,31 +85,32 @@ function loader (version) {
     getEnchants () {
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
-        if (this.name === 'enchanted_book' && this.nbt !== null) {
+        if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
           itemEnch = nbt.simplify(this.nbt).StoredEnchantments
-        } else if (this.nbt !== null) {
+        } else if (this?.nbt?.value?.ench) {
           itemEnch = nbt.simplify(this.nbt).ench
         } else {
           itemEnch = []
         }
         return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id].name }))
       }
-      // NOT DONE
+      // TODO: NOT DONE
       const gg = nbt.simplify(this.nbt)
       console.log(gg)
       return 1
     }
 
-    setEnchants (normalizedEnchArray, uses) {
+    setEnchants (normalizedEnchArray, anvilUses) {
       let enchs = []
       const isBook = this.name === 'enchanted_book'
       if (mcData.isOlderThan('1.13')) {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } }))
-        if (!this.nbt) {
+        if (!this?.nbt?.value?.RepairCost?.value) {
           this.nbt = {
-            name: '', type: 'compound', value: { RepairCost: { type: 'int', value: anvilUses[uses] } }
+            name: '', type: 'compound', value: { RepairCost: { type: 'int', value: anvilUsesData[anvilUses] } }
           }
         }
+        this.nbt.value.RepairCost.value = anvilUsesData[anvilUses]
         this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
       } else {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: name, lvl }))
