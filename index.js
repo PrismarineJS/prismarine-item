@@ -202,14 +202,14 @@ function loader (version) {
         }
       }
 
-      function getMultipliers (weight) {
+      function getMultipliers (weight, isBook) {
         const itemMultiplier = {
           10: 1,
           5: 2,
           2: 4,
           1: 8
         }[weight]
-        return { itemMultiplier, bookMultiplier: Math.max(1, itemMultiplier / 2) }
+        return isBook ? Math.max(1, itemMultiplier / 2) : itemMultiplier
       }
 
       /**
@@ -232,7 +232,7 @@ function loader (version) {
         for (const ench of itemTwoEnch) {
           const enchOnItemOne = itemOneEnch.find(x => x.name === ench.name)
           let { exclude, maxLevel, category, weight } = getEnchData(ench.name)
-          const { itemMultiplier, bookMultiplier } = getMultipliers(weight)
+          const multiplier = getMultipliers(weight, rightIsBook)
           const categoryItems = armorMapping[category]
           if (!bothAreBooks && !categoryItems.includes(itemOne.name) && !creative) continue
           if (enchOnItemOne === undefined) { // first item doesn't have this ench
@@ -241,7 +241,7 @@ function loader (version) {
               xpLevelCost++
             } else {
               const finalLevel = ench.lvl
-              xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
+              xpLevelCost += finalLevel * multiplier
               finalEnchs.push({ id: ench.name, lvl: ench.lvl })
             }
           } else {
@@ -257,7 +257,7 @@ function loader (version) {
               finalLevel = itemTwoLevel
               finalEnchs.push({ id: ench.name, lvl: finalLevel })
             }
-            xpLevelCost += rightIsBook ? (finalLevel * bookMultiplier) : (finalLevel * itemMultiplier)
+            xpLevelCost += finalLevel * multiplier
           }
         }
         for (const ench of itemOneEnch) {
