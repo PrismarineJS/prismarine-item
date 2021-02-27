@@ -4,6 +4,7 @@ const { expect } = require('@jest/globals')
 
 describe('1.8.9 anvil', () => {
   const Item = require('prismarine-item')('1.8.8')
+  const AIR_ITEM = Item.fromNotch({ blockId: -1 })
   test('combine two damaged sword', () => {
     const sword1 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 5, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
     const sword2 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
@@ -19,6 +20,48 @@ describe('1.8.9 anvil', () => {
     const inverse = Item.anvil(book2, book1, false, false)
     expect(res.xpCost).toStrictEqual(2)
     expect(inverse.xpCost).toStrictEqual(5)
+  })
+
+  test('combine book that has repairCost', () => {
+    const sword = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
+    const book = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
+    const res = Item.anvil(sword, book, false, false)
+    const inverse = Item.anvil(book, sword, false, false)
+    expect(res.xpCost).toStrictEqual(6)
+    expect(inverse.xpCost).toStrictEqual(0)
+  })
+
+  test('combine book (with incompatible enchants) using creative', () => {
+    const sword = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
+    const book = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
+    const res = Item.anvil(sword, book, true, false)
+    const inverse = Item.anvil(book, sword, true, false)
+    expect(res.xpCost).toStrictEqual(11)
+    expect(inverse.xpCost).toStrictEqual(0)
+  })
+
+  test('diamond sword rename', () => {
+    const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0 })
+    const res = Item.anvil(item, AIR_ITEM, false, 'ababa')
+    const inverse = Item.anvil(AIR_ITEM, item, false, 'ababa')
+    expect(res.xpCost).toStrictEqual(1)
+    expect(inverse.xpCost).toStrictEqual(0)
+  })
+
+  test('enchanted book rename', () => {
+    const item = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 3 } }] } } } } })
+    const res = Item.anvil(item, AIR_ITEM, false, 'ababa')
+    const inverse = Item.anvil(AIR_ITEM, item, false, 'ababa')
+    expect(res.xpCost).toStrictEqual(1)
+    expect(inverse.xpCost).toStrictEqual(0)
+  })
+
+  test('(64x) blocks rename', () => {
+    const item = Item.fromNotch({ blockId: 1, itemCount: 64, itemDamage: 0 })
+    const res = Item.anvil(item, AIR_ITEM, false, 'ababa')
+    const inverse = Item.anvil(AIR_ITEM, item, false, 'ababa')
+    expect(res.xpCost).toStrictEqual(1)
+    expect(inverse.xpCost).toStrictEqual(0)
   })
 })
 
