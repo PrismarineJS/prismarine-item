@@ -223,7 +223,7 @@ function loader (version) {
       function combineEnchants (itemOne, itemTwo, creative) {
         const rightIsBook = itemTwo.name === 'enchanted_book'
         const bothAreBooks = itemOne.name === 'enchanted_book' && rightIsBook
-        const findEnchantBy = (val, by) => Object.entries(mcData.enchantments).map(x => x[1]).find(x => x[by] === val)
+        const getEnchData = (val) => mcData.enchantmentsByName[val]
         const itemOneEnch = Item.getEnchants(itemOne)
         const itemTwoEnch = Item.getEnchants(itemTwo)
         if (itemOneEnch === null && itemTwoEnch === null) throw new Error('Both items are unenchanted')
@@ -231,12 +231,12 @@ function loader (version) {
         let xpLevelCost = 0
         for (const ench of itemTwoEnch) {
           const enchOnItemOne = itemOneEnch.find(x => x.name === ench.name)
-          let { exclude, maxLevel, category, weight } = findEnchantBy(ench.name, 'name')
+          let { exclude, maxLevel, category, weight } = getEnchData(ench.name)
           const { itemMultiplier, bookMultiplier } = getMultipliers(weight)
           const categoryItems = armorMapping[category]
           if (!bothAreBooks && !categoryItems.includes(itemOne.name) && !creative) continue
           if (enchOnItemOne === undefined) { // first item doesn't have this ench
-            exclude = exclude.map(name => findEnchantBy(name, 'name'))
+            exclude = exclude.map(name => getEnchData(name))
             if (exclude.some(({ name }) => itemOneEnch.find(x => x.name === name))) { // has an excluded enchant
               xpLevelCost++
             } else {
