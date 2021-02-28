@@ -59,8 +59,12 @@ describe('1.8.9 anvil', () => {
     const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0 })
     const res = Item.anvil(item, null, false, 'ababa')
     const inverse = Item.anvil(null, item, false, 'ababa')
+    const finalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'ababa' } } } } } })
+    const inverseFinalItem = null
     expect(res.xpCost).toStrictEqual(1)
     expect(inverse.xpCost).toStrictEqual(0)
+    expect(res.item).toStrictEqual(finalItem)
+    expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
   test('enchanted book rename', () => {

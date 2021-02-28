@@ -106,7 +106,7 @@ function loader (version) {
       }
     }
 
-    setEnchants (normalizedEnchArray, repairCost) {
+    setEnchants (normalizedEnchArray) {
       const isBook = this.name === 'enchanted_book'
       const postEnchantChange = mcData.isOlderThan('1.13')
       const enchListName = postEnchantChange ? 'ench' : 'Enchantments'
@@ -119,11 +119,21 @@ function loader (version) {
       }).sort((a, b) => b.lvl.value - a.lvl.value)
 
       if (enchs.length !== 0) {
-        this.nbt.value.RepairCost = { type: 'int', value: repairCost }
         this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
       }
 
       if (mcData.isNewerOrEqualTo('1.13') && maxItemDura[this.name]) this.nbt.value.Damage = { type: 'int', value: 0 }
+    }
+
+    setName (newName) {
+      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
+      this.nbt.value.display.value.Name = { type: 'string', value: newName }
+    }
+
+    setRepairCost (repairCost) {
+      if (!this.nbt.value) this.nbt.value = {}
+      this.nbt.value.RepairCost = { type: 'int', value: repairCost }
     }
   }
 
