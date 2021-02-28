@@ -70,6 +70,8 @@ describe('1.8.9 anvil', () => {
     const res = Item.anvil(itemOne, itemTwo, false, undefined)
     expect(res.item).toStrictEqual(resItem)
   })
+
+  // todo add test for sword + diamonds
 })
 
 // describe('1.16.5 anvil', () => {

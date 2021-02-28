@@ -92,11 +92,17 @@ function loader (version) {
           itemEnch = []
         }
         return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id].name }))
+      } else {
+        let itemEnch = []
+        if (this?.nbt?.value?.Enchantments) {
+          itemEnch = nbt.simplify(this.nbt).Enchantments
+        } else if (this?.nbt?.value?.StoredEnchantments) {
+          itemEnch = nbt.simplify(this.nbt).StoredEnchantments
+        } else {
+          itemEnch = []
+        }
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: ench.id.replace(/minecraft:/, '') }))
       }
-      // TODO: NOT DONE
-      const gg = nbt.simplify(this.nbt)
-      console.log(gg)
-      return 1
     }
 
     setEnchants (normalizedEnchArray, anvilUses) {
