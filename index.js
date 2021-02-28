@@ -110,14 +110,14 @@ function loader (version) {
       let enchs = []
       const isBook = this.name === 'enchanted_book'
       if (mcData.isOlderThan('1.13')) {
-        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } }))
+        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } })).sort((a, b) => b.lvl.value - a.lvl.value)
         if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
         if (normalizedEnchArray.length !== 0) {
           this.nbt.value.RepairCost = { type: 'int', value: Item.toRepairCost(anvilUses) }
           this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
         }
       } else {
-        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'string', value: `minecraft:${mcData.enchantmentsByName[name].name}` }, lvl: { type: 'short', value: lvl } }))
+        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'string', value: `minecraft:${mcData.enchantmentsByName[name].name}` }, lvl: { type: 'short', value: lvl } })).sort((a, b) => b.lvl.value - a.lvl.value)
         if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
 
         if (normalizedEnchArray.length !== 0) {
