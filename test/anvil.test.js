@@ -83,16 +83,23 @@ describe('1.8.9 anvil', () => {
     const item = Item.fromNotch({ blockId: 1, itemCount: 64, itemDamage: 0 })
     const res = Item.anvil(item, null, false, 'ababa')
     const inverse = Item.anvil(null, item, false, 'ababa')
+    const finalItem = Item.fromNotch({ blockId: 1, itemCount: 64, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'ababa' } } } } } })
+    const inverseFinalItem = null
     expect(res.xpCost).toStrictEqual(1)
     expect(inverse.xpCost).toStrictEqual(0)
+    expect(res.item).toStrictEqual(finalItem)
+    expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
   test('combine w/ pre-rename', () => {
     const itemOne = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Diamond Sword1212' } } } } } })
     const itemTwo = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
-    const resItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 3 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Diamond Sword1212' } } } } } })
+    const finalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 3 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Diamond Sword1212' } } } } } })
+    const inverseFinalItem = null
     const res = Item.anvil(itemOne, itemTwo, false, undefined)
-    expect(res.item).toStrictEqual(resItem)
+    const inverse = Item.anvil(itemTwo, itemOne, false, undefined)
+    expect(res.item).toStrictEqual(finalItem)
+    expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
   // todo add test for sword + diamonds
