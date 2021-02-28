@@ -1,6 +1,7 @@
 module.exports = loader
 
 const nbt = require('prismarine-nbt')
+const maxItemDura = require('./data/max_item_durability.json')
 
 function loader (version) {
   const mcData = require('minecraft-data')(version)
@@ -115,11 +116,23 @@ function loader (version) {
             name: '', type: 'compound', value: { RepairCost: { type: 'int', value: Item.toRepairCost(anvilUses) } }
           }
         }
-        this.nbt.value.RepairCost.value = Item.toRepairCost(anvilUses)
         this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
       } else {
-        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: name, lvl }))
-        // TODO
+        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'string', value: `minecraft:${mcData.enchantmentsByName[name].name}` }, lvl: { type: 'short', value: lvl } }))
+        this.nbt = {
+          name: '',
+          type: 'compound',
+          value: {}
+        }
+
+        if (normalizedEnchArray.length !== 0) {
+          this.nbt.value.RepairCost = { type: 'int', value: anvilUses }
+          this.nbt.value[isBook ? 'StoredEnchantments' : 'Enchantments'] = { type: 'list', value: { type: 'compound', value: enchs } }
+        }
+
+        if (maxItemDura[this.name]) {
+          this.nbt.value.Damage = { type: 'int', value: 0 }
+        }
       }
     }
 

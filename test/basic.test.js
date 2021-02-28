@@ -152,7 +152,7 @@ describe('test anvil functions', () => {
         const enchs = item.getEnchants()
         const newItem = new Item(279, 1)
         newItem.setEnchants(enchs, 1)
-        expect(item).toStrictEqual(newItem)
+        expect(newItem).toStrictEqual(item)
       })
 
       test('gold helmet with fire prot 3, aqua afin 1, unbr 2', () => {
@@ -160,7 +160,7 @@ describe('test anvil functions', () => {
         const enchs = item.getEnchants()
         const newItem = new Item(314, 1)
         newItem.setEnchants(enchs, 2)
-        expect(item).toStrictEqual(newItem)
+        expect(newItem).toStrictEqual(item)
       })
 
       test('carrot on stick with unbr 1', () => {
@@ -168,7 +168,7 @@ describe('test anvil functions', () => {
         const enchs = item.getEnchants()
         const newItem = new Item(398, 1)
         newItem.setEnchants(enchs, 1)
-        expect(item).toStrictEqual(newItem)
+        expect(newItem).toStrictEqual(item)
       })
 
       test('stone pick with eff 4', () => {
@@ -176,7 +176,7 @@ describe('test anvil functions', () => {
         const enchs = item.getEnchants()
         const newItem = new Item(274, 1)
         newItem.setEnchants(enchs, 1)
-        expect(item).toStrictEqual(newItem)
+        expect(newItem).toStrictEqual(item)
       })
 
       test('fishing rod with luck 3 lure 3', () => {
@@ -184,7 +184,38 @@ describe('test anvil functions', () => {
         const enchs = item.getEnchants()
         const newItem = new Item(346, 1)
         newItem.setEnchants(enchs, 2)
-        expect(item).toStrictEqual(newItem)
+        expect(newItem).toStrictEqual(item)
+      })
+    })
+    describe('1.16.5 test', () => {
+      const Item = require('../')('1.16.5')
+      test('diamond sword (unenchanted)', () => {
+        const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
+        const enchs = item.getEnchants()
+        const newItem = new Item(603, 1)
+        newItem.setEnchants(enchs, 1)
+        expect(newItem).toStrictEqual(item)
+      })
+      test('iron shovel w/ eff2 for2 ub2', () => {
+        const item = Item.fromNotch({ present: true, itemId: 600, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:efficiency' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:fortune' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }] } } } } })
+        const enchs = item.getEnchants()
+        const newItem = new Item(600, 1)
+        newItem.setEnchants(enchs, 3)
+        expect(newItem).toStrictEqual(item)
+      })
+      test('ench book w/ resp1 blastprot 1', () => {
+        const item = Item.fromNotch({ present: true, itemId: 848, itemCount: 1, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:respiration' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:blast_protection' } }] } }, RepairCost: { type: 'int', value: 1 } } } })
+        const enchs = item.getEnchants()
+        const newItem = new Item(848, 1)
+        newItem.setEnchants(enchs, 1)
+        expect(newItem).toStrictEqual(item)
+      })
+      test('fishing rod w/ mending', () => {
+        const item = Item.fromNotch({ present: true, itemId: 684, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:mending' } }] } } } } })
+        const enchs = item.getEnchants()
+        const newItem = new Item(684, 1)
+        newItem.setEnchants(enchs, 1)
+        expect(newItem).toStrictEqual(item)
       })
     })
   })
