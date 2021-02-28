@@ -170,11 +170,11 @@ describe('test anvil functions', () => {
   describe('test toAnvilUses & toRepairCost', () => {
     const Item = require('../')('1.16.5')
     const tests = [[1, 1], [2, 3], [3, 7], [4, 15], [5, 31]]
-    test('toAnvilUses test', () => {
-      for (let i = 0; i < tests.length; i++) {
-        expect(tests[i][0]).toStrictEqual(Item.toAnvilUses(tests[i][1]))
-      }
-    })
+    // test('toAnvilUses test', () => {
+    //   for (let i = 0; i < tests.length; i++) {
+    //     expect(tests[i][0]).toStrictEqual(Item.toAnvilUses(tests[i][1]))
+    //   }
+    // })
     test('toRepairCost test', () => {
       for (let i = 0; i < tests.length; i++) {
         expect(tests[i][1]).toStrictEqual(Item.toRepairCost(tests[i][0]))

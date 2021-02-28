@@ -1,7 +1,6 @@
 module.exports = loader
 
 const nbt = require('prismarine-nbt')
-const anvilUsesData = require('./data/anvil_uses.json').regular
 
 function loader (version) {
   const mcData = require('minecraft-data')(version)
@@ -107,10 +106,10 @@ function loader (version) {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } }))
         if (!this?.nbt?.value?.RepairCost?.value) {
           this.nbt = {
-            name: '', type: 'compound', value: { RepairCost: { type: 'int', value: anvilUsesData[anvilUses] } }
+            name: '', type: 'compound', value: { RepairCost: { type: 'int', value: Item.toRepairCost(anvilUses) } }
           }
         }
-        this.nbt.value.RepairCost.value = anvilUsesData[anvilUses]
+        this.nbt.value.RepairCost.value = Item.toRepairCost(anvilUses)
         this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
       } else {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: name, lvl }))
@@ -120,6 +119,7 @@ function loader (version) {
 
     // from fix repairCost to anvil uses
     static toAnvilUses (input) {
+      if (input === 0) return 0
       let counter = 1
       while (input !== 1) {
         input = (input - 1) / 2
