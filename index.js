@@ -112,9 +112,10 @@ function loader (version) {
       if (mcData.isOlderThan('1.13')) {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } }))
         if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-
-        this.nbt.value.RepairCost = { type: 'int', value: Item.toRepairCost(anvilUses) }
-        this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
+        if (normalizedEnchArray.length !== 0) {
+          this.nbt.value.RepairCost = { type: 'int', value: Item.toRepairCost(anvilUses) }
+          this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
+        }
       } else {
         enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'string', value: `minecraft:${mcData.enchantmentsByName[name].name}` }, lvl: { type: 'short', value: lvl } }))
         if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
