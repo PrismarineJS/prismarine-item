@@ -117,6 +117,7 @@ function loader (version) {
         const value = postEnchantChange ? mcData.enchantmentsByName[name].id : `minecraft:${mcData.enchantmentsByName[name].name}`
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
       }).sort((a, b) => b.lvl.value - a.lvl.value)
+
       if (enchs.length !== 0) {
         this.nbt.value.RepairCost = { type: 'int', value: repairCost }
         this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
