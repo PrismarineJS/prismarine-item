@@ -106,50 +106,23 @@ function loader (version) {
       }
     }
 
-    setEnchants (normalizedEnchArray, anvilUses) {
-      let enchs = []
+    setEnchants (normalizedEnchArray, repairCost) {
       const isBook = this.name === 'enchanted_book'
-      if (mcData.isOlderThan('1.13')) {
-        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'short', value: mcData.enchantmentsByName[name].id }, lvl: { type: 'short', value: lvl } })).sort((a, b) => b.lvl.value - a.lvl.value)
-        if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-        if (normalizedEnchArray.length !== 0) {
-          this.nbt.value.RepairCost = { type: 'int', value: Item.toRepairCost(anvilUses) }
-          this.nbt.value[isBook ? 'StoredEnchantments' : 'ench'] = { type: 'list', value: { type: 'compound', value: enchs } }
-        }
-      } else {
-        enchs = normalizedEnchArray.map(({ name, lvl }) => ({ id: { type: 'string', value: `minecraft:${mcData.enchantmentsByName[name].name}` }, lvl: { type: 'short', value: lvl } })).sort((a, b) => b.lvl.value - a.lvl.value)
-        if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      const postEnchantChange = mcData.isOlderThan('1.13')
+      const enchListName = postEnchantChange ? 'ench' : 'Enchantments'
+      const type = postEnchantChange ? 'short' : 'string'
+      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
 
-        if (normalizedEnchArray.length !== 0) {
-          this.nbt.value.RepairCost = { type: 'int', value: anvilUses }
-          this.nbt.value[isBook ? 'StoredEnchantments' : 'Enchantments'] = { type: 'list', value: { type: 'compound', value: enchs } }
-        }
-
-        if (maxItemDura[this.name]) {
-          this.nbt.value.Damage = { type: 'int', value: 0 }
-        }
+      const enchs = normalizedEnchArray.map(({ name, lvl }) => {
+        const value = postEnchantChange ? mcData.enchantmentsByName[name].id : `minecraft:${mcData.enchantmentsByName[name].name}`
+        return { id: { type, value }, lvl: { type: 'short', value: lvl } }
+      }).sort((a, b) => b.lvl.value - a.lvl.value)
+      if (enchs.length !== 0) {
+        this.nbt.value.RepairCost = { type: 'int', value: repairCost }
+        this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
       }
-    }
 
-    // from fix repairCost to anvil uses
-    static toAnvilUses (input) {
-      if (input === 0) return 0
-      let counter = 1
-      while (input !== 1) {
-        input = (input - 1) / 2
-        counter++
-      }
-      return counter
-    }
-
-    // from anvil uses to repair cost
-    static toRepairCost (input) {
-      let curr = 1
-      for (let i = 0; i < input - 1; i++) {
-        curr *= 2
-        curr += 1
-      }
-      return curr
+      if (mcData.isNewerOrEqualTo('1.13') && maxItemDura[this.name]) this.nbt.value.Damage = { type: 'int', value: 0 }
     }
   }
 

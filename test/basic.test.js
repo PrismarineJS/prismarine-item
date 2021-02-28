@@ -159,7 +159,7 @@ describe('test anvil functions', () => {
         const item = Item.fromNotch({ blockId: 314, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 1 } }, { lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 34 } }, { lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 6 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
         const enchs = item.getEnchants()
         const newItem = new Item(314, 1)
-        newItem.setEnchants(enchs, 2)
+        newItem.setEnchants(enchs, 3)
         expect(newItem).toStrictEqual(item)
       })
 
@@ -183,7 +183,7 @@ describe('test anvil functions', () => {
         const item = Item.fromNotch({ blockId: 346, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 61 } }, { lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 62 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
         const enchs = item.getEnchants()
         const newItem = new Item(346, 1)
-        newItem.setEnchants(enchs, 2)
+        newItem.setEnchants(enchs, 3)
         expect(newItem).toStrictEqual(item)
       })
     })
@@ -217,21 +217,6 @@ describe('test anvil functions', () => {
         newItem.setEnchants(enchs, 1)
         expect(newItem).toStrictEqual(item)
       })
-    })
-  })
-
-  describe('test toAnvilUses & toRepairCost', () => {
-    const Item = require('../')('1.16.5')
-    const tests = [[1, 1], [2, 3], [3, 7], [4, 15], [5, 31]]
-    test('toAnvilUses test', () => {
-      for (let i = 0; i < tests.length; i++) {
-        expect(tests[i][0]).toStrictEqual(Item.toAnvilUses(tests[i][1]))
-      }
-    })
-    test('toRepairCost test', () => {
-      for (let i = 0; i < tests.length; i++) {
-        expect(tests[i][1]).toStrictEqual(Item.toRepairCost(tests[i][0]))
-      }
     })
   })
 })
