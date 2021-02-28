@@ -116,7 +116,7 @@ function loader (version) {
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
         const value = postEnchantChange ? mcData.enchantmentsByName[name].id : `minecraft:${mcData.enchantmentsByName[name].name}`
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
-      }).sort((a, b) => b.lvl.value - a.lvl.value)
+      })
 
       if (enchs.length !== 0) {
         this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
