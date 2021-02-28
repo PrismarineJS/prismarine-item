@@ -47,8 +47,12 @@ describe('1.8.9 anvil', () => {
     const book = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
     const res = Item.anvil(sword, book, true, undefined)
     const inverse = Item.anvil(book, sword, true, undefined)
+    const finalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
+    const inverseFinalItem = null
     expect(res.xpCost).toStrictEqual(11)
     expect(inverse.xpCost).toStrictEqual(0)
+    expect(res.item).toStrictEqual(finalItem)
+    expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
   test('diamond sword rename', () => {
