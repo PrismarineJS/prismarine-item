@@ -9,8 +9,12 @@ describe('1.8.9 anvil', () => {
     const sword2 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
     const res = Item.anvil(sword1, sword2, false, undefined)
     const inverse = Item.anvil(sword2, sword1, false, undefined)
+    const finalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
+    const inverseFinalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
     expect(res.xpCost).toStrictEqual(3)
     expect(inverse.xpCost).toStrictEqual(5)
+    expect(res.item).toStrictEqual(finalItem)
+    expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
   test('combine two books', () => {
     const book1 = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }] } } } } })
