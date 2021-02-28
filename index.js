@@ -117,6 +117,26 @@ function loader (version) {
         // TODO
       }
     }
+
+    // from fix repairCost to anvil uses
+    static toAnvilUses (input) {
+      let counter = 1
+      while (input !== 1) {
+        input = (input - 1) / 2
+        counter++
+      }
+      return counter
+    }
+
+    // from anvil uses to repair cost
+    static toRepairCost (input) {
+      let curr = 1
+      for (let i = 0; i < input - 1; i++) {
+        curr *= 2
+        curr += 1
+      }
+      return curr
+    }
   }
 
   Item.anvil = require('./lib/anvil.js')(mcData, Item)
