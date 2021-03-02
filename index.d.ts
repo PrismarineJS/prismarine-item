@@ -16,6 +16,10 @@ declare class Item {
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
     getEnchants (): NormalizedEnchant[]
     setEnchants (enchants: NormalizedEnchant[], anvilUses: number): null
+    getDurabilityUsed (): number
+    setDurability (value: number): void
+    setRepairCost (value: number): void
+    setName (value: string): void
 }
 declare interface NotchItem {
     // 1.8 - 1.12
