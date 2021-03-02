@@ -12,11 +12,11 @@ declare class Item {
     stackSize: number;
     durabilityUsed: number;
     enchants: NormalizedEnchant[];
+    repairCost: number;
     static equal(item1: Item, item2: Item): boolean;
     static toNotch(item: Item): NotchItem;
     static fromNotch(item: NotchItem): Item;
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
-    setRepairCost (value: number): void
     setName (value: string): void
 }
 declare interface NotchItem {

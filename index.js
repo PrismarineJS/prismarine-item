@@ -88,8 +88,14 @@ function loader (version) {
       this.nbt.value.display.value.Name = { type: 'string', value: newName }
     }
 
-    setRepairCost (repairCost) {
-      if (!this.nbt.value) this.nbt.value = {}
+    // gets the cost based on previous anvil uses
+    get repairCost () {
+      if (Object.keys(this).length === 0) return 0
+      return this?.nbt?.value?.RepairCost?.value ?? 0
+    }
+
+    set repairCost (repairCost) {
+      if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
       this.nbt.value.RepairCost = { type: 'int', value: repairCost }
     }
 

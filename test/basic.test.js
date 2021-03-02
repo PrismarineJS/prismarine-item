@@ -152,7 +152,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(279, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(1)
+        newItem.repairCost = 1
         expect(newItem).toStrictEqual(item)
       })
 
@@ -161,7 +161,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(314, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(3)
+        newItem.repairCost = 3
         expect(newItem).toStrictEqual(item)
       })
 
@@ -170,7 +170,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(398, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(1)
+        newItem.repairCost = 1
         expect(newItem).toStrictEqual(item)
       })
 
@@ -179,7 +179,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(274, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(1)
+        newItem.repairCost = 1
         expect(newItem).toStrictEqual(item)
       })
 
@@ -188,7 +188,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(346, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(3)
+        newItem.repairCost = 3
         expect(newItem).toStrictEqual(item)
       })
     })
@@ -206,7 +206,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(600, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(3)
+        newItem.repairCost = 3
         expect(newItem).toStrictEqual(item)
       })
       test('ench book w/ resp1 blastprot 1', () => {
@@ -214,7 +214,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(848, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(1)
+        newItem.repairCost = 1
         expect(newItem).toStrictEqual(item)
       })
       test('fishing rod w/ mending', () => {
@@ -222,7 +222,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(684, 1)
         newItem.enchants = enchs
-        newItem.setRepairCost(1)
+        newItem.repairCost = 1
         expect(newItem).toStrictEqual(item)
       })
     })
