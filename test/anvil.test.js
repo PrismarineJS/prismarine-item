@@ -131,14 +131,16 @@ describe('1.8.9 anvil', () => {
   // todo add test for sword + diamonds
 })
 
-// describe('1.16.5 anvil', () => {
-//   const Item = require('../')('1.16.5')
-//   test('rename', () => {
-//     const itemOne = Item.fromNotch({ blockId: 603, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, display: { type: 'compound', value: { Name: { type: 'string', value: '{"text":"1111 111"}' } } }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
-//     const itemTwo = null
-//     const res = Item.anvil(itemOne, itemTwo, false, false)
-//     const inverse = Item.anvil(itemOne, itemTwo, false, false)
-//     expect(res).toStrictEqual()
-//     expect(inverse).toStrictEqual()
-//   })
-// })
+describe('1.16.5 anvil', () => {
+  const Item = require('../')('1.16.5')
+  test('gold helmets', () => {
+    const firstItem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:fire_protection' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:aqua_affinity' } }] } } } } })
+    const seconditem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 4 }, id: { type: 'string', value: 'minecraft:projectile_protection' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:respiration' } }] } } } } })
+    const anvil = Item.anvil(firstItem, seconditem, false, undefined)
+    const expectedItem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 7 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:fire_protection' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:aqua_affinity' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:respiration' } }] } } } } })
+    const inverse = Item.anvil(seconditem, firstItem, false, undefined)
+    const expectedInverseItem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 7 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 4 }, id: { type: 'string', value: 'minecraft:projectile_protection' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:respiration' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:aqua_affinity' } }] } } } } })
+    expect(anvil.item).toStrictEqual(expectedItem)
+    expect(inverse.item).toStrictEqual(expectedInverseItem)
+  })
+})
