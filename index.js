@@ -144,7 +144,7 @@ function loader (version) {
       }
     }
 
-    setDurability (value) {
+    setDurabilityUsed (value) {
       if (mcData.isNewerOrEqualTo('1.13')) {
         if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
         this.nbt.value.Damage = { type: 'int', value }
