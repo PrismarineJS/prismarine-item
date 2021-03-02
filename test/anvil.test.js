@@ -113,6 +113,21 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
+  describe('too expensive test', () => {
+    const chestplate = Item.fromNotch({ blockId: 303, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 63 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Chain Chaestaaplateaaa' } } } } } })
+    test('try renaming', () => {
+      const res = Item.anvil(chestplate, null, false, 'Hello!')
+      const expectedItem = Item.fromNotch({ blockId: 303, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 127 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Hello!' } } } } } })
+      expect(res.xpCost).toStrictEqual(39)
+      expect(res.item).toStrictEqual(expectedItem)
+    })
+    test('try adding enchants', () => {
+      const secondItem = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 4 }, id: { type: 'short', value: 0 } }] } } } } })
+      const res = Item.anvil(chestplate, secondItem, false, 'Hello!')
+      expect(res.item).toStrictEqual(null)
+    })
+  })
+
   // todo add test for sword + diamonds
 })
 
