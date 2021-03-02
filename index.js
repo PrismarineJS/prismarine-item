@@ -135,6 +135,23 @@ function loader (version) {
       if (!this.nbt.value) this.nbt.value = {}
       this.nbt.value.RepairCost = { type: 'int', value: repairCost }
     }
+
+    getDurabilityUsed () {
+      if (mcData.isNewerOrEqualTo('1.13')) {
+        return this?.nbt?.value?.Damage?.value ?? 0
+      } else {
+        return this.metadata ?? 0
+      }
+    }
+
+    setDurability (value) {
+      if (mcData.isNewerOrEqualTo('1.13')) {
+        if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+        this.nbt.value.Damage = { type: 'int', value }
+      } else {
+        this.metadata = value
+      }
+    }
   }
 
   Item.anvil = require('./lib/anvil.js')(mcData, Item)

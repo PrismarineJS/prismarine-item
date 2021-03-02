@@ -143,4 +143,35 @@ describe('1.16.5 anvil', () => {
     expect(anvil.item).toStrictEqual(expectedItem)
     expect(inverse.item).toStrictEqual(expectedInverseItem)
   })
+
+  test('two fully fixed diamond swords', () => {
+    const firstItem = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
+    const secondItem = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
+    const anvil = Item.anvil(firstItem, secondItem, false, undefined)
+    const resItem = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
+    expect(anvil.item).toStrictEqual(resItem)
+    expect(anvil.xpCost).toStrictEqual(7)
+  })
+
+  test('fixing iron sword with iron ingots', () => {
+    const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
+    const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: 2 })
+    const anvil = Item.anvil(firstItem, secondItem, false, undefined)
+    const expectedItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 176 }, RepairCost: { type: 'int', value: 1 } } } })
+    expect(anvil.item).toStrictEqual(expectedItem)
+    expect(anvil.xpCost).toStrictEqual(2)
+    expect(anvil.usedMats).toStrictEqual(2)
+  })
+
+  describe('test fixing with items', () => {
+    for (let i = 1; i <= 5; i++) {
+      test(`fix using ${i} ingots`, () => {
+        const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
+        const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: i })
+        const anvil = Item.anvil(firstItem, secondItem, false, undefined)
+        expect(anvil.xpCost).toStrictEqual(i)
+        expect(anvil.usedMats).toStrictEqual(i)
+      })
+    }
+  })
 })
