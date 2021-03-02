@@ -17,7 +17,7 @@ declare class Item {
     getEnchants (): NormalizedEnchant[]
     setEnchants (enchants: NormalizedEnchant[], anvilUses: number): null
     getDurabilityUsed (): number
-    setDurability (value: number): void
+    setDurabilityUsed (value: number): void
     setRepairCost (value: number): void
     setName (value: string): void
 }

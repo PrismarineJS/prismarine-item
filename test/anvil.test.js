@@ -127,8 +127,6 @@ describe('1.8.9 anvil', () => {
       expect(res.item).toStrictEqual(null)
     })
   })
-
-  // todo add test for sword + diamonds
 })
 
 describe('1.16.5 anvil', () => {
@@ -156,6 +154,15 @@ describe('1.16.5 anvil', () => {
   test('fixing iron sword with iron ingots', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
     const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: 2 })
+    const anvil = Item.anvil(firstItem, secondItem, false, undefined)
+    const expectedItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 176 }, RepairCost: { type: 'int', value: 1 } } } })
+    expect(anvil.item).toStrictEqual(expectedItem)
+    expect(anvil.xpCost).toStrictEqual(2)
+    expect(anvil.usedMats).toStrictEqual(2)
+  })
+  test('fixing iron sword with enchanted iron ingots', () => {
+    const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
+    const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: 2, nbtData: { name: '', type: 'compound', value: { Enchantments: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'string', value: 'minecraft:unbreaking' }, lvl: { type: 'short', value: 2 } }] } } } } })
     const anvil = Item.anvil(firstItem, secondItem, false, undefined)
     const expectedItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 176 }, RepairCost: { type: 'int', value: 1 } } } })
     expect(anvil.item).toStrictEqual(expectedItem)
