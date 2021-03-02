@@ -82,7 +82,18 @@ function loader (version) {
       }
     }
 
-    getEnchants () {
+    setName (newName) {
+      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
+      this.nbt.value.display.value.Name = { type: 'string', value: newName }
+    }
+
+    setRepairCost (repairCost) {
+      if (!this.nbt.value) this.nbt.value = {}
+      this.nbt.value.RepairCost = { type: 'int', value: repairCost }
+    }
+
+    get enchants () {
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
         if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
@@ -106,7 +117,7 @@ function loader (version) {
       }
     }
 
-    setEnchants (normalizedEnchArray) {
+    set enchants (normalizedEnchArray) {
       const isBook = this.name === 'enchanted_book'
       const postEnchantChange = mcData.isOlderThan('1.13')
       const enchListName = postEnchantChange ? 'ench' : 'Enchantments'
@@ -125,18 +136,7 @@ function loader (version) {
       if (mcData.isNewerOrEqualTo('1.13') && maxItemDura[this.name]) this.nbt.value.Damage = { type: 'int', value: 0 }
     }
 
-    setName (newName) {
-      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
-      this.nbt.value.display.value.Name = { type: 'string', value: newName }
-    }
-
-    setRepairCost (repairCost) {
-      if (!this.nbt.value) this.nbt.value = {}
-      this.nbt.value.RepairCost = { type: 'int', value: repairCost }
-    }
-
-    getDurabilityUsed () {
+    get durabilityUsed () {
       if (mcData.isNewerOrEqualTo('1.13')) {
         return this?.nbt?.value?.Damage?.value ?? 0
       } else {
@@ -144,7 +144,7 @@ function loader (version) {
       }
     }
 
-    setDurabilityUsed (value) {
+    set durabilityUsed (value) {
       if (mcData.isNewerOrEqualTo('1.13')) {
         if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
         this.nbt.value.Damage = { type: 'int', value }

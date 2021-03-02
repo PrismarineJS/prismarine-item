@@ -56,6 +56,14 @@ Buffer.
 
 Return true if items are equal.
 
+#### item.durabilityUsed
+
+A getter/setter for abstracting the underlying nbt
+
+#### item.enchants
+
+A getter/setter for abstracting the underlying nbt (does calculations) 
+
 
 ## History
 

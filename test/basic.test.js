@@ -53,49 +53,49 @@ describe('test anvil functions', () => {
 
       test('diamond axe with fortune 2', () => {
         const item = Item.fromNotch({ blockId: 279, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 35 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 2, name: 'fortune' }])
       })
 
       test('gold helmet with fire prot 3, aqua afin 1, unbr 2', () => {
         const item = Item.fromNotch({ blockId: 314, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 1 } }, { lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 34 } }, { lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 6 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 3, name: 'fire_protection' }, { lvl: 2, name: 'unbreaking' }, { lvl: 1, name: 'aqua_affinity' }])
       })
 
       test('carrot on stick with unbr 1', () => {
         const item = Item.fromNotch({ blockId: 398, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 1, name: 'unbreaking' }])
       })
 
       test('stone pick with eff 4', () => {
         const item = Item.fromNotch({ blockId: 274, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 4 }, id: { type: 'short', value: 32 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 4, name: 'efficiency' }])
       })
 
       test('fishing rod with luck 3 lure 3', () => {
         const item = Item.fromNotch({ blockId: 346, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 61 } }, { lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 62 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 3, name: 'luck_of_the_sea' }, { lvl: 3, name: 'lure' }])
       })
 
       test('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0 })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([])
       })
 
       test('enchanted book rename', () => {
         const item = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 3 } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 1, name: 'blast_protection' }])
       })
 
       test('(64x) blocks rename', () => {
         const item = Item.fromNotch({ blockId: 1, itemCount: 64, itemDamage: 0 })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([])
       })
     })
@@ -104,12 +104,12 @@ describe('test anvil functions', () => {
 
       test('sharp 5 dia sword', () => {
         const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 5, name: 'sharpness' }])
       })
       test('mending 1 elytra', () => {
         const item = Item.fromNotch({ blockId: 443, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'int', value: 1 }, id: { type: 'int', value: 70 } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 1, name: 'mending' }])
       })
     })
@@ -117,27 +117,27 @@ describe('test anvil functions', () => {
       const Item = require('../')('1.16.5')
       test('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([])
       })
       test('iron shovel w/ eff2 for2 ub2', () => {
         const item = Item.fromNotch({ present: true, itemId: 600, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:efficiency' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:fortune' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 2, name: 'efficiency' }, { lvl: 2, name: 'fortune' }, { lvl: 2, name: 'unbreaking' }])
       })
       test('ench book w/ resp1 blastprot 1', () => {
         const item = Item.fromNotch({ present: true, itemId: 848, itemCount: 1, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:respiration' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:blast_protection' } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 1, name: 'respiration' }, { lvl: 1, name: 'blast_protection' }])
       })
       test('music disc', () => {
         const item = Item.fromNotch({ present: true, itemId: 911, itemCount: 1 })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([])
       })
       test('fishing rod w/ mending', () => {
         const item = Item.fromNotch({ present: true, itemId: 684, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:mending' } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         expect(enchs).toStrictEqual([{ lvl: 1, name: 'mending' }])
       })
     })
@@ -149,45 +149,45 @@ describe('test anvil functions', () => {
 
       test('diamond axe with fortune 2', () => {
         const item = Item.fromNotch({ blockId: 279, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 35 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(279, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(1)
         expect(newItem).toStrictEqual(item)
       })
 
       test('gold helmet with fire prot 3, aqua afin 1, unbr 2', () => {
         const item = Item.fromNotch({ blockId: 314, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 1 } }, { lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 34 } }, { lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 6 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(314, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(3)
         expect(newItem).toStrictEqual(item)
       })
 
       test('carrot on stick with unbr 1', () => {
         const item = Item.fromNotch({ blockId: 398, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(398, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(1)
         expect(newItem).toStrictEqual(item)
       })
 
       test('stone pick with eff 4', () => {
         const item = Item.fromNotch({ blockId: 274, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 4 }, id: { type: 'short', value: 32 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(274, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(1)
         expect(newItem).toStrictEqual(item)
       })
 
       test('fishing rod with luck 3 lure 3', () => {
         const item = Item.fromNotch({ blockId: 346, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 61 } }, { lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 62 } }] } }, RepairCost: { type: 'int', value: 3 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(346, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(3)
         expect(newItem).toStrictEqual(item)
       })
@@ -196,32 +196,32 @@ describe('test anvil functions', () => {
       const Item = require('../')('1.16.5')
       test('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(603, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         expect(newItem).toStrictEqual(item)
       })
       test('iron shovel w/ eff2 for2 ub2', () => {
         const item = Item.fromNotch({ present: true, itemId: 600, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:efficiency' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:fortune' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(600, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(3)
         expect(newItem).toStrictEqual(item)
       })
       test('ench book w/ resp1 blastprot 1', () => {
         const item = Item.fromNotch({ present: true, itemId: 848, itemCount: 1, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:respiration' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:blast_protection' } }] } }, RepairCost: { type: 'int', value: 1 } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(848, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(1)
         expect(newItem).toStrictEqual(item)
       })
       test('fishing rod w/ mending', () => {
         const item = Item.fromNotch({ present: true, itemId: 684, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:mending' } }] } } } } })
-        const enchs = item.getEnchants()
+        const enchs = item.enchants
         const newItem = new Item(684, 1)
-        newItem.setEnchants(enchs)
+        newItem.enchants = enchs
         newItem.setRepairCost(1)
         expect(newItem).toStrictEqual(item)
       })

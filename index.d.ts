@@ -10,14 +10,12 @@ declare class Item {
     name: string;
     displayName: string;
     stackSize: number;
+    durabilityUsed: number;
+    enchants: NormalizedEnchant[];
     static equal(item1: Item, item2: Item): boolean;
     static toNotch(item: Item): NotchItem;
     static fromNotch(item: NotchItem): Item;
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
-    getEnchants (): NormalizedEnchant[]
-    setEnchants (enchants: NormalizedEnchant[], anvilUses: number): null
-    getDurabilityUsed (): number
-    setDurabilityUsed (value: number): void
     setRepairCost (value: number): void
     setName (value: string): void
 }
