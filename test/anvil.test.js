@@ -223,5 +223,25 @@ describe('1.16.5 anvil', () => {
       expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
       expect(inverseAnvilResults.xpCost).toStrictEqual(19)
     })
+    test('Dealing with conflicting enchantments', () => {
+      const itemOne = new Item(598, 1)
+      itemOne.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 2 }]
+      const itemTwo = new Item(598, 1)
+      itemTwo.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 2 }]
+      // expected way
+      const expectedItem = new Item(598, 1)
+      expectedItem.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 3 }]
+      expectedItem.repairCost = 1
+      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+      expect(anvilResults.item).toStrictEqual(expectedItem)
+      expect(anvilResults.xpCost).toStrictEqual(13)
+      // inverse
+      const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
+      const inverseExpectedItem = new Item(598, 1)
+      inverseExpectedItem.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 3 }]
+      inverseExpectedItem.repairCost = 1
+      expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
+      expect(inverseAnvilResults.xpCost).toStrictEqual(13)
+    })
   })
 })
