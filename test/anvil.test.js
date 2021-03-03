@@ -203,5 +203,25 @@ describe('1.16.5 anvil', () => {
       expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
       expect(inverseAnvilResults.xpCost).toStrictEqual(20)
     })
+    test('Dealing with unequal enchantments', () => {
+      const itemOne = new Item(598, 1)
+      itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 1 }]
+      const itemTwo = new Item(598, 1)
+      itemTwo.enchants = [{ name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 3 }]
+      // expected way
+      const expectedItem = new Item(598, 1)
+      expectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+      expectedItem.repairCost = 1
+      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+      expect(anvilResults.item).toStrictEqual(expectedItem)
+      expect(anvilResults.xpCost).toStrictEqual(15)
+      // inverse
+      const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
+      const inverseExpectedItem = new Item(598, 1)
+      inverseExpectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }, { name: 'knockback', lvl: 2 }]
+      inverseExpectedItem.repairCost = 1
+      expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
+      expect(inverseAnvilResults.xpCost).toStrictEqual(19)
+    })
   })
 })
