@@ -94,9 +94,9 @@ function loader (version) {
       return this?.nbt?.value?.RepairCost?.value ?? 0
     }
 
-    set repairCost (repairCost) {
+    set repairCost (value) {
       if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.RepairCost = { type: 'int', value: repairCost }
+      this.nbt.value.RepairCost = { type: 'int', value }
     }
 
     get enchants () {

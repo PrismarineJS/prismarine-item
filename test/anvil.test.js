@@ -181,4 +181,19 @@ describe('1.16.5 anvil', () => {
       })
     }
   })
+
+  describe('wiki test', () => { // this example is assumed to have no repair cost on either item (so they are assumed to be found with the enchants)
+    test('Dealing with equal enchantments', () => {
+      const itemOne = new Item(598, 1)
+      itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+      const itemTwo = new Item(598, 1)
+      itemTwo.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }]
+      const expectedItem = new Item(598, 1)
+      expectedItem.enchants = [{ name: 'sharpness', lvl: 4 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+      expectedItem.repairCost = 1
+      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+      expect(anvilResults.item).toStrictEqual(expectedItem)
+      expect(anvilResults.xpCost).toStrictEqual(16)
+    })
+  })
 })
