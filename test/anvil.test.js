@@ -243,5 +243,18 @@ describe('1.16.5 anvil', () => {
       expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
       expect(inverseAnvilResults.xpCost).toStrictEqual(13)
     })
+    test('Using books', () => {
+      const itemOne = new Item(598, 1)
+      itemOne.enchants = [{ name: 'looting', lvl: 2 }]
+      const itemTwo = new Item(848, 1)
+      itemTwo.enchants = [{ name: 'protection', lvl: 3 }, { name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 2 }]
+      // expected way
+      const expectedItem = new Item(598, 1)
+      expectedItem.enchants = [{ name: 'looting', lvl: 3 }, { name: 'sharpness', lvl: 1 }]
+      expectedItem.repairCost = 1
+      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+      expect(anvilResults.item).toStrictEqual(expectedItem)
+      expect(anvilResults.xpCost).toStrictEqual(7)
+    })
   })
 })
