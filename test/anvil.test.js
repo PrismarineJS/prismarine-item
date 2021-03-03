@@ -131,6 +131,20 @@ describe('1.8.9 anvil', () => {
 
 describe('1.16.5 anvil', () => {
   const Item = require('../')('1.16.5')
+  const mcData = require('minecraft-data')('1.16.5')
+
+  function makeBook (ench, repairCost) {
+    const i = new Item(mcData.itemsByName.enchanted_book.id, 1)
+    i.enchants = ench
+    if (repairCost > 0) i.repairCost = repairCost
+    return i
+  }
+
+  function expectAnvilEq (res, cost, item) {
+    expect(res.xpCost).toStrictEqual(cost)
+    expect(res.item).toStrictEqual(item)
+  }
+
   test('gold helmets', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:fire_protection' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:aqua_affinity' } }] } } } } })
     const seconditem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 4 }, id: { type: 'string', value: 'minecraft:projectile_protection' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:respiration' } }] } } } } })
@@ -181,80 +195,146 @@ describe('1.16.5 anvil', () => {
       })
     }
   })
-
-  describe('wiki test', () => { // this example is assumed to have no repair cost on either item (so they are assumed to be found with the enchants)
-    test('Dealing with equal enchantments', () => {
-      const itemOne = new Item(598, 1)
-      itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
-      const itemTwo = new Item(598, 1)
-      itemTwo.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }]
-      // expected way
-      const expectedItem = new Item(598, 1)
-      expectedItem.enchants = [{ name: 'sharpness', lvl: 4 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
-      expectedItem.repairCost = 1
-      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
-      expect(anvilResults.item).toStrictEqual(expectedItem)
-      expect(anvilResults.xpCost).toStrictEqual(16)
-      // inverse
-      const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
-      const inverseExpectedItem = new Item(598, 1)
-      inverseExpectedItem.enchants = [{ name: 'sharpness', lvl: 4 }, { name: 'looting', lvl: 3 }, { name: 'knockback', lvl: 2 }]
-      inverseExpectedItem.repairCost = 1
-      expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
-      expect(inverseAnvilResults.xpCost).toStrictEqual(20)
+  describe('wiki related', () => {
+    describe('wiki tests', () => { // this example is assumed to have no repair cost on either item (so they are assumed to be found with the enchants)
+      test('Dealing with equal enchantments', () => {
+        const itemOne = new Item(598, 1)
+        itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+        const itemTwo = new Item(598, 1)
+        itemTwo.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }]
+        // expected way
+        const expectedItem = new Item(598, 1)
+        expectedItem.enchants = [{ name: 'sharpness', lvl: 4 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+        expectedItem.repairCost = 1
+        const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+        expect(anvilResults.item).toStrictEqual(expectedItem)
+        expect(anvilResults.xpCost).toStrictEqual(16)
+        // inverse
+        const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
+        const inverseExpectedItem = new Item(598, 1)
+        inverseExpectedItem.enchants = [{ name: 'sharpness', lvl: 4 }, { name: 'looting', lvl: 3 }, { name: 'knockback', lvl: 2 }]
+        inverseExpectedItem.repairCost = 1
+        expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
+        expect(inverseAnvilResults.xpCost).toStrictEqual(20)
+      })
+      test('Dealing with unequal enchantments', () => {
+        const itemOne = new Item(598, 1)
+        itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 1 }]
+        const itemTwo = new Item(598, 1)
+        itemTwo.enchants = [{ name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 3 }]
+        // expected way
+        const expectedItem = new Item(598, 1)
+        expectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
+        expectedItem.repairCost = 1
+        const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+        expect(anvilResults.item).toStrictEqual(expectedItem)
+        expect(anvilResults.xpCost).toStrictEqual(15)
+        // inverse
+        const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
+        const inverseExpectedItem = new Item(598, 1)
+        inverseExpectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }, { name: 'knockback', lvl: 2 }]
+        inverseExpectedItem.repairCost = 1
+        expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
+        expect(inverseAnvilResults.xpCost).toStrictEqual(19)
+      })
+      test('Dealing with conflicting enchantments', () => {
+        const itemOne = new Item(598, 1)
+        itemOne.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 2 }]
+        const itemTwo = new Item(598, 1)
+        itemTwo.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 2 }]
+        // expected way
+        const expectedItem = new Item(598, 1)
+        expectedItem.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 3 }]
+        expectedItem.repairCost = 1
+        const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+        expect(anvilResults.item).toStrictEqual(expectedItem)
+        expect(anvilResults.xpCost).toStrictEqual(13)
+        // inverse
+        const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
+        const inverseExpectedItem = new Item(598, 1)
+        inverseExpectedItem.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 3 }]
+        inverseExpectedItem.repairCost = 1
+        expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
+        expect(inverseAnvilResults.xpCost).toStrictEqual(13)
+      })
+      test('Using books', () => {
+        const itemOne = new Item(598, 1)
+        itemOne.enchants = [{ name: 'looting', lvl: 2 }]
+        const itemTwo = new Item(848, 1)
+        itemTwo.enchants = [{ name: 'protection', lvl: 3 }, { name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 2 }]
+        // expected way
+        const expectedItem = new Item(598, 1)
+        expectedItem.enchants = [{ name: 'looting', lvl: 3 }, { name: 'sharpness', lvl: 1 }]
+        expectedItem.repairCost = 1
+        const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
+        expect(anvilResults.item).toStrictEqual(expectedItem)
+        expect(anvilResults.xpCost).toStrictEqual(7)
+      })
     })
-    test('Dealing with unequal enchantments', () => {
-      const itemOne = new Item(598, 1)
-      itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 1 }]
-      const itemTwo = new Item(598, 1)
-      itemTwo.enchants = [{ name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 3 }]
-      // expected way
-      const expectedItem = new Item(598, 1)
-      expectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
-      expectedItem.repairCost = 1
-      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
-      expect(anvilResults.item).toStrictEqual(expectedItem)
-      expect(anvilResults.xpCost).toStrictEqual(15)
-      // inverse
-      const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
-      const inverseExpectedItem = new Item(598, 1)
-      inverseExpectedItem.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'looting', lvl: 3 }, { name: 'knockback', lvl: 2 }]
-      inverseExpectedItem.repairCost = 1
-      expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
-      expect(inverseAnvilResults.xpCost).toStrictEqual(19)
-    })
-    test('Dealing with conflicting enchantments', () => {
-      const itemOne = new Item(598, 1)
-      itemOne.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 2 }]
-      const itemTwo = new Item(598, 1)
-      itemTwo.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 2 }]
-      // expected way
-      const expectedItem = new Item(598, 1)
-      expectedItem.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 3 }]
-      expectedItem.repairCost = 1
-      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
-      expect(anvilResults.item).toStrictEqual(expectedItem)
-      expect(anvilResults.xpCost).toStrictEqual(13)
-      // inverse
-      const inverseAnvilResults = Item.anvil(itemTwo, itemOne, false, undefined)
-      const inverseExpectedItem = new Item(598, 1)
-      inverseExpectedItem.enchants = [{ name: 'smite', lvl: 5 }, { name: 'looting', lvl: 3 }]
-      inverseExpectedItem.repairCost = 1
-      expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
-      expect(inverseAnvilResults.xpCost).toStrictEqual(13)
-    })
-    test('Using books', () => {
-      const itemOne = new Item(598, 1)
-      itemOne.enchants = [{ name: 'looting', lvl: 2 }]
-      const itemTwo = new Item(848, 1)
-      itemTwo.enchants = [{ name: 'protection', lvl: 3 }, { name: 'sharpness', lvl: 1 }, { name: 'looting', lvl: 2 }]
-      // expected way
-      const expectedItem = new Item(598, 1)
-      expectedItem.enchants = [{ name: 'looting', lvl: 3 }, { name: 'sharpness', lvl: 1 }]
-      expectedItem.repairCost = 1
-      const anvilResults = Item.anvil(itemOne, itemTwo, false, undefined)
-      expect(anvilResults.item).toStrictEqual(expectedItem)
-      expect(anvilResults.xpCost).toStrictEqual(7)
+    describe('Enchantment Order Diagram', () => { // this test is from https://minecraft.gamepedia.com/File:Enchantment_Order_Diagram.png
+      // make items
+      let b1, b2, b3, b4, c1, c2
+      const a1 = new Item(mcData.itemsByName.diamond_boots.id, 1)
+      const a2 = makeBook([{ name: 'soul_speed', lvl: 3 }], 0)
+      const a3 = makeBook([{ name: 'thorns', lvl: 3 }], 0)
+      const a4 = makeBook([{ name: 'feather_falling', lvl: 4 }], 0)
+      const a5 = makeBook([{ name: 'depth_strider', lvl: 3 }], 0)
+      const a6 = makeBook([{ name: 'protection', lvl: 4 }], 0)
+      const a7 = makeBook([{ name: 'unbreaking', lvl: 3 }], 0)
+      const a8 = makeBook([{ name: 'mending', lvl: 1 }], 0)
+      describe('first combine', () => {
+        test('enchant boot+ss3', () => {
+          const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
+          eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }]
+          eqItem.repairCost = 1
+          const res = Item.anvil(a1, a2, false, undefined)
+          expectAnvilEq(res, 12, eqItem)
+          b1 = res.item
+        })
+        test('thorns3+ff4', () => {
+          const eqItem = makeBook([{ name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }], 1)
+          const res = Item.anvil(a3, a4, false, undefined)
+          expectAnvilEq(res, 4, eqItem)
+          b2 = res.item
+        })
+        test('depth3+p4', () => {
+          const eqItem = makeBook([{ name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }], 1)
+          const res = Item.anvil(a5, a6, false, undefined)
+          expectAnvilEq(res, 4, eqItem)
+          b3 = res.item
+        })
+        test('ub3+mending', () => {
+          const eqItem = makeBook([{ name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }], 1)
+          const res = Item.anvil(a7, a8, false, undefined)
+          expectAnvilEq(res, 2, eqItem)
+          b4 = res.item
+        })
+      })
+      describe('second combine', () => {
+        test('ss3 boots + t3 ff4', () => {
+          const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
+          eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }, { name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }]
+          eqItem.repairCost = 3
+          const res = Item.anvil(b1, b2, false, undefined)
+          expectAnvilEq(res, 16 + 2, eqItem) // 1 working per item
+          c1 = res.item
+        })
+        test('d3p4 + u3m1', () => {
+          const eqItem = makeBook([{ name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }, { name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }], 3)
+          const res = Item.anvil(b3, b4, false, undefined)
+          expectAnvilEq(res, 5 + 2, eqItem) // 1 working on each book
+          c2 = res.item
+        })
+      })
+      describe('third combine', () => {
+        test('d3p4 + u3m1', () => {
+          const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
+          eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }, { name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }, { name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }, { name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }]
+          eqItem.repairCost = 7
+          const res = Item.anvil(c1, c2, false, undefined)
+          expectAnvilEq(res, 15 + 6, eqItem) // 3 lvl repairCost on each item
+        })
+      })
     })
   })
 })
