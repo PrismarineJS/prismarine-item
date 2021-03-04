@@ -67,6 +67,13 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
+  test('rename to same name as before', () => {
+    const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'ababa' } } } } } })
+    const res = Item.anvil(item, null, false, 'ababa')
+    expect(res.xpCost).toStrictEqual(0)
+    expect(res.item).toStrictEqual(null)
+  })
+
   test('enchanted book rename', () => {
     const item = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 3 } }] } } } } })
     const res = Item.anvil(item, null, false, 'ababa')

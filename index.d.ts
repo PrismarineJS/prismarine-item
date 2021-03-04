@@ -13,11 +13,11 @@ declare class Item {
     durabilityUsed: number;
     enchants: NormalizedEnchant[];
     repairCost: number;
+    customName: string;
     static equal(item1: Item, item2: Item): boolean;
     static toNotch(item: Item): NotchItem;
     static fromNotch(item: NotchItem): Item;
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
-    setCustomName (value: string): void
 }
 declare interface NotchItem {
     // 1.8 - 1.12

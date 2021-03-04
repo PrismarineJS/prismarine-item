@@ -78,7 +78,12 @@ function loader (version) {
       }
     }
 
-    setCustomName (newName) {
+    get customName () {
+      if (Object.keys(this).length === 0) return null
+      return this?.nbt?.value?.display?.value?.Name?.value ?? 0
+    }
+
+    set customName (newName) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       this.nbt.value.display.value.Name = { type: 'string', value: newName }
@@ -96,6 +101,7 @@ function loader (version) {
     }
 
     get enchants () {
+      if (Object.keys(this).length === 0) return null
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
         if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
@@ -139,6 +145,7 @@ function loader (version) {
     }
 
     get durabilityUsed () {
+      if (Object.keys(this).length === 0) return null
       if (mcData.isNewerOrEqualTo('1.13')) {
         return this?.nbt?.value?.Damage?.value ?? 0
       } else {
