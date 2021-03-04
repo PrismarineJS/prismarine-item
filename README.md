@@ -31,6 +31,10 @@ Take an `item` in the format of the minecraft packets and return an `Item` insta
 
 Take an `Item` instance and return it in the format of the minecraft packets.
 
+### item.anvil(itemOne, itemTwo, creative[, newName])
+
+Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
+
 #### item.type
 
 Numerical id.
@@ -55,6 +59,23 @@ Buffer.
 #### item.equal(otherItem)
 
 Return true if items are equal.
+
+#### item.durabilityUsed
+
+A getter/setter for abstracting the underlying nbt
+
+#### item.customName
+
+A getter/setter for abstracting the underlying nbt
+
+#### item.enchants
+
+A getter/setter for abstracting the underlying nbt (does calculations) 
+
+#### item.repairCost
+
+A getter/setter for abstracting the underlying nbt.
+See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 
 ## History
