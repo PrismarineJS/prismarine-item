@@ -80,6 +80,10 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 ## History
 
+## 1.6.0
+
+* Item.anvil added, along with a ton of getters & setters for Item (thanks @u9g)
+
 ### 1.5.0
 
 * 1.16 support (thanks @DrakoTrogdor)
