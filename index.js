@@ -1,8 +1,4 @@
-module.exports = loader
-
 const nbt = require('prismarine-nbt')
-const maxItemDura = require('./data/max_item_durability.json')
-
 function loader (version) {
   const mcData = require('minecraft-data')(version)
   class Item {
@@ -139,7 +135,7 @@ function loader (version) {
         this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
       }
 
-      if (mcData.isNewerOrEqualTo('1.13') && maxItemDura[this.name]) this.nbt.value.Damage = { type: 'int', value: 0 }
+      if (mcData.isNewerOrEqualTo('1.13') && mcData.itemsByName[this.name].maxDurability) this.nbt.value.Damage = { type: 'int', value: 0 }
     }
 
     get durabilityUsed () {
@@ -163,3 +159,5 @@ function loader (version) {
   Item.anvil = require('./lib/anvil.js')(mcData, Item)
   return Item
 }
+
+module.exports = loader
