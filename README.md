@@ -31,13 +31,17 @@ Take an `item` in the format of the minecraft packets and return an `Item` insta
 
 Take an `Item` instance and return it in the format of the minecraft packets.
 
-#### item.type
+#### item.setCustomName(newName)
 
-Numerical id.
+Sets the name in the item's nbt
 
 ### item.anvil(itemOne, itemTwo, creative[, newName])
 
 Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
+
+#### item.type
+
+Numerical id.
 
 #### item.count
 

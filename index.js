@@ -78,7 +78,7 @@ function loader (version) {
       }
     }
 
-    setName (newName) {
+    setCustomName (newName) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       this.nbt.value.display.value.Name = { type: 'string', value: newName }

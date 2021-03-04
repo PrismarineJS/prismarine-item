@@ -17,7 +17,7 @@ declare class Item {
     static toNotch(item: Item): NotchItem;
     static fromNotch(item: NotchItem): Item;
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
-    setName (value: string): void
+    setCustomName (value: string): void
 }
 declare interface NotchItem {
     // 1.8 - 1.12
