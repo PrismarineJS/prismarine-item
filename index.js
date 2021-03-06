@@ -42,7 +42,8 @@ function loader (version) {
       } else {
         return item1.type === item2.type &&
             item1.count === item2.count &&
-            item1.metadata === item2.metadata
+            item1.metadata === item2.metadata &&
+            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt)
       }
     }
 
