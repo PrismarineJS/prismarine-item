@@ -82,6 +82,10 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 ## History
 
+## 1.7.0
+
+* Item.equal checks nbt equality (@U9G)
+
 ## 1.6.0
 
 * Item.anvil added, along with a ton of getters & setters for Item (thanks @u9g)
