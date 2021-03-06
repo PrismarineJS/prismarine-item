@@ -1,5 +1,4 @@
 const nbt = require('prismarine-nbt')
-const equal = require('fast-deep-equal')
 function loader (version) {
   const mcData = require('minecraft-data')(version)
   class Item {
@@ -44,7 +43,7 @@ function loader (version) {
         return item1.type === item2.type &&
             item1.count === item2.count &&
             item1.metadata === item2.metadata &&
-            equal(item1.nbt, item2.nbt)
+            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt)
       }
     }
 
