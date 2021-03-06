@@ -250,4 +250,11 @@ describe('use Item.equal', () => {
     itemTwo.enchants = [{ name: 'sharpness', lvl: 5 }]
     expect(Item.equal(itemOne, itemTwo)).toStrictEqual(true)
   })
+  test('two enchants in common on both items but diff orders', () => {
+    const itemOne = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    itemOne.enchants = [{ name: 'sharpness', lvl: 5 }, { name: 'unbreaking', lvl: 1 }]
+    const itemTwo = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    itemTwo.enchants = [{ name: 'unbreaking', lvl: 1 }, { name: 'sharpness', lvl: 5 }]
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
 })
