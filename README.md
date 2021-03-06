@@ -31,9 +31,11 @@ Take an `item` in the format of the minecraft packets and return an `Item` insta
 
 Take an `Item` instance and return it in the format of the minecraft packets.
 
-### item.anvil(itemOne, itemTwo, creative[, newName])
+### Item.anvil(itemOne, itemTwo, creative[, newName])
 
 Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
+
+### Item.equal(itemOne, itemTwo)
 
 #### item.type
 
