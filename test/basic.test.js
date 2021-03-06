@@ -228,3 +228,26 @@ describe('test anvil functions', () => {
     })
   })
 })
+
+describe('use Item.equal', () => {
+  const Item = require('..')('1.16.5')
+  const mcData = require('minecraft-data')('1.16.5')
+  test('sh5 wep + not sh5 wep', () => {
+    const itemOne = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    itemOne.enchants = [{ name: 'sharpness', lvl: 5 }]
+    const itemTwo = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
+  test('two unenchanted', () => {
+    const itemOne = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    const itemTwo = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(true)
+  })
+  test('two enchanted', () => {
+    const itemOne = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    itemOne.enchants = [{ name: 'sharpness', lvl: 5 }]
+    const itemTwo = new Item(mcData.itemsByName.diamond_sword.id, 1)
+    itemTwo.enchants = [{ name: 'sharpness', lvl: 5 }]
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(true)
+  })
+})
