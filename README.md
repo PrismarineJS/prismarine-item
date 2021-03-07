@@ -90,9 +90,13 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 ## History
 
+## 1.8.0
+
+* add matchStackSize option on Item.equal (thanks @u9g)
+
 ## 1.7.0
 
-* Item.equal checks nbt equality (@U9G)
+* Item.equal checks nbt equality (thanks @u9g)
 
 ## 1.6.0
 
