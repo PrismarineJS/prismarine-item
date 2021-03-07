@@ -35,7 +35,15 @@ Take an `Item` instance and return it in the format of the minecraft packets.
 
 Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
 
-### Item.equal(itemOne, itemTwo)
+### Item.equal(itemOne, itemTwo[, matchStackSize])
+
+`itemOne` - first item
+
+`itemTwo` - second item
+
+`matchStackSize` - whether to check for count equality
+
+Checks equality between two items based on itemType, count, metadata, and stringified nbt
 
 #### item.type
 

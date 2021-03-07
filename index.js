@@ -32,7 +32,7 @@ function loader (version) {
       }
     }
 
-    static equal (item1, item2) {
+    static equal (item1, item2, matchStackSize = true) {
       if (item1 == null && item2 == null) {
         return true
       } else if (item1 == null) {
@@ -40,10 +40,10 @@ function loader (version) {
       } else if (item2 == null) {
         return false
       } else {
-        return item1.type === item2.type &&
-            item1.count === item2.count &&
+        return (item1.type === item2.type &&
+            (matchStackSize ? item1.count === item2.count : true) &&
             item1.metadata === item2.metadata &&
-            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt)
+            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt))
       }
     }
 
