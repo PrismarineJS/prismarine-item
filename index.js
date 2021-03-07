@@ -43,7 +43,7 @@ function loader (version) {
         return (item1.type === item2.type &&
             (matchStackSize ? item1.count === item2.count : true) &&
             item1.metadata === item2.metadata &&
-            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt)
+            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt))
       }
     }
 
