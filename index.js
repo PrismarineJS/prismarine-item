@@ -40,8 +40,8 @@ function loader (version) {
       } else if (item2 == null) {
         return false
       } else {
-        return (matchStackSize ? item1.type === item2.type : true) &&
-            item1.count === item2.count &&
+        return (item1.type === item2.type &&
+            (matchStackSize ? item1.count === item2.count : true) &&
             item1.metadata === item2.metadata &&
             JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt)
       }
