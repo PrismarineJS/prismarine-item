@@ -18,7 +18,7 @@
     "minecraft-data": "^2.79.0"
   },
   "devDependencies": {
-    "@types/node": "^14.0.1",
+    "@types/node": "^15.0.0",
     "jest": "^26.1.0",
     "minecraft-data": "^2.79.0",
     "standard": "^16.0.1"
