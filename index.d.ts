@@ -1,12 +1,14 @@
 /// <reference types="node" />
 
+import { Tag, TagType } from 'prismarine-nbt'
+
 declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
     type: number;
     slot: number;
     count: number;
     metadata: number;
-    nbt: Buffer | null;
+    nbt: Tags[TagType] | null;
     name: string;
     displayName: string;
     stackSize: number;
