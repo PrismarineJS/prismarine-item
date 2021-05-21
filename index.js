@@ -70,8 +70,11 @@ function loader (version) {
     }
 
     static fromNotch (item) {
-      if (mcData.isNewerOrEqualTo('1.13')) {
+      if (mcData.isNewerOrEqualTo('1.14')) {
         if (item.present === false) return null
+        return new Item(item.itemId, item.itemCount, item.nbtData)
+      } else if (mcData.isNewerOrEqualTo('1.13')) {
+        if (item.itemId === -1) return null
         return new Item(item.itemId, item.itemCount, item.nbtData)
       } else {
         if (item.blockId === -1) return null
