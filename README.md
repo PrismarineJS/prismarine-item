@@ -90,6 +90,12 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 ## History
 
+## 1.9.0
+
+* Revise typings (thanks @extremeheat)
+* Revise deps (thanks @rom1504)
+* Correctly identify null items in MC 1.13 (thanks @u9g)
+
 ## 1.8.0
 
 * add matchStackSize option on Item.equal (thanks @u9g)
