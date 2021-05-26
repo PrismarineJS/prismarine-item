@@ -74,7 +74,7 @@ function loader (version) {
         if (item.present === false) return null
         return new Item(item.itemId, item.itemCount, item.nbtData)
       } else if (mcData.isNewerOrEqualTo('1.13')) {
-        if (item.itemId === -1) return null
+        if (item.itemId === -1 || item.present === false) return null
         return new Item(item.itemId, item.itemCount, item.nbtData)
       } else {
         if (item.blockId === -1) return null
