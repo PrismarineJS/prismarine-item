@@ -90,6 +90,10 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 ## History
 
+## 1.9.1
+
+* fix item present detection (@U9G)
+
 ## 1.9.0
 
 * Revise typings (thanks @extremeheat)
