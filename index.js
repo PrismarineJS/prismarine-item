@@ -169,13 +169,13 @@ function loader (version) {
     get spawnEggMobName () {
       if (mcData.isOlderThan('1.9')) {
         return mcData.entitiesArray.find(o => o.internalId === this.metadata).name
-      } else if (mcData.isOlderThan('1.13')) {
+      }
+      if (mcData.isOlderThan('1.13')) {
         const data = nbt.simplify(this.nbt)
         const entityName = data.EntityTag.id
         return entityName.replace('minecraft:', '')
-      } else {
-        return this.name.replace('_spawn_egg', '')
       }
+      return this.name.replace('_spawn_egg', '')
     }
   }
 

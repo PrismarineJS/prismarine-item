@@ -1,7 +1,5 @@
 /* eslint-env jest */
 
-const { expect } = require('@jest/globals')
-
 describe('1.8.9 anvil', () => {
   const Item = require('prismarine-item')('1.8.8')
   test('combine two damaged sword', () => {
@@ -137,7 +135,7 @@ describe('1.8.9 anvil', () => {
 })
 
 describe('1.16.5 anvil', () => {
-  const Item = require('../')('1.16.5')
+  const Item = require('prismarine-item')('1.16.5')
   const mcData = require('minecraft-data')('1.16.5')
 
   function makeBook (ench, repairCost) {
