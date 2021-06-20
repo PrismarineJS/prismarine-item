@@ -1,10 +1,8 @@
 /* eslint-env jest */
 
-const { test, expect, describe } = require('@jest/globals')
-
 describe('test based on examples', () => {
   describe('1.8 iron shovel', () => {
-    const Item = require('../')('1.8')
+    const Item = require('prismarine-item')('1.8')
     const ironShovelItem = new Item(256, 1)
 
     test('constructor makes item correctly', () => {
@@ -24,7 +22,7 @@ describe('test based on examples', () => {
     })
   })
   describe('1.13.2 iron shovel', () => {
-    const Item = require('../')('1.13.2')
+    const Item = require('prismarine-item')('1.13.2')
     const ironShovelItem = new Item(472, 1)
 
     test('constructor makes item correctly', () => {
@@ -49,7 +47,7 @@ describe('test based on examples', () => {
 describe('test anvil functions', () => {
   describe('Item.getEnchants', () => {
     describe('1.8.8 test', () => {
-      const Item = require('../')('1.8.8')
+      const Item = require('prismarine-item')('1.8.8')
 
       test('diamond axe with fortune 2', () => {
         const item = Item.fromNotch({ blockId: 279, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 35 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
@@ -100,7 +98,7 @@ describe('test anvil functions', () => {
       })
     })
     describe('1.12.2 test', () => {
-      const Item = require('../')('1.12.2')
+      const Item = require('prismarine-item')('1.12.2')
 
       test('sharp 5 dia sword', () => {
         const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
@@ -114,7 +112,7 @@ describe('test anvil functions', () => {
       })
     })
     describe('1.16.5 test', () => {
-      const Item = require('../')('1.16.5')
+      const Item = require('prismarine-item')('1.16.5')
       test('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
         const enchs = item.enchants
@@ -142,10 +140,46 @@ describe('test anvil functions', () => {
       })
     })
   })
-
+  describe('item.spawnEggMobName', () => {
+    describe('1.8.9 test', () => {
+      test('zombie egg', () => {
+        const Item = require('prismarine-item')('1.8.9')
+        const item = Item.fromNotch({ blockId: 383, itemCount: 1, itemDamage: 54 })
+        expect(item.spawnEggMobName).toStrictEqual('Zombie')
+      })
+    })
+    describe('1.11.2 test', () => {
+      test('zombie egg', () => {
+        const Item = require('prismarine-item')('1.11.2')
+        const item = Item.fromNotch({ blockId: 383, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { EntityTag: { type: 'compound', value: { id: { type: 'string', value: 'minecraft:zombie' } } } } } })
+        expect(item.spawnEggMobName).toStrictEqual('zombie')
+      })
+    })
+    describe('1.11.2 test', () => {
+      test('zombie egg', () => {
+        const Item = require('prismarine-item')('1.11.2')
+        const item = Item.fromNotch({ blockId: 383, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { EntityTag: { type: 'compound', value: { id: { type: 'string', value: 'minecraft:zombie' } } } } } })
+        expect(item.spawnEggMobName).toStrictEqual('zombie')
+      })
+    })
+    describe('1.11.2 test', () => {
+      test('zombie egg', () => {
+        const Item = require('prismarine-item')('1.11.2')
+        const item = Item.fromNotch({ blockId: 383, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { EntityTag: { type: 'compound', value: { id: { type: 'string', value: 'minecraft:zombie' } } } } } })
+        expect(item.spawnEggMobName).toStrictEqual('zombie')
+      })
+    })
+    describe('1.16.5 test', () => {
+      test('zombie egg', () => {
+        const Item = require('prismarine-item')('1.16.5')
+        const item = Item.fromNotch({ present: true, itemId: 819, itemCount: 1 })
+        expect(item.spawnEggMobName).toStrictEqual('zombie')
+      })
+    })
+  })
   describe('item.setEnchants', () => {
     describe('1.8.8 test', () => {
-      const Item = require('../')('1.8.8')
+      const Item = require('prismarine-item')('1.8.8')
 
       test('diamond axe with fortune 2', () => {
         const item = Item.fromNotch({ blockId: 279, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'short', value: 35 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
@@ -193,7 +227,7 @@ describe('test anvil functions', () => {
       })
     })
     describe('1.16.5 test', () => {
-      const Item = require('../')('1.16.5')
+      const Item = require('prismarine-item')('1.16.5')
       test('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
         const enchs = item.enchants
@@ -230,7 +264,7 @@ describe('test anvil functions', () => {
 })
 
 describe('use Item.equal', () => {
-  const Item = require('..')('1.16.5')
+  const Item = require('prismarine-item')('1.16.5')
   const mcData = require('minecraft-data')('1.16.5')
   test('sh5 wep + not sh5 wep', () => {
     const itemOne = new Item(mcData.itemsByName.diamond_sword.id, 1)

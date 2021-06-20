@@ -87,6 +87,10 @@ A getter/setter for abstracting the underlying nbt (does calculations)
 A getter/setter for abstracting the underlying nbt.
 See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
+#### item.spawnEggMobName
+
+A getter for abstracting the underlying nbt, get's the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
+
 
 ## History
 

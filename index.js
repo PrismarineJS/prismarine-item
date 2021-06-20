@@ -165,6 +165,18 @@ function loader (version) {
         this.metadata = value
       }
     }
+
+    get spawnEggMobName () {
+      if (mcData.isOlderThan('1.9')) {
+        return mcData.entitiesArray.find(o => o.internalId === this.metadata).name
+      }
+      if (mcData.isOlderThan('1.13')) {
+        const data = nbt.simplify(this.nbt)
+        const entityName = data.EntityTag.id
+        return entityName.replace('minecraft:', '')
+      }
+      return this.name.replace('_spawn_egg', '')
+    }
   }
 
   Item.anvil = require('./lib/anvil.js')(mcData, Item)
