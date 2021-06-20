@@ -94,9 +94,13 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 ## History
 
+## 1.10.0
+
+* add item.spawnEggMobName (thanks @U9G)
+
 ## 1.9.1
 
-* fix item present detection (@U9G)
+* fix item present detection (thanks @U9G)
 
 ## 1.9.0
 
