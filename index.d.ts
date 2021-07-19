@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import { Tag, TagType } from 'prismarine-nbt'
+import { Tags, TagType } from 'prismarine-nbt'
 
 declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
