@@ -7,16 +7,14 @@ Represent a minecraft item with its associated data
 ## Usage
 
 ```js
-const Item=require("prismarine-item")("1.8");
+const Item = require('prismarine-item')('1.8')
 
-const ironShovelItem=new Item(256,1);
+const ironShovelItem = new Item(256, 1)
+console.log(ironShovelItem)
 
-console.log(ironShovelItem);
-
-const notchItem=Item.toNotch(ironShovelItem);
-console.log(notchItem);
-
-console.log(Item.fromNotch(notchItem));
+const notchItem = Item.toNotch(ironShovelItem)
+console.log(notchItem)
+console.log(Item.fromNotch(notchItem))
 ```
 
 ## API
@@ -93,6 +91,10 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 
 ## History
+
+## 1.10.1
+
+* update typings (thanks @stzups)
 
 ## 1.10.0
 
