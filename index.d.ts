@@ -2,7 +2,7 @@
 
 import { Tags, TagType } from 'prismarine-nbt'
 
-declare class Item {
+export declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
     type: number;
     slot: number;
