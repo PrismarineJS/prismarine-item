@@ -105,7 +105,7 @@ function loader (version) {
     }
 
     get enchants () {
-      if (Object.keys(this).length === 0) return null
+      if (Object.keys(this).length === 0) return []
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
         if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
