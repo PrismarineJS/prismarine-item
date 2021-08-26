@@ -7,12 +7,20 @@ declare class Item {
     type: number;
     slot: number;
     count: number;
+    /** max vanilla stack size */
+    stackSize: number;
+    /** prefer durability variable for using metadata for all version compatability @see durability */
     metadata: number;
     nbt: Tags[TagType] | null;
+    /** @example item.name = 'lily_pad' */
     name: string;
+    /** @example item.displayName = 'Lily Pad' */
     displayName: string;
-    stackSize: number;
+    /** @deprecated use durability instead */
     durabilityUsed: number;
+    /** the amount of durability out of max the item has */
+    durability: number | null;
+    readonly maxDurability?: number;
     enchants: NormalizedEnchant[];
     repairCost: number;
     customName: string;

@@ -56,7 +56,7 @@ See http://www.minecraftwiki.net/wiki/Data_values#Data
 
 #### item.nbt
 
-Buffer.
+Object representing the item's nbt data, which will be in the format of prismarine-nbt's tag types.
 
 #### item.name
 
@@ -64,13 +64,9 @@ Buffer.
 
 #### item.stackSize
 
-#### item.equal(otherItem)
-
-Return true if items are equal.
-
 #### item.durabilityUsed
 
-A getter/setter for abstracting the underlying nbt
+Get's/Set's the amount of durability damage the item has recieved
 
 #### item.customName
 
@@ -78,17 +74,19 @@ A getter/setter for abstracting the underlying nbt
 
 #### item.enchants
 
-A getter/setter for abstracting the underlying nbt (does calculations) 
+Enchantments in the format: `[{ name: 'efficiency', lvl: 3 }]`
 
 #### item.repairCost
 
-A getter/setter for abstracting the underlying nbt.
 See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 #### item.spawnEggMobName
 
-A getter for abstracting the underlying nbt, get's the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
+Gets the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
 
+#### item.durability
+
+Get's/Set's the amount of durability is left on an item out of max.
 
 ## History
 

@@ -25,6 +25,7 @@ function loader (version) {
           }
         }
         this.stackSize = itemEnum.stackSize
+        this.maxDurability = itemEnum.maxDurability
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
@@ -105,7 +106,7 @@ function loader (version) {
     }
 
     get enchants () {
-      if (Object.keys(this).length === 0) return []
+      if (Object.keys(this).length === 0) return null
       if (mcData.isOlderThan('1.13')) {
         let itemEnch
         if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
@@ -130,6 +131,7 @@ function loader (version) {
     }
 
     set enchants (normalizedEnchArray) {
+      if (normalizedEnchArray.length === 0) return
       const isBook = this.name === 'enchanted_book'
       const postEnchantChange = mcData.isOlderThan('1.13')
       const enchListName = postEnchantChange ? 'ench' : 'Enchantments'
@@ -141,11 +143,9 @@ function loader (version) {
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
       })
 
-      if (enchs.length !== 0) {
-        this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
-      }
+      this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
 
-      if (mcData.isNewerOrEqualTo('1.13') && mcData.itemsByName[this.name].maxDurability) this.nbt.value.Damage = { type: 'int', value: 0 }
+      if (mcData.isNewerOrEqualTo('1.13') && this.maxDurability) this.nbt.value.Damage = { type: 'int', value: 0 }
     }
 
     get durabilityUsed () {
@@ -176,6 +176,16 @@ function loader (version) {
         return entityName.replace('minecraft:', '')
       }
       return this.name.replace('_spawn_egg', '')
+    }
+
+    get durability () {
+      if (!this.maxDurability) return null
+      return this.maxDurability - this.durabilityUsed
+    }
+    
+    set durability (value) {
+      if (!this.maxDurability) return
+      this.durabilityUsed = this.maxDurability - value
     }
   }
 
