@@ -39,4 +39,4 @@ declare interface NormalizedEnchant {
     lvl: number
 }
 
-export default function loader(mcVersion: string): keyof Item;
+export default function loader(mcVersion: string): typeof Item;
