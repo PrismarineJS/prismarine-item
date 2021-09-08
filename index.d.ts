@@ -16,6 +16,7 @@ declare class Item {
     enchants: NormalizedEnchant[];
     repairCost: number;
     customName: string | null;
+    customLore: string | null;
     readonly spawnEggMobName: string;
     static equal(item1: Item, item2: Item, matchStackSize: boolean): boolean;
     static toNotch(item: Item): NotchItem;
