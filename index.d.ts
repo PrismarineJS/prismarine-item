@@ -20,7 +20,7 @@ declare class Item {
     readonly spawnEggMobName: string;
     static equal(item1: Item, item2: Item, matchStackSize: boolean): boolean;
     static toNotch(item: Item): NotchItem;
-    static fromNotch(item: NotchItem): Item;
+    static fromNotch(item: NotchItem): Item | null;
     static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
 }
 declare interface NotchItem {
