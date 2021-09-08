@@ -84,7 +84,7 @@ function loader (version) {
 
     get customName () {
       if (Object.keys(this).length === 0) return null
-      return this?.nbt?.value?.display?.value?.Name?.value ?? 0
+      return this?.nbt?.value?.display?.value?.Name?.value ?? null
     }
 
     set customName (newName) {
