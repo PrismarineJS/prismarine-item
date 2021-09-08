@@ -92,7 +92,7 @@ function loader (version) {
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       this.nbt.value.display.value.Name = { type: 'string', value: newName }
     }
-    
+
     get customLore () {
       if (Object.keys(this).length === 0) return null
       return this?.nbt?.value?.display?.value?.Name?.value ?? null
