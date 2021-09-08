@@ -2,6 +2,8 @@
 
 import { Tags, TagType } from 'prismarine-nbt'
 
+type ItemLike = Item | null
+
 declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
     type: number;
@@ -15,13 +17,15 @@ declare class Item {
     durabilityUsed: number;
     enchants: NormalizedEnchant[];
     repairCost: number;
-    customName: string;
+    customName: string | null;
+    customLore: string | null;
     readonly spawnEggMobName: string;
     static equal(item1: Item, item2: Item, matchStackSize: boolean): boolean;
-    static toNotch(item: Item): NotchItem;
-    static fromNotch(item: NotchItem): Item;
-    static anvil (itemOne: Item, itemTwo: Item | null, creative: boolean, rename: string | undefined): {xpCost: number, item: Item}
+    static toNotch(item: ItemLike): NotchItem;
+    static fromNotch(item: NotchItem): ItemLike;
+    static anvil (itemOne: ItemLike, itemTwo: ItemLike, creative: boolean, rename: string | undefined): { xpCost: number, item: ItemLike }
 }
+
 declare interface NotchItem {
     // 1.8 - 1.12
     blockId?: number;
