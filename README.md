@@ -74,7 +74,11 @@ A getter/setter for abstracting the underlying nbt
 
 #### item.customName
 
-A getter/setter for abstracting the underlying nbt
+the item's custom name (ie. anvil name)
+
+#### item.customLore
+
+the item's custom lore (ie. set in give command)
 
 #### item.enchants
 
