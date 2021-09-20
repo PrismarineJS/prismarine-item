@@ -96,6 +96,12 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 ## History
 
+## 1.11.0
+
+* fix typings
+* add .customLore
+* .customName now returns null when there is no custom name
+
 ## 1.10.1
 
 * update typings (thanks @stzups)
