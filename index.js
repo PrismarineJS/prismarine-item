@@ -95,7 +95,7 @@ function loader (version) {
 
     get customLore () {
       if (Object.keys(this).length === 0) return null
-      return this?.nbt?.value?.display?.value?.Lore?.value ?? null
+      return this?.nbt?.value?.display?.value?.Lore?.value.value ?? null
     }
 
     set customLore (newLore) {
