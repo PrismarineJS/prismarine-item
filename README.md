@@ -96,6 +96,10 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 ## History
 
+## 1.11.1
+
+* fix customLore
+
 ## 1.11.0
 
 * fix typings
