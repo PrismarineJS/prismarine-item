@@ -1,8 +1,10 @@
-/* eslint-env jest */
+/* eslint-env mocha */
+
+const expect = require('expect')
 
 describe('1.8.9 anvil', () => {
   const Item = require('prismarine-item')('1.8.8')
-  test('combine two damaged sword', () => {
+  it('combine two damaged sword', () => {
     const sword1 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 5, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 34 } }] } }, RepairCost: { type: 'int', value: 1 } } } })
     const sword2 = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
     const res = Item.anvil(sword1, sword2, false, undefined)
@@ -14,7 +16,7 @@ describe('1.8.9 anvil', () => {
     expect(res.item).toStrictEqual(finalItem)
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
-  test('combine two books', () => {
+  it('combine two books', () => {
     const book1 = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }] } } } } })
     const book2 = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 6 } }] } } } } })
     const finalItem = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 6 } }] } } } } })
@@ -27,7 +29,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('combine book that has repairCost', () => {
+  it('combine book that has repairCost', () => {
     const sword = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
     const book = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
     const res = Item.anvil(sword, book, false, undefined)
@@ -40,7 +42,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('combine book (with incompatible enchants) using creative', () => {
+  it('combine book (with incompatible enchants) using creative', () => {
     const sword = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 3 })
     const book = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
     const res = Item.anvil(sword, book, true, undefined)
@@ -53,7 +55,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('diamond sword rename', () => {
+  it('diamond sword rename', () => {
     const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0 })
     const res = Item.anvil(item, null, false, 'ababa')
     const inverse = Item.anvil(null, item, false, 'ababa')
@@ -65,14 +67,14 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('rename to same name as before', () => {
+  it('rename to same name as before', () => {
     const item = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'ababa' } } } } } })
     const res = Item.anvil(item, null, false, 'ababa')
     expect(res.xpCost).toStrictEqual(0)
     expect(res.item).toStrictEqual(null)
   })
 
-  test('enchanted book rename', () => {
+  it('enchanted book rename', () => {
     const item = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 3 } }] } } } } })
     const res = Item.anvil(item, null, false, 'ababa')
     const inverse = Item.anvil(null, item, false, 'ababa')
@@ -84,7 +86,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('(64x) blocks rename', () => {
+  it('(64x) blocks rename', () => {
     const item = Item.fromNotch({ blockId: 1, itemCount: 64, itemDamage: 0 })
     const res = Item.anvil(item, null, false, 'ababa')
     const inverse = Item.anvil(null, item, false, 'ababa')
@@ -96,7 +98,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('combine w/ pre-rename', () => {
+  it('combine w/ pre-rename', () => {
     const itemOne = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Diamond Sword1212' } } } } } })
     const itemTwo = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 48 } }, { lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } } } } })
     const finalItem = Item.fromNotch({ blockId: 276, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { ench: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'short', value: 16 } }] } }, RepairCost: { type: 'int', value: 3 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Diamond Sword1212' } } } } } })
@@ -107,7 +109,7 @@ describe('1.8.9 anvil', () => {
     expect(inverse.item).toStrictEqual(inverseFinalItem)
   })
 
-  test('incompatible books', () => {
+  it('incompatible books', () => {
     const itemOne = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 1 }, id: { type: 'short', value: 33 } }] } } } } })
     const itemTwo = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 34 } }, { lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 35 } }] } } } } })
     const inverseFinalItem = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 34 } }, { lvl: { type: 'short', value: 3 }, id: { type: 'short', value: 35 } }] } } } } })
@@ -120,13 +122,13 @@ describe('1.8.9 anvil', () => {
 
   describe('too expensive test', () => {
     const chestplate = Item.fromNotch({ blockId: 303, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 63 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Chain Chaestaaplateaaa' } } } } } })
-    test('try renaming', () => {
+    it('try renaming', () => {
       const res = Item.anvil(chestplate, null, false, 'Hello!')
       const expectedItem = Item.fromNotch({ blockId: 303, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 127 }, display: { type: 'compound', value: { Name: { type: 'string', value: 'Hello!' } } } } } })
       expect(res.xpCost).toStrictEqual(39)
       expect(res.item).toStrictEqual(expectedItem)
     })
-    test('try adding enchants', () => {
+    it('try adding enchants', () => {
       const secondItem = Item.fromNotch({ blockId: 403, itemCount: 1, itemDamage: 0, nbtData: { type: 'compound', name: '', value: { StoredEnchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 4 }, id: { type: 'short', value: 0 } }] } } } } })
       const res = Item.anvil(chestplate, secondItem, false, 'Hello!')
       expect(res.item).toStrictEqual(null)
@@ -150,7 +152,7 @@ describe('1.16.5 anvil', () => {
     expect(res.item).toStrictEqual(item)
   }
 
-  test('gold helmets', () => {
+  it('gold helmets', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:fire_protection' } }, { lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 1 }, id: { type: 'string', value: 'minecraft:aqua_affinity' } }] } } } } })
     const seconditem = Item.fromNotch({ present: true, itemId: 638, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 3 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 2 }, id: { type: 'string', value: 'minecraft:unbreaking' } }, { lvl: { type: 'short', value: 4 }, id: { type: 'string', value: 'minecraft:projectile_protection' } }, { lvl: { type: 'short', value: 3 }, id: { type: 'string', value: 'minecraft:respiration' } }] } } } } })
     const anvil = Item.anvil(firstItem, seconditem, false, undefined)
@@ -161,7 +163,7 @@ describe('1.16.5 anvil', () => {
     expect(inverse.item).toStrictEqual(expectedInverseItem)
   })
 
-  test('two fully fixed diamond swords', () => {
+  it('two fully fixed diamond swords', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
     const secondItem = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { RepairCost: { type: 'int', value: 1 }, Damage: { type: 'int', value: 0 }, Enchantments: { type: 'list', value: { type: 'compound', value: [{ lvl: { type: 'short', value: 5 }, id: { type: 'string', value: 'minecraft:sharpness' } }] } } } } })
     const anvil = Item.anvil(firstItem, secondItem, false, undefined)
@@ -170,7 +172,7 @@ describe('1.16.5 anvil', () => {
     expect(anvil.xpCost).toStrictEqual(7)
   })
 
-  test('fixing iron sword with iron ingots', () => {
+  it('fixing iron sword with iron ingots', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
     const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: 2 })
     const anvil = Item.anvil(firstItem, secondItem, false, undefined)
@@ -179,7 +181,7 @@ describe('1.16.5 anvil', () => {
     expect(anvil.xpCost).toStrictEqual(2)
     expect(anvil.usedMats).toStrictEqual(2)
   })
-  test('fixing iron sword with enchanted iron ingots', () => {
+  it('fixing iron sword with enchanted iron ingots', () => {
     const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
     const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: 2, nbtData: { name: '', type: 'compound', value: { Enchantments: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'string', value: 'minecraft:unbreaking' }, lvl: { type: 'short', value: 2 } }] } } } } })
     const anvil = Item.anvil(firstItem, secondItem, false, undefined)
@@ -191,7 +193,7 @@ describe('1.16.5 anvil', () => {
 
   describe('test fixing with items', () => {
     for (let i = 1; i <= 5; i++) {
-      test(`fix using ${i} ingots`, () => {
+      it(`fix using ${i} ingots`, () => {
         const firstItem = Item.fromNotch({ present: true, itemId: 598, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 300 } } } })
         const secondItem = Item.fromNotch({ present: true, itemId: 579, itemCount: i })
         const anvil = Item.anvil(firstItem, secondItem, false, undefined)
@@ -202,7 +204,7 @@ describe('1.16.5 anvil', () => {
   })
   describe('wiki related', () => {
     describe('wiki tests', () => { // this example is assumed to have no repair cost on either item (so they are assumed to be found with the enchants)
-      test('Dealing with equal enchantments', () => {
+      it('Dealing with equal enchantments', () => {
         const itemOne = new Item(598, 1)
         itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 3 }]
         const itemTwo = new Item(598, 1)
@@ -222,7 +224,7 @@ describe('1.16.5 anvil', () => {
         expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
         expect(inverseAnvilResults.xpCost).toStrictEqual(20)
       })
-      test('Dealing with unequal enchantments', () => {
+      it('Dealing with unequal enchantments', () => {
         const itemOne = new Item(598, 1)
         itemOne.enchants = [{ name: 'sharpness', lvl: 3 }, { name: 'knockback', lvl: 2 }, { name: 'looting', lvl: 1 }]
         const itemTwo = new Item(598, 1)
@@ -242,7 +244,7 @@ describe('1.16.5 anvil', () => {
         expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
         expect(inverseAnvilResults.xpCost).toStrictEqual(19)
       })
-      test('Dealing with conflicting enchantments', () => {
+      it('Dealing with conflicting enchantments', () => {
         const itemOne = new Item(598, 1)
         itemOne.enchants = [{ name: 'sharpness', lvl: 2 }, { name: 'looting', lvl: 2 }]
         const itemTwo = new Item(598, 1)
@@ -262,7 +264,7 @@ describe('1.16.5 anvil', () => {
         expect(inverseAnvilResults.item).toStrictEqual(inverseExpectedItem)
         expect(inverseAnvilResults.xpCost).toStrictEqual(13)
       })
-      test('Using books', () => {
+      it('Using books', () => {
         const itemOne = new Item(598, 1)
         itemOne.enchants = [{ name: 'looting', lvl: 2 }]
         const itemTwo = new Item(848, 1)
@@ -288,7 +290,7 @@ describe('1.16.5 anvil', () => {
       const a7 = makeBook([{ name: 'unbreaking', lvl: 3 }], 0)
       const a8 = makeBook([{ name: 'mending', lvl: 1 }], 0)
       describe('first combine', () => {
-        test('enchant boot+ss3', () => {
+        it('enchant boot+ss3', () => {
           const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
           eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }]
           eqItem.repairCost = 1
@@ -296,19 +298,19 @@ describe('1.16.5 anvil', () => {
           expectAnvilEq(res, 12, eqItem)
           b1 = res.item
         })
-        test('thorns3+ff4', () => {
+        it('thorns3+ff4', () => {
           const eqItem = makeBook([{ name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }], 1)
           const res = Item.anvil(a3, a4, false, undefined)
           expectAnvilEq(res, 4, eqItem)
           b2 = res.item
         })
-        test('depth3+p4', () => {
+        it('depth3+p4', () => {
           const eqItem = makeBook([{ name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }], 1)
           const res = Item.anvil(a5, a6, false, undefined)
           expectAnvilEq(res, 4, eqItem)
           b3 = res.item
         })
-        test('ub3+mending', () => {
+        it('ub3+mending', () => {
           const eqItem = makeBook([{ name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }], 1)
           const res = Item.anvil(a7, a8, false, undefined)
           expectAnvilEq(res, 2, eqItem)
@@ -316,7 +318,7 @@ describe('1.16.5 anvil', () => {
         })
       })
       describe('second combine', () => {
-        test('ss3 boots + t3 ff4', () => {
+        it('ss3 boots + t3 ff4', () => {
           const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
           eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }, { name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }]
           eqItem.repairCost = 3
@@ -324,7 +326,7 @@ describe('1.16.5 anvil', () => {
           expectAnvilEq(res, 16 + 2, eqItem) // 1 working per item
           c1 = res.item
         })
-        test('d3p4 + u3m1', () => {
+        it('d3p4 + u3m1', () => {
           const eqItem = makeBook([{ name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }, { name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }], 3)
           const res = Item.anvil(b3, b4, false, undefined)
           expectAnvilEq(res, 5 + 2, eqItem) // 1 working on each book
@@ -332,7 +334,7 @@ describe('1.16.5 anvil', () => {
         })
       })
       describe('third combine', () => {
-        test('d3p4 + u3m1', () => {
+        it('d3p4 + u3m1', () => {
           const eqItem = new Item(mcData.itemsByName.diamond_boots.id, 1)
           eqItem.enchants = [{ name: 'soul_speed', lvl: 3 }, { name: 'thorns', lvl: 3 }, { name: 'feather_falling', lvl: 4 }, { name: 'depth_strider', lvl: 3 }, { name: 'protection', lvl: 4 }, { name: 'unbreaking', lvl: 3 }, { name: 'mending', lvl: 1 }]
           eqItem.repairCost = 7
