@@ -126,7 +126,7 @@ function loader (version) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id].name }))
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id]?.name || ench.id }))
       } else {
         let itemEnch = []
         if (this?.nbt?.value?.Enchantments) {
