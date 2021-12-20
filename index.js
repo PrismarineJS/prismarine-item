@@ -136,7 +136,7 @@ function loader (version) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: typeof ench.id === "string" ? ench.id.replace(/minecraft:/, '') : null}))
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: typeof ench.id === 'string' ? ench.id.replace(/minecraft:/, '') : null }))
       }
     }
 
