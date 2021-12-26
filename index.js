@@ -126,7 +126,7 @@ function loader (version) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id].name }))
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id]?.name || null }))
       } else {
         let itemEnch = []
         if (this?.nbt?.value?.Enchantments) {
@@ -136,7 +136,7 @@ function loader (version) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: ench.id.replace(/minecraft:/, '') }))
+        return itemEnch.map(ench => ({ lvl: ench.lvl, name: typeof ench.id === 'string' ? ench.id.replace(/minecraft:/, '') : null }))
       }
     }
 
