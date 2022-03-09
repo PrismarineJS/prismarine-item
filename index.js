@@ -119,7 +119,9 @@ function loader (version) {
 
     get enchants () {
       if (Object.keys(this).length === 0) return []
-      if (mcData.supportFeature('preFlattening')) {
+      const enchantNbtKey = mcData.supportFeature('nbtNameForEnchant')
+      const typeOfEnchantLevelValue = mcData.supportFeature('typeOfValueForEnchantLevel')
+      if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'ench') {
         let itemEnch
         if (this.name === 'enchanted_book' && this?.nbt?.value?.StoredEnchantments) {
           itemEnch = nbt.simplify(this.nbt).StoredEnchantments
@@ -129,7 +131,7 @@ function loader (version) {
           itemEnch = []
         }
         return itemEnch.map(ench => ({ lvl: ench.lvl, name: mcData.enchantments[ench.id]?.name || null }))
-      } else if (mcData.supportFeature('theFlattening')) {
+      } else if (typeOfEnchantLevelValue === 'string' && enchantNbtKey === 'Enchantments') {
         let itemEnch = []
         if (this?.nbt?.value?.Enchantments) {
           itemEnch = nbt.simplify(this.nbt).Enchantments
@@ -145,13 +147,13 @@ function loader (version) {
 
     set enchants (normalizedEnchArray) {
       const isBook = this.name === 'enchanted_book'
-      const preFlattening = mcData.supportFeature('preFlattening')
-      const enchListName = preFlattening ? 'ench' : 'Enchantments'
-      const type = preFlattening ? 'short' : 'string'
+      const enchListName = mcData.supportFeature('nbtNameForEnchant')
+      const type = mcData.supportFeature('typeOfValueForEnchantLevel')
+      if (type === null) throw new Error("Don't know the serialized type for enchant level")
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
 
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
-        const value = preFlattening ? mcData.enchantmentsByName[name].id : `minecraft:${mcData.enchantmentsByName[name].name}`
+        const value = type === 'short' ? mcData.enchantmentsByName[name].id : `minecraft:${mcData.enchantmentsByName[name].name}`
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
       })
 
@@ -159,24 +161,29 @@ function loader (version) {
         this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
       }
 
-      if (mcData.supportFeature('theFlattening') && mcData.itemsByName[this.name].maxDurability) this.nbt.value.Damage = { type: 'int', value: 0 }
+      // The 'mcData.itemsByName[this.name].maxDurability' checks to see if this item can lose durability
+      if (mcData.supportFeature('whereDurabilityIsSerialized') === 'Damage' && mcData.itemsByName[this.name].maxDurability) {
+        this.nbt.value.Damage = { type: 'int', value: 0 }
+      }
     }
 
     get durabilityUsed () {
       if (Object.keys(this).length === 0) return null
-      if (mcData.supportFeature('theFlattening')) {
+      const where = mcData.supportFeature('whereDurabilityIsSerialized')
+      if (where === 'Damage') {
         return this?.nbt?.value?.Damage?.value ?? 0
-      } else if (mcData.supportFeature('preFlattening')) {
+      } else if (where === 'metadata') {
         return this.metadata ?? 0
       }
       throw new Error("Don't know how to get item durability for this mc version")
     }
 
     set durabilityUsed (value) {
-      if (mcData.supportFeature('theFlattening')) {
+      const where = mcData.supportFeature('whereDurabilityIsSerialized')
+      if (where === 'Damage') {
         if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
         this.nbt.value.Damage = { type: 'int', value }
-      } else if (mcData.supportFeature('preFlattening')) {
+      } else if (where === 'metadata') {
         this.metadata = value
       }
       throw new Error("Don't know how to set item durability for this mc version")
@@ -186,12 +193,12 @@ function loader (version) {
       if (mcData.supportFeature('spawnEggsUseInternalIdInNbt')) {
         return mcData.entitiesArray.find(o => o.internalId === this.metadata).name
       }
-      if (mcData.supportFeature('preFlattening')) {
+      if (mcData.supportFeature('spawnEggsUseEntityTagInNbt')) {
         const data = nbt.simplify(this.nbt)
         const entityName = data.EntityTag.id
         return entityName.replace('minecraft:', '')
       }
-      if (mcData.supportFeature('theFlattening')) {
+      if (mcData.supportFeature('spawnEggsHaveSpawnedEntityInName')) {
         return this.name.replace('_spawn_egg', '')
       }
       throw new Error("Don't know how to get spawn egg mob name for this mc version")
