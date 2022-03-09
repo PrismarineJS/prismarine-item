@@ -185,8 +185,9 @@ function loader (version) {
         this.nbt.value.Damage = { type: 'int', value }
       } else if (where === 'metadata') {
         this.metadata = value
+      } else {
+        throw new Error("Don't know how to set item durability for this mc version")
       }
-      throw new Error("Don't know how to set item durability for this mc version")
     }
 
     get spawnEggMobName () {
