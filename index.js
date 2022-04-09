@@ -15,7 +15,7 @@ function loader (version) {
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
 
-      const itemEnum = mcData.findItemOrBlockById(type)
+      const itemEnum = mcData.items[type]
       if (itemEnum) {
         this.name = itemEnum.name
         this.displayName = itemEnum.displayName
