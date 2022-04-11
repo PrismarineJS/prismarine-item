@@ -34,6 +34,6 @@
   "homepage": "https://github.com/PrismarineJS/prismarine-item#readme",
   "dependencies": {
     "prismarine-nbt": "^2.0.0",
-    "minecraft-data": "^2.118.0"
+    "minecraft-data": "^3.0.0"
   }
 }
