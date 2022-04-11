@@ -96,6 +96,10 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 ## History
 
+## 1.11.5
+
+* Update mcdata
+
 ## 1.11.4
 
 * Use mcData.items instead of mcData.findItemOrBlockById()
