@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-const expect = require('expect')
+const expect = require('expect').default
 
 describe('1.8.9 anvil', () => {
   const Item = require('prismarine-item')('1.8.8')

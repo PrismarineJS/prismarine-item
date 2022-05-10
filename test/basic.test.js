@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-const expect = require('expect')
+const expect = require('expect').default
 
 describe('test based on examples', () => {
   describe('1.8 iron shovel', () => {
