@@ -96,6 +96,10 @@ A getter for abstracting the underlying nbt, get's the mob name from a spawn egg
 
 ## History
 
+## 1.12.0
+
+* uses registry instead of mcData (thanks @Epirito)
+
 ## 1.11.5
 
 * Update mcdata
