@@ -66,6 +66,24 @@ function loader (registryOrVersion) {
         }
         if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
         return notchItem
+      } else if (registry.supportFeature('itemSerializationUsesNetworkId')) {
+        if (item == null) return { network_id: -1 }
+        const notchItem = {
+          network_id: item.type,
+          count: item.count,
+          metadata: item.metadata,
+          has_stack_id: 0,
+          block_runtime_id: 0,
+          extra: {
+            has_nbt: 0,
+            can_place_on : [],
+            can_destroy: []
+          }
+        }
+        if (item.nbt && item.nbt.length !== 0) { 
+          notchItem.extra.nbt = item.nbt
+        }
+        return notchItem
       }
       throw new Error("Don't know how to serialize for this mc version ")
     }
@@ -80,6 +98,9 @@ function loader (registryOrVersion) {
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (item.blockId === -1) return null
         return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
+      } else if (registry.supportFeature('itemSerializationUsesNetworkId')) {
+        if (!item.metadata && !item.metadata !== 0) return null
+        return new Item(item.networkId, item.count || 0, item.metadata, item.nbtData)
       }
       throw new Error("Don't know how to deserialize for this mc version ")
     }
