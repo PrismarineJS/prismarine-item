@@ -100,7 +100,7 @@ function loader (registryOrVersion) {
         return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
       } else if (registry.supportFeature('itemSerializationUsesNetworkId')) {
         if (!item.metadata && item.metadata !== 0) return null
-        return new Item(item.network_id, item.count || 0, item.metadata, item.nbtData)
+        return new Item(item.network_id, item.count || 0, item.metadata, item.extra?.nbt)
       }
       throw new Error("Don't know how to deserialize for this mc version ")
     }
