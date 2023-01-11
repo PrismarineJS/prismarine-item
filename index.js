@@ -76,11 +76,11 @@ function loader (registryOrVersion) {
           block_runtime_id: 0,
           extra: {
             has_nbt: 0,
-            can_place_on : [],
+            can_place_on: [],
             can_destroy: []
           }
         }
-        if (item.nbt && item.nbt.length !== 0) { 
+        if (item.nbt && item.nbt.length !== 0) {
           notchItem.extra.nbt = item.nbt
         }
         return notchItem
@@ -99,8 +99,8 @@ function loader (registryOrVersion) {
         if (item.blockId === -1) return null
         return new Item(item.blockId, item.itemCount, item.itemDamage, item.nbtData)
       } else if (registry.supportFeature('itemSerializationUsesNetworkId')) {
-        if (!item.metadata && !item.metadata !== 0) return null
-        return new Item(item.networkId, item.count || 0, item.metadata, item.nbtData)
+        if (!item.metadata && item.metadata !== 0) return null
+        return new Item(item.network_id, item.count || 0, item.metadata, item.nbtData)
       }
       throw new Error("Don't know how to deserialize for this mc version ")
     }
