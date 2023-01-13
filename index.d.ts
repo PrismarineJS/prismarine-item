@@ -2,7 +2,7 @@
 
 import { Tags, TagType } from 'prismarine-nbt'
 
-type ItemLike = Item | null
+type ItemLike = Item | BedrockItem | null
 
 declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
@@ -26,6 +26,10 @@ declare class Item {
     static anvil (itemOne: ItemLike, itemTwo: ItemLike, creative: boolean, rename: string | undefined): { xpCost: number, item: ItemLike }
 }
 
+declare class BedrockItem extends Item {
+    constructor(type: number, count: number, metadata?: number, nbt?: object, itemStates?: ItemState[]);
+}
+
 declare interface NotchItem {
     // 1.8 - 1.12
     blockId?: number;
@@ -43,4 +47,11 @@ declare interface NormalizedEnchant {
     lvl: number
 }
 
-export default function loader(mcVersion: string): typeof Item;
+// For bedrock edition
+type ItemState = {
+    name: string
+    runtime_id: number
+    component_based: boolean
+}
+
+export default function loader(mcVersion: string): typeof Item | BedrockItem;

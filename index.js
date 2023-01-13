@@ -227,8 +227,18 @@ function loader (registryOrVersion) {
     }
   }
 
+  class BedrockItem extends Item {
+    constructor (type, count, metadata, nbt, itemStates) {
+      super(type, count, metadata, nbt)
+      if (itemStates && !registry.loadedItemStates) {
+        registry.loadItemStates(itemStates)
+      }
+    }
+  }
+
   Item.anvil = require('./lib/anvil.js')(registry, Item)
-  return Item
+  BedrockItem.anvil = require('./lib/anvil.js')(registry, BedrockItem)
+  return registry.version.type === 'bedrock' ? BedrockItem : Item
 }
 
 module.exports = loader
