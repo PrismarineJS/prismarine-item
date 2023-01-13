@@ -27,7 +27,8 @@ declare class Item {
 }
 
 declare class BedrockItem extends Item {
-    constructor(type: number, count: number, metadata?: number, nbt?: object, itemStates?: ItemState[]);
+    static loadItemStates(itemStates: ItemState[]): void;
+    constructor(type: number, count: number, metadata?: number, nbt?: object);
 }
 
 declare interface NotchItem {

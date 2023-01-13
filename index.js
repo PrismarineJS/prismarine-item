@@ -228,11 +228,8 @@ function loader (registryOrVersion) {
   }
 
   class BedrockItem extends Item {
-    constructor (type, count, metadata, nbt, itemStates) {
-      super(type, count, metadata, nbt)
-      if (itemStates && !registry.loadedItemStates) {
-        registry.loadItemStates(itemStates)
-      }
+    static loadItemStates (itemStates) {
+      registry.loadItemStates(itemStates)
     }
   }
 
