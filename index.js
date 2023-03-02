@@ -225,7 +225,8 @@ function loader (registryOrVersion) {
       throw new Error("Don't know how to get spawn egg mob name for this mc version")
     }
 
-    // TODO: test this
+    // TODO: test this, implement it properly
+    // Most likely is not supported by every version
     canPlaceOn (block) {
       if (!this.nbt || !this.nbt.value.CanPlaceOn) return true
       if (typeof block === 'string') {
@@ -240,7 +241,6 @@ function loader (registryOrVersion) {
         )
       }
     }
-
     canDestroy (block) {
       if (!this.nbt || !this.nbt.value.CanPlaceOn) return true
       if (typeof block === 'string') {
