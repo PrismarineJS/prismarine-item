@@ -54,26 +54,26 @@ function loader (registryOrVersion) {
     static toNetwork (item) {
       if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (item == null) return { present: false }
-        const notchItem = {
+        const networkItem = {
           present: true,
           itemId: item.type,
           itemCount: item.count
         }
         if (item.nbt && item.nbt.length !== 0) {
-          notchItem.nbtData = item.nbt
+          networkItem.nbtData = item.nbt
         }
-        return notchItem
+        return networkItem
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (item == null) return { blockId: -1 }
-        const notchItem = {
+        const networkItem = {
           blockId: item.type,
           itemCount: item.count,
           itemDamage: item.metadata
         }
         if (item.nbt && item.nbt.length !== 0) {
-          notchItem.nbtData = item.nbt
+          networkItem.nbtData = item.nbt
         }
-        return notchItem
+        return networkItem
       }
       throw new Error("Don't know how to serialize for this mc version ")
     }
