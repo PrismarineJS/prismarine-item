@@ -1,5 +1,3 @@
-process.env.DEBUG = process.argv.includes('--debug') && 'minecraft-protocol'
-
 const { Relay } = require('bedrock-protocol')
 
 const relay = new Relay({
