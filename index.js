@@ -1,6 +1,7 @@
 const nbt = require('prismarine-nbt')
 function loader (registryOrVersion) {
-  const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  const registry =
+        typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
     constructor (type, count, metadata, nbt) {
       if (type == null) return
@@ -21,7 +22,9 @@ function loader (registryOrVersion) {
         this.displayName = itemEnum.displayName
         if ('variations' in itemEnum) {
           for (const i in itemEnum.variations) {
-            if (itemEnum.variations[i].metadata === metadata) { this.displayName = itemEnum.variations[i].displayName }
+            if (itemEnum.variations[i].metadata === metadata) {
+              this.displayName = itemEnum.variations[i].displayName
+            }
           }
         }
         this.stackSize = itemEnum.stackSize
@@ -32,7 +35,7 @@ function loader (registryOrVersion) {
       }
     }
 
-    static equal (item1, item2, matchStackSize = true) {
+    static equal (item1, item2, matchStackSize = true, matchNbt = true) {
       if (item1 == null && item2 == null) {
         return true
       } else if (item1 == null) {
@@ -40,14 +43,16 @@ function loader (registryOrVersion) {
       } else if (item2 == null) {
         return false
       } else {
-        return (item1.type === item2.type &&
-            (matchStackSize ? item1.count === item2.count : true) &&
-            item1.metadata === item2.metadata &&
-            JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt))
+        return (
+          item1.type === item2.type &&
+          (matchStackSize ? item1.count === item2.count : true) &&
+          item1.metadata === item2.metadata &&
+          (matchNbt ? JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt) : true)
+        )
       }
     }
 
-    static toNotch (item) {
+    static toNetwork (item) {
       if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (item == null) return { present: false }
         const notchItem = {
@@ -55,7 +60,9 @@ function loader (registryOrVersion) {
           itemId: item.type,
           itemCount: item.count
         }
-        if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
+        if (item.nbt && item.nbt.length !== 0) {
+          notchItem.nbtData = item.nbt
+        }
         return notchItem
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (item == null) return { blockId: -1 }
@@ -64,13 +71,15 @@ function loader (registryOrVersion) {
           itemCount: item.count,
           itemDamage: item.metadata
         }
-        if (item.nbt && item.nbt.length !== 0) { notchItem.nbtData = item.nbt }
+        if (item.nbt && item.nbt.length !== 0) {
+          notchItem.nbtData = item.nbt
+        }
         return notchItem
       }
       throw new Error("Don't know how to serialize for this mc version ")
     }
 
-    static fromNotch (item) {
+    static fromNetwork (item) {
       if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
         if (item.present === false) return null
         return new Item(item.itemId, item.itemCount, item.nbtData)
@@ -130,7 +139,7 @@ function loader (registryOrVersion) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: registry.enchantments[ench.id]?.name || null }))
+        return itemEnch.map((ench) => ({ lvl: ench.lvl, name: registry.enchantments[ench.id]?.name || null }))
       } else if (typeOfEnchantLevelValue === 'string' && enchantNbtKey === 'Enchantments') {
         let itemEnch = []
         if (this?.nbt?.value?.Enchantments) {
@@ -140,7 +149,10 @@ function loader (registryOrVersion) {
         } else {
           itemEnch = []
         }
-        return itemEnch.map(ench => ({ lvl: ench.lvl, name: typeof ench.id === 'string' ? ench.id.replace(/minecraft:/, '') : null }))
+        return itemEnch.map((ench) => ({
+          lvl: ench.lvl,
+          name: typeof ench.id === 'string' ? ench.id.replace(/minecraft:/, '') : null
+        }))
       }
       throw new Error("Don't know how to get the enchants from an item on this mc version")
     }
@@ -153,16 +165,25 @@ function loader (registryOrVersion) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
 
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
-        const value = type === 'short' ? registry.enchantmentsByName[name].id : `minecraft:${registry.enchantmentsByName[name].name}`
+        const value =
+                    type === 'short'
+                      ? registry.enchantmentsByName[name].id
+                      : `minecraft:${registry.enchantmentsByName[name].name}`
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
       })
 
       if (enchs.length !== 0) {
-        this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = { type: 'list', value: { type: 'compound', value: enchs } }
+        this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = {
+          type: 'list',
+          value: { type: 'compound', value: enchs }
+        }
       }
 
       // The 'registry.itemsByName[this.name].maxDurability' checks to see if this item can lose durability
-      if (registry.supportFeature('whereDurabilityIsSerialized') === 'Damage' && registry.itemsByName[this.name].maxDurability) {
+      if (
+        registry.supportFeature('whereDurabilityIsSerialized') === 'Damage' &&
+                registry.itemsByName[this.name].maxDurability
+      ) {
         this.nbt.value.Damage = { type: 'int', value: 0 }
       }
     }
@@ -192,7 +213,7 @@ function loader (registryOrVersion) {
 
     get spawnEggMobName () {
       if (registry.supportFeature('spawnEggsUseInternalIdInNbt')) {
-        return registry.entitiesArray.find(o => o.internalId === this.metadata).name
+        return registry.entitiesArray.find((o) => o.internalId === this.metadata).name
       }
       if (registry.supportFeature('spawnEggsUseEntityTagInNbt')) {
         const data = nbt.simplify(this.nbt)
