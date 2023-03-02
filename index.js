@@ -51,7 +51,7 @@ function loader (registryOrVersion) {
       }
     }
 
-    static toNetwork (item) {
+    static toNotch (item) {
       if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (item == null) return { present: false }
         const networkItem = {
@@ -78,7 +78,7 @@ function loader (registryOrVersion) {
       throw new Error("Don't know how to serialize for this mc version ")
     }
 
-    static fromNetwork (item) {
+    static fromNotch (item) {
       if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
         if (item.present === false) return null
         return new Item(item.itemId, item.itemCount, item.nbtData)
