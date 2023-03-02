@@ -1,7 +1,6 @@
 const nbt = require('prismarine-nbt')
 function loader (registryOrVersion) {
-  const registry =
-        typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
     constructor (type, count, metadata, nbt) {
       if (type == null) return
@@ -166,9 +165,9 @@ function loader (registryOrVersion) {
 
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
         const value =
-                    type === 'short'
-                      ? registry.enchantmentsByName[name].id
-                      : `minecraft:${registry.enchantmentsByName[name].name}`
+          type === 'short'
+            ? registry.enchantmentsByName[name].id
+            : `minecraft:${registry.enchantmentsByName[name].name}`
         return { id: { type, value }, lvl: { type: 'short', value: lvl } }
       })
 
@@ -181,8 +180,7 @@ function loader (registryOrVersion) {
 
       // The 'registry.itemsByName[this.name].maxDurability' checks to see if this item can lose durability
       if (
-        registry.supportFeature('whereDurabilityIsSerialized') === 'Damage' &&
-                registry.itemsByName[this.name].maxDurability
+        registry.supportFeature('whereDurabilityIsSerialized') === 'Damage' && registry.itemsByName[this.name].maxDurability
       ) {
         this.nbt.value.Damage = { type: 'int', value: 0 }
       }
