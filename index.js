@@ -2,10 +2,11 @@ const nbt = require('prismarine-nbt')
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
-    constructor (type, count, metadata, nbt) {
+    constructor (type, count, metadata, nbt, stackId) {
       if (type == null) return
 
       if (metadata instanceof Object && metadata !== null) {
+        stackId = nbt
         nbt = metadata
         metadata = 0
       }
@@ -14,6 +15,7 @@ function loader (registryOrVersion) {
       this.count = count
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
+      this.stackId = stackId ?? Item.nextStackId()
 
       const itemEnum = registry.items[type]
       if (itemEnum) {
@@ -48,6 +50,12 @@ function loader (registryOrVersion) {
       }
     }
 
+    // Stack ID
+    static currentStackId = 0
+    static nextStackId () {
+      return Item.currentStackId++
+    }
+
     static toNotch (item, serverAuthoritative = true) {
       if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (item == null) return { present: false }
@@ -73,6 +81,9 @@ function loader (registryOrVersion) {
         return networkItem
       } else if (registry.type === 'bedrock') {
         // TODO: older versions, stack_id
+        // item format changes in 1.16.220, NBT data isn't inside extra field
+        // stack ID related fields and block runtime ID don't exist
+        // <.220 there is a field called auxiliary_value
         if (item.type === 0) return { network_id: 0 }
 
         const networkItem = {
@@ -245,7 +256,9 @@ function loader (registryOrVersion) {
 
     set blocksCanPlaceOn (blocks) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.CanPlaceOn = nbt.list(nbt.string(blocks.map(b => b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
+      this.nbt.value.CanPlaceOn = nbt.list(
+        nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
+      )
     }
 
     get blocksCanDestroy () {
@@ -258,7 +271,9 @@ function loader (registryOrVersion) {
 
     set blocksCanDestroy (blocks) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.CanDestroy = nbt.list(nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`))))
+      this.nbt.value.CanDestroy = nbt.list(
+        nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
+      )
     }
 
     get durabilityUsed () {
