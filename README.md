@@ -84,6 +84,14 @@ the item's custom lore (ie. set in give command)
 
 A getter/setter for abstracting the underlying nbt (does calculations) 
 
+#### item.blocksCanPlaceOn
+
+A getter/setter for abstracting the underlying nbt, an array of block names that this item can be placed on in adventure mode
+
+#### item.blocksCanDestroy
+
+A getter/setter for abstracting the underlying nbt, an array of block names that this item can destroy in adventure mode
+
 #### item.repairCost
 
 A getter/setter for abstracting the underlying nbt.
@@ -91,7 +99,7 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 #### item.spawnEggMobName
 
-A getter for abstracting the underlying nbt, get's the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
+A getter for abstracting the underlying nbt, gets the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
 
 
 ## History

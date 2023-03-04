@@ -104,22 +104,12 @@ function loader (registryOrVersion) {
         return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (networkItem.blockId === -1) return null
-        return new Item(
-          networkItem.blockId,
-          networkItem.itemCount,
-          networkItem.itemDamage,
-          networkItem.nbtData
-        )
+        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
       } else if (registry.type === 'bedrock') {
         // TODO: older versions, stack_id
-        const item = new Item(
-          networkItem.network_id,
-          networkItem.count,
-          networkItem.metadata,
-          networkItem.extra.nbt
-        )
-        item.canPlaceOn = networkItem.extra.canPlaceOn
-        item.canDestroy = networkItem.extra.canDestroy
+        const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt)
+        item.blocksCanPlaceOn = networkItem.extra.canPlaceOn
+        item.blocksCanDestroy = networkItem.extra.canDestroy
         return item
       }
       throw new Error("Don't know how to deserialize for this mc version ")
@@ -245,7 +235,7 @@ function loader (registryOrVersion) {
     // with other namespaces, probably need to handle
     // this in prismarine-registry
     // Also this needs to be tested
-    get canPlaceOn () {
+    get blocksCanPlaceOn () {
       if (Object.keys(this).length === 0) return []
 
       if (!this.nbt?.value?.CanPlaceOn) return []
@@ -253,15 +243,12 @@ function loader (registryOrVersion) {
       return nbt.simplify(this.nbt).CanPlaceOn
     }
 
-    set canPlaceOn (blockNameArray) {
+    set blocksCanPlaceOn (blocks) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.CanPlaceOn = {
-        type: 'list',
-        value: { type: 'string', value: blockNameArray }
-      }
+      this.nbt.value.CanPlaceOn = nbt.list(nbt.string(blocks.map(b => b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
     }
 
-    get canDestroy () {
+    get blocksCanDestroy () {
       if (Object.keys(this).length === 0) return []
 
       if (!this.nbt?.value?.CanDestroy) return []
@@ -269,12 +256,9 @@ function loader (registryOrVersion) {
       return nbt.simplify(this.nbt).CanDestroy
     }
 
-    set canDestroy (blockNameArray) {
+    set blocksCanDestroy (blocks) {
       if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.CanDestroy = {
-        type: 'list',
-        value: { type: 'string', value: blockNameArray }
-      }
+      this.nbt.value.CanDestroy = nbt.list(nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`))))
     }
 
     get durabilityUsed () {
