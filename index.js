@@ -118,7 +118,13 @@ function loader (registryOrVersion) {
         return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
       } else if (registry.type === 'bedrock') {
         // TODO: older versions, stack_id
-        const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt)
+        const item = new Item(
+          networkItem.network_id,
+          networkItem.count,
+          networkItem.metadata,
+          networkItem.extra.nbt,
+          networkItem.stack_id
+        )
         item.blocksCanPlaceOn = networkItem.extra.canPlaceOn
         item.blocksCanDestroy = networkItem.extra.canDestroy
         return item
