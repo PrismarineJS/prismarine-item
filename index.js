@@ -158,8 +158,9 @@ function loader (registryOrVersion) {
     }
 
     get customName () {
-      if (Object.keys(this).length === 0) return null
-      return this?.nbt?.value?.display?.value?.Name?.value ?? null
+      if (Object.keys(this).length === 0 || !this.nbt) return null
+
+      return nbt.simplify(this.nbt).display?.Name ?? null
     }
 
     set customName (newName) {
@@ -169,9 +170,9 @@ function loader (registryOrVersion) {
     }
 
     get customLore () {
-      if (Object.keys(this).length === 0) return null
-      // feature: itemLoreIsAString
-      return this?.nbt?.value?.display?.value?.Lore?.value.value ?? null
+      if (Object.keys(this).length === 0 || !this.nbt) return null
+
+      return nbt.simplify(this.nbt).display?.Lore ?? null
     }
 
     set customLore (newLore) {
@@ -187,12 +188,14 @@ function loader (registryOrVersion) {
 
     // gets the cost based on previous anvil uses
     get repairCost () {
-      if (Object.keys(this).length === 0) return 0
-      return this?.nbt?.value?.RepairCost?.value ?? 0
+      if (Object.keys(this).length === 0 || !this.nbt) return 0
+
+      return nbt.simplify(this.nbt).RepairCost ?? 0
     }
 
     set repairCost (newRepairCost) {
       if (!this?.nbt) this.nbt = nbt.comp({})
+      
       this.nbt.value.RepairCost = nbt.int(newRepairCost)
     }
 
