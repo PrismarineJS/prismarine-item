@@ -80,28 +80,45 @@ function loader (registryOrVersion) {
         }
         return networkItem
       } else if (registry.type === 'bedrock') {
-        // TODO: older versions, stack_id
-        // item format changes in 1.16.220, NBT data isn't inside extra field
-        // stack ID related fields and block runtime ID don't exist
-        // <.220 there is a field called auxiliary_value
-        if (item.type === 0) return { network_id: 0 }
+        // This can later be changed to use supportFeature
+        if (registry.version['<']('1.16.220')) {
+          if (item.type === 0) return { runtime_id: 0, item: { network_id: 0 } }
 
-        const networkItem = {
-          network_id: item.type,
-          count: item.count,
-          metadata: item.metadata,
-          has_stack_id: serverAuthoritative,
-          stack_id: serverAuthoritative ? item.stackId : undefined,
-          block_runtime_id: 0, // TODO
-          extra: {
-            has_nbt: item.nbt !== null,
-            nbt: item.nbt !== null ? { version: 1, nbt: item.nbt } : undefined,
-            can_place_on: item.canPlaceOn,
-            can_destroy: item.canDestroy
+          const networkItem = {
+            runtime_id: item.id,
+            item: {
+              network_id: item.id,
+              auxiliary_value: (item.metadata << 8) | (item.count & 0xff),
+              has_nbt: item.nbt !== null,
+              nbt: item.nbt !== null ? { version: 1, nbt: item.nbt } : undefined,
+              can_place_on: item.blocksCanPlaceOn,
+              can_destroy: item.blocksCanDestroy
+              // blocking_tick: 0, // TODO
+            }
           }
-        }
 
-        return networkItem
+          return networkItem
+        } else {
+          if (item.type === 0) return { network_id: 0 }
+
+          const networkItem = {
+            network_id: item.type,
+            count: item.count,
+            metadata: item.metadata,
+            has_stack_id: serverAuthoritative,
+            stack_id: serverAuthoritative ? item.stackId : undefined,
+            block_runtime_id: 0, // TODO
+            extra: {
+              has_nbt: item.nbt !== null,
+              nbt: item.nbt !== null ? { version: 1, nbt: item.nbt } : undefined,
+              can_place_on: item.canPlaceOn,
+              can_destroy: item.canDestroy
+              // blocking_tick: 0, // TODO
+            }
+          }
+
+          return networkItem
+        }
       }
       throw new Error("Don't know how to serialize for this mc version ")
     }
@@ -117,17 +134,31 @@ function loader (registryOrVersion) {
         if (networkItem.blockId === -1) return null
         return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
       } else if (registry.type === 'bedrock') {
-        // TODO: older versions, stack_id
-        const item = new Item(
-          networkItem.network_id,
-          networkItem.count,
-          networkItem.metadata,
-          networkItem.extra.nbt,
-          networkItem.stack_id
-        )
-        item.blocksCanPlaceOn = networkItem.extra.canPlaceOn
-        item.blocksCanDestroy = networkItem.extra.canDestroy
-        return item
+        if (registry.version['<']('1.16.220')) {
+          // unsure about this, different packets use slightly different formats, but everything
+          // in the item field stays the same - just sometimes it isn't in the item field
+          const item = new Item(
+            networkItem.item?.network_id ?? networkItem.network_id,
+            (networkItem.item?.auxiliary_value ?? networkItem.auxiliary_value) & 0xff,
+            (networkItem.item?.auxiliary_value ?? networkItem.auxiliary_value) >> 8,
+            networkItem.item?.nbt ?? networkItem.nbt,
+            networkItem.stack_id
+          )
+          item.blocksCanPlaceOn = networkItem.item?.can_place_on ?? networkItem.can_place_on
+          item.blocksCanDestroy = networkItem.item?.can_destroy ?? networkItem.can_destroy
+          return item
+        } else {
+          const item = new Item(
+            networkItem.network_id,
+            networkItem.count,
+            networkItem.metadata,
+            networkItem.extra.nbt,
+            networkItem.stack_id
+          )
+          item.blocksCanPlaceOn = networkItem.extra.canPlaceOn
+          item.blocksCanDestroy = networkItem.extra.canDestroy
+          return item
+        }
       }
       throw new Error("Don't know how to deserialize for this mc version ")
     }
