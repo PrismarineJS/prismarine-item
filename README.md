@@ -19,27 +19,30 @@ console.log(Item.fromNotch(notchItem))
 
 ## API
 
-### Item(type, count[, metadata], nbt)
+### Item(type, count[, metadata, nbt, stackId])
 
 #### Item.toNotch(item)
 
 Take an `item` in the format of the minecraft packets and return an `Item` instance.
 
-#### Item.fromNotch(item)
+#### Item.fromNotch(item[, stackId])
 
-Take an `Item` instance and return it in the format of the minecraft packets.
+Take an `Item` instance and returns it in the format of the minecraft packets.
+- stackId for bedrock items before 1.16.220
 
 ### Item.anvil(itemOne, itemTwo, creative[, newName])
 
 Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
 
-### Item.equal(itemOne, itemTwo[, matchStackSize])
+### Item.equal(itemOne, itemTwo[, matchStackSize, matchNbt])
 
 `itemOne` - first item
 
 `itemTwo` - second item
 
 `matchStackSize` - whether to check for count equality
+
+`matchNbt` - wether to check for NBT equality
 
 Checks equality between two items based on itemType, count, metadata, and stringified nbt
 
