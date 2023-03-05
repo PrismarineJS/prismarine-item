@@ -89,11 +89,11 @@ A getter/setter for abstracting the underlying nbt (does calculations)
 
 #### item.blocksCanPlaceOn
 
-A getter/setter for abstracting the underlying nbt, an array of block names that this item can be placed on in adventure mode
+In adventure mode, the list of block names (as strings) that this Item can be placed on
 
 #### item.blocksCanDestroy
 
-A getter/setter for abstracting the underlying nbt, an array of block names that this item can destroy in adventure mode
+In adventure mode, the list of block names (as strings) that this Item can be used to break
 
 #### item.repairCost
 
@@ -102,7 +102,7 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 #### item.spawnEggMobName
 
-A getter for abstracting the underlying nbt, gets the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
+If the current item is a type of Spawn Egg, the protocol name of the entity that will be spawned. For example, a zombie spawn egg on 1.8 will return `Zombie`.
 
 
 ## History
