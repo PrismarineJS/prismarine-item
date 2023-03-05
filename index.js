@@ -163,25 +163,25 @@ function loader (registryOrVersion) {
     }
 
     set customName (newName) {
-      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt) this.nbt = nbt.comp({})
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
-      this.nbt.value.display.value.Name = { type: 'string', value: newName }
+      this.nbt.value.display.value.Name = nbt.string(newName)
     }
 
     get customLore () {
       if (Object.keys(this).length === 0) return null
+      // feature: itemLoreIsAString
       return this?.nbt?.value?.display?.value?.Lore?.value.value ?? null
     }
 
     set customLore (newLore) {
-      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt) this.nbt = nbt.comp({})
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       if (registry.type === 'bedrock') {
-        this.nbt.value.display.value.Lore = { type: 'list', value: { type: 'string', value: newLore } }
+        this.nbt.value.display.value.Lore = nbt.list(nbt.string(newLore))
       } else {
-        // Is this correct? Judging by the code in the getter,
-        // it should be a list in java too
-        this.nbt.value.display.value.Lore = { type: 'string', value: newLore }
+        // feature: itemLoreIsAString
+        this.nbt.value.display.value.Lore = nbt.string(newLore)
       }
     }
 
@@ -191,9 +191,9 @@ function loader (registryOrVersion) {
       return this?.nbt?.value?.RepairCost?.value ?? 0
     }
 
-    set repairCost (value) {
-      if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-      this.nbt.value.RepairCost = { type: 'int', value }
+    set repairCost (newRepairCost) {
+      if (!this?.nbt) this.nbt = nbt.comp({})
+      this.nbt.value.RepairCost = nbt.int(newRepairCost)
     }
 
     get enchants () {
@@ -232,34 +232,31 @@ function loader (registryOrVersion) {
     set enchants (normalizedEnchArray) {
       if (registry.type === 'bedrock') {
         const enchs = normalizedEnchArray.map(({ name, lvl }) => ({
-          id: { type: 'short', value: registry.enchantmentsByName[name].id },
-          lvl: { type: 'short', value: lvl }
+          id: nbt.short(registry.enchantmentsByName[name].id),
+          lvl: nbt.short(lvl)
         }))
 
         if (enchs.length !== 0) {
-          if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-          this.nbt.value.ench = { type: 'list', value: { type: 'compound', value: enchs } }
+          if (!this.nbt) this.nbt = nbt.comp({})
+          this.nbt.value.ench = nbt.list(nbt.comp(enchs))
         }
       } else if (registry.type === 'pc') {
         const isBook = this.name === 'enchanted_book'
         const enchListName = registry.supportFeature('nbtNameForEnchant')
         const type = registry.supportFeature('typeOfValueForEnchantLevel')
         if (type === null) throw new Error("Don't know the serialized type for enchant level")
-        if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+        if (!this.nbt) this.nbt = nbt.comp({})
 
         const enchs = normalizedEnchArray.map(({ name, lvl }) => {
           const value =
             type === 'short'
               ? registry.enchantmentsByName[name].id
               : `minecraft:${registry.enchantmentsByName[name].name}`
-          return { id: { type, value }, lvl: { type: 'short', value: lvl } }
+          return { id: { type, value }, lvl: nbt.short(lvl) }
         })
 
         if (enchs.length !== 0) {
-          this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = {
-            type: 'list',
-            value: { type: 'compound', value: enchs }
-          }
+          this.nbt.value[isBook ? 'StoredEnchantments' : enchListName] = nbt.list(nbt.comp(enchs))
         }
 
         // The 'registry.itemsByName[this.name].maxDurability' checks to see if this item can lose durability
@@ -272,11 +269,6 @@ function loader (registryOrVersion) {
       }
     }
 
-    // TODO: namespaces other than minecraft:
-    // The item palette on bedrock can contain items
-    // with other namespaces, probably need to handle
-    // this in prismarine-registry
-    // Also this needs to be tested
     get blocksCanPlaceOn () {
       if (Object.keys(this).length === 0) return []
 
@@ -286,7 +278,7 @@ function loader (registryOrVersion) {
     }
 
     set blocksCanPlaceOn (blocks) {
-      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt) this.nbt = nbt.comp({})
       this.nbt.value.CanPlaceOn = nbt.list(
         nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
       )
@@ -301,7 +293,7 @@ function loader (registryOrVersion) {
     }
 
     set blocksCanDestroy (blocks) {
-      if (!this.nbt) this.nbt = { name: '', type: 'compound', value: {} }
+      if (!this.nbt) this.nbt = nbt.comp({})
       this.nbt.value.CanDestroy = nbt.list(
         nbt.string(blocks.map((b) => (b.startsWith('minecraft:') ? b : `minecraft:${b}`)))
       )
@@ -321,8 +313,8 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage' || registry.type === 'bedrock') {
-        if (!this?.nbt) this.nbt = { name: '', type: 'compound', value: {} }
-        this.nbt.value.Damage = { type: 'int', value }
+        if (!this?.nbt) this.nbt = nbt.comp({})
+        this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {
         this.metadata = value
       } else {
