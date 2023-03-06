@@ -16,7 +16,8 @@ declare class Item {
   displayName: string;
   stackSize: number;
   durabilityUsed: number;
-  enchants: NormalizedEnchant[];
+  get enchants(): { name: string; lvl: number }[];
+  set enchants(enchantments: { name: string; lvl: number }[]);
   blocksCanPlaceOn: string[];
   blocksCanDestroy: string[];
   repairCost: number;
@@ -36,7 +37,7 @@ declare class Item {
   static nextStackId(): number;
 }
 
-declare type PcNetworkItem = {
+declare interface PcNetworkItem {
   // 1.8 - 1.12
   blockId?: number;
   itemDamage?: number;
@@ -46,35 +47,31 @@ declare type PcNetworkItem = {
 
   itemCount?: number;
   nbtData?: Buffer;
-};
+}
 
-declare type BedrockNetworkItem =
-  | { network_id: 0 }
-  | ({
-      // >= 1.16.220
-      network_id: number;
-      count: number;
-      metadata: number;
-      block_runtime_id: number;
-      extra: {
-        can_place_on: string[];
-        can_destroy: string[];
-        blocking_tick?: number;
-      } & ({ has_nbt: false } | { has_nbt: true; nbt: { version: 1; nbt: Tags[TagType] } });
-    } & ({ has_stack_id: 0 } | { has_stack_id: 1; stack_id: number }))
-  | ({
-      // < 1.16.220
-      network_id: number;
-      auxiliary_value: number;
-      can_place_on: string[];
-      can_destroy: string[];
-    } & ({ has_nbt: false } | { has_nbt: true; nbt: { version: 1; nbt: Tags[TagType] } }));
+declare interface BedrockNetworkItem {
+  network_id: number;
+
+  // >= 1.16.220
+  count?: number;
+  metadata?: number;
+  has_stack_id?: 0 | 1;
+  stack_id?: number;
+  block_runtime_id?: number;
+  extra?: {
+    has_nbt: boolean;
+    nbt?: { version: 1; nbt: Tags[TagType] };
+    can_place_on: string[];
+    can_destroy: string[];
+    blocking_tick?: number;
+  };
+
+  // < 1.16.220
+  auxiliary_value?: number;
+  can_place_on?: string[];
+  can_destroy?: string[];
+}
 
 declare type NetworkItem = PcNetworkItem | BedrockNetworkItem;
-
-declare interface NormalizedEnchant {
-    name: string;
-    lvl: number
-}
 
 export default function loader(mcVersion: string): typeof Item;
