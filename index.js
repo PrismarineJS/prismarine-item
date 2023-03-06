@@ -158,9 +158,7 @@ function loader (registryOrVersion) {
     }
 
     get customName () {
-      if (Object.keys(this).length === 0 || !this.nbt) return null
-
-      return nbt.simplify(this.nbt).display?.Name ?? null
+      return this?.nbt?.value?.display?.value?.Name ?? null
     }
 
     set customName (newName) {
@@ -170,9 +168,7 @@ function loader (registryOrVersion) {
     }
 
     get customLore () {
-      if (Object.keys(this).length === 0 || !this.nbt) return null
-
-      return nbt.simplify(this.nbt).display?.Lore ?? null
+      return this?.nbt?.value?.display?.value?.Lore ?? null
     }
 
     set customLore (newLore) {
@@ -188,9 +184,7 @@ function loader (registryOrVersion) {
 
     // gets the cost based on previous anvil uses
     get repairCost () {
-      if (Object.keys(this).length === 0 || !this.nbt) return 0
-
-      return nbt.simplify(this.nbt).RepairCost ?? 0
+      return this?.nbt?.value?.RepairCost ?? 0;
     }
 
     set repairCost (newRepairCost) {
@@ -273,11 +267,7 @@ function loader (registryOrVersion) {
     }
 
     get blocksCanPlaceOn () {
-      if (Object.keys(this).length === 0) return []
-
-      if (!this.nbt?.value?.CanPlaceOn) return []
-
-      return nbt.simplify(this.nbt).CanPlaceOn
+      return this?.nbt?.value?.CanPlaceOn ?? []
     }
 
     set blocksCanPlaceOn (blocks) {
@@ -288,11 +278,7 @@ function loader (registryOrVersion) {
     }
 
     get blocksCanDestroy () {
-      if (Object.keys(this).length === 0) return []
-
-      if (!this.nbt?.value?.CanDestroy) return []
-
-      return nbt.simplify(this.nbt).CanDestroy
+      return this?.nbt?.value?.CanDestroy ?? []
     }
 
     set blocksCanDestroy (blocks) {
