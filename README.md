@@ -85,7 +85,13 @@ the item's custom lore (ie. set in give command)
 
 #### item.enchants
 
-A getter/setter for abstracting the underlying nbt (does calculations) 
+#### get item.enchants(): { name: string, lvl: number }[]
+
+Returns an array of enchants on the Item with their name and level
+
+#### set item.enchants({ name: string, lvl: number }[])
+
+Updates the Item's NBT enchantments based on assigned array
 
 #### item.blocksCanPlaceOn
 
