@@ -68,6 +68,8 @@ declare interface BedrockNetworkItem {
 
   // < 1.16.220
   auxiliary_value?: number;
+  has_nbt?: boolean;
+  nbt?: { version: 1; nbt: Tags[TagType] }
   can_place_on?: string[];
   can_destroy?: string[];
 }
