@@ -85,7 +85,6 @@ function loader (registryOrVersion) {
       } else if (registry.type === 'bedrock') {
         if (item.type === 0) return { network_id: 0 }
 
-        // if (registry.version['<']('1.16.220')) {
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           const networkItem = {
             network_id: item.id,
@@ -221,7 +220,7 @@ function loader (registryOrVersion) {
     set enchants (normalizedEnchArray) {
       const enchListName = registry.supportFeature('nbtNameForEnchant')
       const type = registry.supportFeature('typeOfValueForEnchantLevel')
-      if (type === null) throw new Error("Don't know the serialized type for enchant level")
+      if (!type) throw new Error("Don't know the serialized type for enchant level")
 
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
         const value =
@@ -231,13 +230,11 @@ function loader (registryOrVersion) {
         return { id: { type, value }, lvl: nbt.short(lvl) }
       })
 
-      if (enchs.length !== 0) {
-        if (!this.nbt) this.nbt = nbt.comp({})
-        if (this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')) {
-          this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
-        } else {
-          this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
-        }
+      if (!this.nbt) this.nbt = nbt.comp({})
+      if (this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')) {
+        this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
+      } else {
+        this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
       }
     }
 
