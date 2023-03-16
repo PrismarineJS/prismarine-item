@@ -28,19 +28,19 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(472, 1)
 
     it('constructor makes item correctly', () => {
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}}, stackSize: 1, type: 472, stackId: 0 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: 472, stackId: 0 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(expectedObj)
     })
 
     it('use .toNotch', () => {
-      const expectedObj = { itemCount: 1, itemId: 472, present: true, nbtData: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}} }
+      const expectedObj = { itemCount: 1, itemId: 472, present: true, nbtData: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } } }
       expect(Item.toNotch(ironShovelItem)).toStrictEqual(expectedObj)
     })
 
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}}, stackSize: 1, type: 472, stackId: 1 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: 472, stackId: 1 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
