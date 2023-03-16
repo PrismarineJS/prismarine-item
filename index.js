@@ -27,7 +27,7 @@ function loader (registryOrVersion) {
         }
         this.stackSize = itemEnum.stackSize
         // The 'itemEnum.maxDurability' checks to see if this item can lose durability
-        if (itemEnum.maxDurability) this.durabilityUsed ||= 0
+        if (itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
