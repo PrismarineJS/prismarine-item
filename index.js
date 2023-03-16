@@ -230,11 +230,13 @@ function loader (registryOrVersion) {
         return { id: { type, value }, lvl: nbt.short(lvl) }
       })
 
-      if (!this.nbt) this.nbt = nbt.comp({})
-      if (this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')) {
-        this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
-      } else {
-        this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
+      if (enchs.length !== 0) {
+        if (!this.nbt) this.nbt = nbt.comp({})
+        if (this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')) {
+          this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
+        } else {
+          this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
+        }
       }
     }
 
