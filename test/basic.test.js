@@ -8,7 +8,7 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(256, 1)
 
     it('constructor makes item correctly', () => {
-      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1 }
+      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: 0 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(val)
     })
 
@@ -19,7 +19,7 @@ describe('test based on examples', () => {
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256, stackId: 1 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -28,19 +28,19 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(472, 1)
 
     it('constructor makes item correctly', () => {
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}}, stackSize: 1, type: 472, stackId: 0 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(expectedObj)
     })
 
     it('use .toNotch', () => {
-      const expectedObj = { itemCount: 1, itemId: 472, present: true }
+      const expectedObj = { itemCount: 1, itemId: 472, present: true, nbtData: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}} }
       expect(Item.toNotch(ironShovelItem)).toStrictEqual(expectedObj)
     })
 
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: "", type: "compound", value: { Damage: { type: "int", value: 0 }}}, stackSize: 1, type: 472, stackId: 1 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -115,6 +115,7 @@ describe('test anvil functions', () => {
     })
     describe('1.16.5 test', () => {
       const Item = require('prismarine-item')('1.16.5')
+
       it('diamond sword (unenchanted)', () => {
         const item = Item.fromNotch({ present: true, itemId: 603, itemCount: 1, nbtData: { type: 'compound', name: '', value: { Damage: { type: 'int', value: 0 } } } })
         const enchs = item.enchants
@@ -189,6 +190,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(279, 1)
         newItem.enchants = enchs
         newItem.repairCost = 1
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
 
@@ -198,6 +200,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(314, 1)
         newItem.enchants = enchs
         newItem.repairCost = 3
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
 
@@ -207,6 +210,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(398, 1)
         newItem.enchants = enchs
         newItem.repairCost = 1
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
 
@@ -216,6 +220,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(274, 1)
         newItem.enchants = enchs
         newItem.repairCost = 1
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
 
@@ -225,6 +230,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(346, 1)
         newItem.enchants = enchs
         newItem.repairCost = 3
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
     })
@@ -235,6 +241,7 @@ describe('test anvil functions', () => {
         const enchs = item.enchants
         const newItem = new Item(603, 1)
         newItem.enchants = enchs
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
       it('iron shovel w/ eff2 for2 ub2', () => {
@@ -243,6 +250,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(600, 1)
         newItem.enchants = enchs
         newItem.repairCost = 3
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
       it('ench book w/ resp1 blastprot 1', () => {
@@ -251,6 +259,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(848, 1)
         newItem.enchants = enchs
         newItem.repairCost = 1
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
       it('fishing rod w/ mending', () => {
@@ -259,6 +268,7 @@ describe('test anvil functions', () => {
         const newItem = new Item(684, 1)
         newItem.enchants = enchs
         newItem.repairCost = 1
+        newItem.stackId = item.stackId
         expect(newItem).toStrictEqual(item)
       })
     })

@@ -26,6 +26,8 @@ function loader (registryOrVersion) {
           if (variation) this.displayName = variation.displayName
         }
         this.stackSize = itemEnum.stackSize
+        // The 'itemEnum.maxDurability' checks to see if this item can lose durability
+        if (itemEnum.maxDurability) this.durabilityUsed ||= 0
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
@@ -235,43 +237,6 @@ function loader (registryOrVersion) {
           this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
         } else {
           this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
-        }
-      }
-
-      if (registry.type === 'bedrock') {
-        // const enchs = normalizedEnchArray.map(({ name, lvl }) => ({
-        //   id: { type, value: registry.enchantmentsByName[name].id },
-        //   lvl: nbt.short(lvl),
-        // }));
-        // if (enchs.length !== 0) {
-        //   if (!this.nbt) this.nbt = nbt.comp({});
-        //   this.nbt.value.ench = nbt.list(nbt.comp(enchs));
-        // }
-      } else if (registry.type === 'pc') {
-        // const isBook = this.name === "enchanted_book";
-        // const enchListName = registry.supportFeature("nbtNameForEnchant");
-        // const type = registry.supportFeature("typeOfValueForEnchantLevel");
-        // if (type === null) throw new Error("Don't know the serialized type for enchant level");
-        // if (!this.nbt) this.nbt = nbt.comp({});
-
-        // const enchs = normalizedEnchArray.map(({ name, lvl }) => {
-        //   const value =
-        //     type === "short"
-        //       ? registry.enchantmentsByName[name].id
-        //       : `minecraft:${registry.enchantmentsByName[name].name}`;
-        //   return { id: { type, value }, lvl: nbt.short(lvl) };
-        // });
-
-        // if (enchs.length !== 0) {
-        //   this.nbt.value[isBook ? "StoredEnchantments" : enchListName] = nbt.list(nbt.comp(enchs));
-        // }
-
-        // The 'registry.itemsByName[this.name].maxDurability' checks to see if this item can lose durability
-        if (
-          registry.supportFeature('whereDurabilityIsSerialized') === 'Damage' &&
-          registry.itemsByName[this.name].maxDurability
-        ) {
-          this.nbt.value.Damage = { type: 'int', value: 0 }
         }
       }
     }
