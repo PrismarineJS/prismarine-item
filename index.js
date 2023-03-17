@@ -5,7 +5,7 @@ function loader (registryOrVersion) {
     constructor (type, count, metadata, nbt) {
       if (type == null) return
 
-      if (metadata instanceof Object && metadata !== null) {
+      if (metadata instanceof Object) {
         nbt = metadata
         metadata = 0
       }
