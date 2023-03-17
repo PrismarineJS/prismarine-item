@@ -25,8 +25,8 @@ declare class Item {
   customLore: string | null;
   readonly spawnEggMobName: string;
   static equal(item1: Item, item2: Item, matchStackSize: boolean, matchNbt: boolean): boolean;
-  static toNotch(item: ItemLike): NetworkItem;
-  static fromNotch(item: NetworkItem): ItemLike;
+  static toNotch(item: ItemLike): object;
+  static fromNotch(item: object, stackId?: number): ItemLike;
   static anvil(
     itemOne: ItemLike,
     itemTwo: ItemLike,
@@ -36,44 +36,5 @@ declare class Item {
   static currentStackId: number;
   static nextStackId(): number;
 }
-
-declare interface PcNetworkItem {
-  // 1.8 - 1.12
-  blockId?: number;
-  itemDamage?: number;
-  // 1.13 - 1.15
-  present?: boolean;
-  itemId?: number;
-
-  itemCount?: number;
-  nbtData?: Buffer;
-}
-
-declare interface BedrockNetworkItem {
-  network_id: number;
-
-  // >= 1.16.220
-  count?: number;
-  metadata?: number;
-  has_stack_id?: 0 | 1;
-  stack_id?: number;
-  block_runtime_id?: number;
-  extra?: {
-    has_nbt: boolean;
-    nbt?: { version: 1; nbt: Tags[TagType] };
-    can_place_on: string[];
-    can_destroy: string[];
-    blocking_tick?: number;
-  };
-
-  // < 1.16.220
-  auxiliary_value?: number;
-  has_nbt?: boolean;
-  nbt?: { version: 1; nbt: Tags[TagType] }
-  can_place_on?: string[];
-  can_destroy?: string[];
-}
-
-declare type NetworkItem = PcNetworkItem | BedrockNetworkItem;
 
 export default function loader(mcVersion: string): typeof Item;
