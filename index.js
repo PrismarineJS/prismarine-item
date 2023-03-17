@@ -123,21 +123,22 @@ function loader (registryOrVersion) {
     static fromNotch (networkItem, stackId) {
       if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
         if (networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, stackId)
       } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (networkItem.itemId === -1 || networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, stackId)
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (networkItem.blockId === -1) return null
-        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
+        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData, stackId)
       } else if (registry.type === 'bedrock') {
+        if (networkItem.network_id === 0) return new Item(0)
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           const item = new Item(networkItem.network_id, networkItem.auxiliary_value & 0xff, networkItem.auxiliary_value >> 8, networkItem.nbt?.nbt, stackId)
           item.blocksCanPlaceOn = networkItem.can_place_on
           item.blocksCanDestroy = networkItem.can_destroy
           return item
         } else {
-          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id)
+          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id ?? stackId)
           item.blocksCanPlaceOn = networkItem.extra.can_place_on
           item.blocksCanDestroy = networkItem.extra.can_destroy
           return item
