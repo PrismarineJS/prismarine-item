@@ -2,9 +2,9 @@
 
 import { Tags, TagType } from 'prismarine-nbt'
 
-type ItemLike = Item | null
+export type ItemLike = Item | null
 
-declare class Item {
+export declare class Item {
     constructor(type: number, count: number, metadata?: number, nbt?: object);
     type: number;
     slot: number;
@@ -26,7 +26,7 @@ declare class Item {
     static anvil (itemOne: ItemLike, itemTwo: ItemLike, creative: boolean, rename: string | undefined): { xpCost: number, item: ItemLike }
 }
 
-declare interface NotchItem {
+export declare interface NotchItem {
     // 1.8 - 1.12
     blockId?: number;
     itemDamage?: number;
@@ -38,7 +38,7 @@ declare interface NotchItem {
     nbtData?: Buffer;
 }
 
-declare interface NormalizedEnchant {
+export declare interface NormalizedEnchant {
     name: string;
     lvl: number
 }
