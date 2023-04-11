@@ -15,7 +15,13 @@ function loader (registryOrVersion) {
       this.count = count
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
-      this.stackId = stackId ?? Item.nextStackId()
+
+      // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
+      if (registry.type === 'bedrock') {
+        this.stackId = stackId ?? Item.nextStackId()
+      } else {
+        this.stackId = null
+      }
 
       const itemEnum = registry.items[type]
       if (itemEnum) {
@@ -67,7 +73,7 @@ function loader (registryOrVersion) {
           itemId: item.type,
           itemCount: item.count
         }
-        if (item.nbt && item.nbt.length !== 0) {
+        if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
           networkItem.nbtData = item.nbt
         }
         return networkItem
@@ -78,42 +84,48 @@ function loader (registryOrVersion) {
           itemCount: item.count,
           itemDamage: item.metadata
         }
-        if (item.nbt && item.nbt.length !== 0) {
+        if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
           networkItem.nbtData = item.nbt
         }
         return networkItem
       } else if (registry.type === 'bedrock') {
-        if (item.type === 0) return { network_id: 0 }
+        if (item == null || item.type === 0) return { network_id: 0 }
 
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           const networkItem = {
             network_id: item.id,
             auxiliary_value: (item.metadata << 8) | (item.count & 0xff),
-            has_nbt: item.nbt !== null,
-            nbt: item.nbt !== null ? { version: 1, nbt: item.nbt } : undefined,
             can_place_on: item.blocksCanPlaceOn,
             can_destroy: item.blocksCanDestroy,
             blocking_tick: 0
           }
-
+          if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
+            networkItem.has_nbt = true
+            networkItem.nbt = { version: 1, nbt: item.nbt }
+          } else {
+            networkItem.has_nbt = false
+          }
           return networkItem
         } else {
           const networkItem = {
             network_id: item.type,
             count: item.count,
             metadata: item.metadata,
-            has_stack_id: +serverAuthoritative,
+            has_stack_id: serverAuthoritative,
             stack_id: serverAuthoritative ? item.stackId : undefined,
             block_runtime_id: 0,
             extra: {
-              has_nbt: item.nbt !== null,
-              nbt: item.nbt !== null ? { version: 1, nbt: item.nbt } : undefined,
               can_place_on: item.blocksCanPlaceOn,
               can_destroy: item.blocksCanDestroy,
               blocking_tick: 0
             }
           }
-
+          if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
+            networkItem.extra.has_nbt = true
+            networkItem.extra.nbt = { version: 1, nbt: item.nbt }
+          } else {
+            networkItem.has_nbt = false
+          }
           return networkItem
         }
       }
@@ -123,24 +135,24 @@ function loader (registryOrVersion) {
     static fromNotch (networkItem, stackId) {
       if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
         if (networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, stackId)
+        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
       } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
         if (networkItem.itemId === -1 || networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, stackId)
+        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
       } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
         if (networkItem.blockId === -1) return null
-        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData, stackId)
+        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
       } else if (registry.type === 'bedrock') {
-        if (networkItem.network_id === 0) return new Item(0)
+        if (networkItem.network_id === 0) return null
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           const item = new Item(networkItem.network_id, networkItem.auxiliary_value & 0xff, networkItem.auxiliary_value >> 8, networkItem.nbt?.nbt, stackId)
-          item.blocksCanPlaceOn = networkItem.can_place_on
-          item.blocksCanDestroy = networkItem.can_destroy
+          if (networkItem.can_place_on.length > 0) item.blocksCanPlaceOn = networkItem.can_place_on
+          if (networkItem.can_destroy.length > 0) item.blocksCanDestroy = networkItem.can_destroy
           return item
         } else {
-          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id ?? stackId)
-          item.blocksCanPlaceOn = networkItem.extra.can_place_on
-          item.blocksCanDestroy = networkItem.extra.can_destroy
+          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id)
+          if (networkItem.extra.can_place_on.length > 0) item.blocksCanPlaceOn = networkItem.extra.can_place_on
+          if (networkItem.extra.can_destroy.length > 0) item.blocksCanDestroy = networkItem.extra.can_destroy
           return item
         }
       }
@@ -223,6 +235,8 @@ function loader (registryOrVersion) {
       const type = registry.supportFeature('typeOfValueForEnchantLevel')
       if (!type) throw new Error("Don't know the serialized type for enchant level")
 
+      const useStoredEnchants = this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')
+
       const enchs = normalizedEnchArray.map(({ name, lvl }) => {
         const value =
           type === 'short'
@@ -233,11 +247,9 @@ function loader (registryOrVersion) {
 
       if (enchs.length !== 0) {
         if (!this.nbt) this.nbt = nbt.comp({})
-        if (this.name === 'enchanted_book' && registry.supportFeature('booksUseStoredEnchantments')) {
-          this.nbt.value.StoredEnchantments = nbt.list(nbt.comp(enchs))
-        } else {
-          this.nbt.value[enchListName] = nbt.list(nbt.comp(enchs))
-        }
+        this.nbt.value[useStoredEnchants ? 'StoredEnchantments' : enchListName] = nbt.list(nbt.comp(enchs))
+      } else if (this.enchants.length !== 0) {
+        delete this.nbt?.[useStoredEnchants ? 'StoredEnchantments' : enchListName]
       }
     }
 
@@ -246,6 +258,10 @@ function loader (registryOrVersion) {
     }
 
     set blocksCanPlaceOn (newBlocks) {
+      if (newBlocks.length === 0) {
+        if (this.blocksCanPlaceOn.length !== 0) delete this.nbt.value.CanPlaceOn
+        return
+      }
       if (!this.nbt) this.nbt = nbt.comp({})
 
       const blocks = []
@@ -266,6 +282,10 @@ function loader (registryOrVersion) {
     }
 
     set blocksCanDestroy (newBlocks) {
+      if (newBlocks.length === 0) {
+        if (this.blocksCanDestroy.length !== 0) delete this.nbt.value.CanDestroy
+        return
+      }
       if (!this.nbt) this.nbt = nbt.comp({})
 
       const blocks = []
@@ -305,6 +325,9 @@ function loader (registryOrVersion) {
     }
 
     get spawnEggMobName () {
+      if (registry.supportFeature('spawnEggsHaveSpawnedEntityInName')) {
+        return this.name.replace('_spawn_egg', '')
+      }
       if (registry.supportFeature('spawnEggsUseInternalIdInNbt')) {
         return registry.entitiesArray.find((o) => o.internalId === this.metadata).name
       }
@@ -312,9 +335,6 @@ function loader (registryOrVersion) {
         const data = nbt.simplify(this.nbt)
         const entityName = data.EntityTag.id
         return entityName.replace('minecraft:', '')
-      }
-      if (registry.supportFeature('spawnEggsHaveSpawnedEntityInName')) {
-        return this.name.replace('_spawn_egg', '')
       }
       throw new Error("Don't know how to get spawn egg mob name for this mc version")
     }

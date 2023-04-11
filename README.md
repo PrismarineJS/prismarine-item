@@ -64,7 +64,7 @@ Buffer.
 
 #### item.stackId
 
-The stack ID of the item.
+The stack ID of the item, if the version supports Stack IDs.
 
 #### item.name
 
