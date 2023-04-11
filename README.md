@@ -21,13 +21,14 @@ console.log(Item.fromNotch(notchItem))
 
 ### Item(type, count[, metadata, nbt, stackId])
 
-#### Item.toNotch(item)
+#### Item.toNotch(item[, serverAuthoritative])
 
-Take an `item` in the format of the minecraft packets and return an `Item` instance.
+Take an `Item` instance and returns it in the format of the minecraft packets.
+- serverAuthoritative: Whether the server is using server authoritative inventory (whether or not to write a Stack ID)
 
 #### Item.fromNotch(item[, stackId])
 
-Take an `Item` instance and returns it in the format of the minecraft packets.
+Take an `item` in the format of the minecraft packets and return an `Item` instance.
 - stackId for bedrock items before 1.16.220
 
 ### Item.anvil(itemOne, itemTwo, creative[, newName])
@@ -60,6 +61,10 @@ See http://www.minecraftwiki.net/wiki/Data_values#Data
 #### item.nbt
 
 Buffer.
+
+#### item.stackId
+
+The stack ID of the item.
 
 #### item.name
 

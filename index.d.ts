@@ -11,7 +11,7 @@ declare class Item {
   count: number;
   metadata: number;
   nbt: Tags[TagType] | null;
-  stackId: number;
+  stackId: number | null;
   name: string;
   displayName: string;
   stackSize: number;
@@ -24,8 +24,8 @@ declare class Item {
   customName: string | null;
   customLore: string | null;
   readonly spawnEggMobName: string;
-  static equal(item1: Item, item2: Item, matchStackSize: boolean, matchNbt: boolean): boolean;
-  static toNotch(item: ItemLike): object;
+  static equal(item1: Item, item2: Item, matchStackSize?: boolean, matchNbt?: boolean): boolean;
+  static toNotch(item: ItemLike, serverAuthoritative?: boolean): object;
   static fromNotch(item: object, stackId?: number): ItemLike;
   static anvil(
     itemOne: ItemLike,
