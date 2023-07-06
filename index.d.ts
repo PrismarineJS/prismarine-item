@@ -2,7 +2,7 @@
 
 import { Tags, TagType } from 'prismarine-nbt'
 
-type ItemLike = Item | null
+export type ItemLike = Item | null
 
 declare class Item {
   constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number);
@@ -22,7 +22,7 @@ declare class Item {
   blocksCanDestroy: string[];
   repairCost: number;
   customName: string | null;
-  customLore: string | null;
+  customLore: string | string[] | null;
   readonly spawnEggMobName: string;
   static equal(item1: Item, item2: Item, matchStackSize?: boolean, matchNbt?: boolean): boolean;
   static toNotch(item: ItemLike, serverAuthoritative?: boolean): object;

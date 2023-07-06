@@ -118,6 +118,14 @@ If the current item is a type of Spawn Egg, the protocol name of the entity that
 
 ## History
 
+### 1.12.3
+* [add commands workflow (#99)](https://github.com/PrismarineJS/prismarine-item/commit/a4f5d593be8a80fbe539369efe2d1127c9785583) (thanks @extremeheat)
+* [Update to node 18.0.0 (#98)](https://github.com/PrismarineJS/prismarine-item/commit/52098ca2b0a9eafa6bcde3cdfb3c2315bab258a5) (thanks @rom1504)
+
+## 1.12.2
+
+* Fix types (thanks @TigerbyteDev and @u9g)
+
 ## 1.12.1
 
 * Fix publish
