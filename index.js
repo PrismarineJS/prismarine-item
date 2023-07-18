@@ -66,48 +66,42 @@ function loader (registryOrVersion) {
     }
 
     static toNotch (item, serverAuthoritative = true) {
-      if (registry.supportFeature('itemSerializationAllowsPresent')) {
-        if (item == null) return { present: false }
-        const networkItem = {
-          present: true,
-          itemId: item.type,
-          itemCount: item.count
+      const hasNBT = item.nbt && Object.keys(item.nbt.value).length > 0
+
+      if (registry.type === 'pc') {
+        if (registry.supportFeature('itemSerializationAllowsPresent')) {
+          if (item == null) return { present: false }
+          const networkItem = {
+            present: true,
+            itemId: item.type,
+            itemCount: item.count
+          }
+          if (hasNBT) networkItem.nbtData = item.nbt
+          return networkItem
+        } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
+          if (item == null) return { blockId: -1 }
+          const networkItem = {
+            blockId: item.type,
+            itemCount: item.count,
+            itemDamage: item.metadata
+          }
+          if (hasNBT) networkItem.nbtData = item.nbt
+          return networkItem
         }
-        if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
-          networkItem.nbtData = item.nbt
-        }
-        return networkItem
-      } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
-        if (item == null) return { blockId: -1 }
-        const networkItem = {
-          blockId: item.type,
-          itemCount: item.count,
-          itemDamage: item.metadata
-        }
-        if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
-          networkItem.nbtData = item.nbt
-        }
-        return networkItem
       } else if (registry.type === 'bedrock') {
         if (item == null || item.type === 0) return { network_id: 0 }
-
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
-          const networkItem = {
+          return {
             network_id: item.id,
             auxiliary_value: (item.metadata << 8) | (item.count & 0xff),
             can_place_on: item.blocksCanPlaceOn,
             can_destroy: item.blocksCanDestroy,
-            blocking_tick: 0
+            blocking_tick: 0,
+            has_nbt: hasNBT,
+            nbt: hasNBT ? { version: 1, nbt: item.nbt } : undefined
           }
-          if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
-            networkItem.has_nbt = true
-            networkItem.nbt = { version: 1, nbt: item.nbt }
-          } else {
-            networkItem.has_nbt = false
-          }
-          return networkItem
         } else {
-          const networkItem = {
+          return {
             network_id: item.type,
             count: item.count,
             metadata: item.metadata,
@@ -117,31 +111,28 @@ function loader (registryOrVersion) {
             extra: {
               can_place_on: item.blocksCanPlaceOn,
               can_destroy: item.blocksCanDestroy,
-              blocking_tick: 0
+              blocking_tick: 0,
+              has_nbt: hasNBT,
+              nbt: hasNBT ? { version: 1, nbt: item.nbt } : undefined
             }
           }
-          if (item.nbt && Object.keys(item.nbt.value).length !== 0) {
-            networkItem.extra.has_nbt = true
-            networkItem.extra.nbt = { version: 1, nbt: item.nbt }
-          } else {
-            networkItem.has_nbt = false
-          }
-          return networkItem
         }
       }
       throw new Error("Don't know how to serialize for this mc version ")
     }
 
     static fromNotch (networkItem, stackId) {
-      if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
-        if (networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
-      } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
-        if (networkItem.itemId === -1 || networkItem.present === false) return null
-        return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
-      } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
-        if (networkItem.blockId === -1) return null
-        return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
+      if (registry.type === 'pc') {
+        if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
+          if (networkItem.present === false) return null
+          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+        } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
+          if (networkItem.itemId === -1 || networkItem.present === false) return null
+          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+        } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
+          if (networkItem.blockId === -1) return null
+          return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
+        }
       } else if (registry.type === 'bedrock') {
         if (networkItem.network_id === 0) return null
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
