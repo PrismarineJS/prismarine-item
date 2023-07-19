@@ -249,7 +249,7 @@ function loader (registryOrVersion) {
 
     get blocksCanPlaceOn () {
       const blockNames = this?.nbt?.value?.CanPlaceOn?.value?.value ?? []
-      return blockNames.map(name => [name, registry.blocksByName[name.replace('minecraft:', '')]])
+      return blockNames.map(name => [name])
     }
 
     set blocksCanPlaceOn (newBlocks) {
@@ -274,7 +274,7 @@ function loader (registryOrVersion) {
 
     get blocksCanDestroy () {
       const blockNames = this?.nbt?.value?.CanDestroy?.value?.value ?? []
-      return blockNames.map(name => [name, registry.blocksByName[name.replace('minecraft:', '')]])
+      return blockNames.map(name => [name])
     }
 
     set blocksCanDestroy (newBlocks) {
