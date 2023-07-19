@@ -19,9 +19,9 @@ declare class Item {
   durabilityUsed: number;
   get enchants(): { name: string; lvl: number }[];
   set enchants(enchantments: { name: string; lvl: number }[]);
-  get blocksCanPlaceOn(): [string, Block][];
+  get blocksCanPlaceOn(): [string][];
   set blocksCanPlaceOn(blockNames: string[]);
-  get blocksCanDestroy(): [string, Block][];
+  get blocksCanDestroy(): [string][];
   set blocksCanDestroy(blockNames: string[]);
   repairCost: number;
   customName: string | null;
