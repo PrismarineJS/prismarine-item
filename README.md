@@ -98,11 +98,12 @@ Returns an array of enchants on the Item with their name and level
 
 Updates the Item's NBT enchantments based on assigned array
 
-#### item.blocksCanPlaceOn
-
+#### get item.blocksCanPlaceOn(): [name, Block][]
+#### set item.blocksCanPlaceOn(blockNames: string[])
 In adventure mode, the list of block names (as strings) that this Item can be placed on
 
-#### item.blocksCanDestroy
+#### get item.blocksCanDestroy(): [name, Block][]
+#### set item.blocksCanDestroy(blockNames: string[])
 
 In adventure mode, the list of block names (as strings) that this Item can be used to break
 

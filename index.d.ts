@@ -1,6 +1,7 @@
 /// <reference types="node" />
 
 import { Tags, TagType } from 'prismarine-nbt'
+import { Block } from "minecraft-data"
 
 export type ItemLike = Item | null
 
@@ -18,8 +19,10 @@ declare class Item {
   durabilityUsed: number;
   get enchants(): { name: string; lvl: number }[];
   set enchants(enchantments: { name: string; lvl: number }[]);
-  blocksCanPlaceOn: string[];
-  blocksCanDestroy: string[];
+  get blocksCanPlaceOn(): [string, Block][];
+  set blocksCanPlaceOn(blockNames: string[]);
+  get blocksCanDestroy(): [string, Block][];
+  set blocksCanDestroy(blockNames: string[]);
   repairCost: number;
   customName: string | null;
   customLore: string | string[] | null;

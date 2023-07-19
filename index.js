@@ -1,4 +1,5 @@
 const nbt = require('prismarine-nbt')
+
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
@@ -27,11 +28,13 @@ function loader (registryOrVersion) {
       if (itemEnum) {
         this.name = itemEnum.name
         this.displayName = itemEnum.displayName
+        this.stackSize = itemEnum.stackSize
+
         if ('variations' in itemEnum) {
           const variation = itemEnum.variations.find((item) => item.metadata === metadata)
           if (variation) this.displayName = variation.displayName
         }
-        this.stackSize = itemEnum.stackSize
+
         // The 'itemEnum.maxDurability' checks to see if this item can lose durability
         if (itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
       } else {
@@ -51,15 +54,14 @@ function loader (registryOrVersion) {
       } else {
         return (
           item1.type === item2.type &&
-          (matchStackSize ? item1.count === item2.count : true) &&
           item1.metadata === item2.metadata &&
+          (matchStackSize ? item1.count === item2.count : true) &&
           (matchNbt ? JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt) : true)
         )
       }
     }
 
-    // Stack ID
-    // Probably needs to be moved to prismarine-registry later on as calling the loader again will reset it
+    // TODO: Move stack ID handling to prismarine-registry, as calling the loader again resets it here
     static currentStackId = 0
     static nextStackId () {
       return Item.currentStackId++
@@ -71,25 +73,24 @@ function loader (registryOrVersion) {
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (item == null) return { present: false }
-          const networkItem = {
+          return {
             present: true,
             itemId: item.type,
-            itemCount: item.count
+            itemCount: item.count,
+            nbtData: hasNBT ? item.nbt : undefined
           }
-          if (hasNBT) networkItem.nbtData = item.nbt
-          return networkItem
         } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
           if (item == null) return { blockId: -1 }
-          const networkItem = {
+          return {
             blockId: item.type,
             itemCount: item.count,
-            itemDamage: item.metadata
+            itemDamage: item.metadata,
+            nbtData: hasNBT ? item.nbt : undefined
           }
-          if (hasNBT) networkItem.nbtData = item.nbt
-          return networkItem
         }
       } else if (registry.type === 'bedrock') {
         if (item == null || item.type === 0) return { network_id: 0 }
+
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           return {
             network_id: item.id,
@@ -135,6 +136,7 @@ function loader (registryOrVersion) {
         }
       } else if (registry.type === 'bedrock') {
         if (networkItem.network_id === 0) return null
+
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
           const item = new Item(networkItem.network_id, networkItem.auxiliary_value & 0xff, networkItem.auxiliary_value >> 8, networkItem.nbt?.nbt, stackId)
           if (networkItem.can_place_on.length > 0) item.blocksCanPlaceOn = networkItem.can_place_on
@@ -189,30 +191,31 @@ function loader (registryOrVersion) {
       if (Object.keys(this).length === 0) return []
       const enchantNbtKey = registry.supportFeature('nbtNameForEnchant')
       const typeOfEnchantLevelValue = registry.supportFeature('typeOfValueForEnchantLevel')
+      const useStoredEnchantments = registry.supportFeature('booksUseStoredEnchantments') && this.name === 'enchanted_book'
 
       if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'ench') {
         let itemEnch = []
-        if (
-          this.name === 'enchanted_book' &&
-          this?.nbt?.value?.StoredEnchantments &&
-          registry.supportFeature('booksUseStoredEnchantments')
-        ) {
+
+        if (useStoredEnchantments && this?.nbt?.value?.StoredEnchantments) {
           itemEnch = nbt.simplify(this.nbt).StoredEnchantments
         } else if (this?.nbt?.value?.ench) {
           itemEnch = nbt.simplify(this.nbt).ench
         } else {
           itemEnch = []
         }
+
         return itemEnch.map((ench) => ({ lvl: ench.lvl, name: registry.enchantments[ench.id]?.name || null }))
       } else if (typeOfEnchantLevelValue === 'string' && enchantNbtKey === 'Enchantments') {
         let itemEnch = []
-        if (this?.nbt?.value?.Enchantments) {
-          itemEnch = nbt.simplify(this.nbt).Enchantments
-        } else if (this?.nbt?.value?.StoredEnchantments) {
+
+        if (useStoredEnchantments && this?.nbt?.value?.StoredEnchantments) {
           itemEnch = nbt.simplify(this.nbt).StoredEnchantments
+        } else if (this?.nbt?.value?.Enchantments) {
+          itemEnch = nbt.simplify(this.nbt).Enchantments
         } else {
           itemEnch = []
         }
+
         return itemEnch.map((ench) => ({
           lvl: ench.lvl,
           name: typeof ench.id === 'string' ? ench.id.replace('minecraft:', '') : null
@@ -245,7 +248,8 @@ function loader (registryOrVersion) {
     }
 
     get blocksCanPlaceOn () {
-      return this?.nbt?.value?.CanPlaceOn?.value?.value ?? []
+      const blockNames = this?.nbt?.value?.CanPlaceOn?.value?.value ?? []
+      return blockNames.map(name => [name, registry.blocksByName[name.replace('minecraft:', '')]])
     }
 
     set blocksCanPlaceOn (newBlocks) {
@@ -255,21 +259,22 @@ function loader (registryOrVersion) {
       }
       if (!this.nbt) this.nbt = nbt.comp({})
 
-      const blocks = []
+      const blockNames = []
       for (const block of newBlocks) {
         let [ns, name] = block.split(':')
         if (!name) {
           name = ns
           ns = 'minecraft'
         }
-        blocks.push(`${ns}:${name}`)
+        blockNames.push(`${ns}:${name}`)
       }
 
-      this.nbt.value.CanPlaceOn = nbt.list(nbt.string(blocks))
+      this.nbt.value.CanPlaceOn = nbt.list(nbt.string(blockNames))
     }
 
     get blocksCanDestroy () {
-      return this?.nbt?.value?.CanDestroy?.value?.value ?? []
+      const blockNames = this?.nbt?.value?.CanDestroy?.value?.value ?? []
+      return blockNames.map(name => [name, registry.blocksByName[name.replace('minecraft:', '')]])
     }
 
     set blocksCanDestroy (newBlocks) {
@@ -279,17 +284,17 @@ function loader (registryOrVersion) {
       }
       if (!this.nbt) this.nbt = nbt.comp({})
 
-      const blocks = []
+      const blockNames = []
       for (const block of newBlocks) {
         let [ns, name] = block.split(':')
         if (!name) {
           name = ns
           ns = 'minecraft'
         }
-        blocks.push(`${ns}:${name}`)
+        blockNames.push(`${ns}:${name}`)
       }
 
-      this.nbt.value.CanDestroy = nbt.list(nbt.string(blocks))
+      this.nbt.value.CanDestroy = nbt.list(nbt.string(blockNames))
     }
 
     get durabilityUsed () {
@@ -319,14 +324,17 @@ function loader (registryOrVersion) {
       if (registry.supportFeature('spawnEggsHaveSpawnedEntityInName')) {
         return this.name.replace('_spawn_egg', '')
       }
+
       if (registry.supportFeature('spawnEggsUseInternalIdInNbt')) {
         return registry.entitiesArray.find((o) => o.internalId === this.metadata).name
       }
+
       if (registry.supportFeature('spawnEggsUseEntityTagInNbt')) {
         const data = nbt.simplify(this.nbt)
         const entityName = data.EntityTag.id
         return entityName.replace('minecraft:', '')
       }
+
       throw new Error("Don't know how to get spawn egg mob name for this mc version")
     }
   }

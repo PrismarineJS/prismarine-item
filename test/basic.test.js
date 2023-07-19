@@ -13,7 +13,7 @@ describe('test based on examples', () => {
     })
 
     it('use .toNotch', () => {
-      expect(Item.toNotch(ironShovelItem)).toStrictEqual({ blockId: 256, itemCount: 1, itemDamage: 0 })
+      expect(Item.toNotch(ironShovelItem)).toStrictEqual({ blockId: 256, itemCount: 1, itemDamage: 0, nbtData: undefined })
     })
 
     it('use .fromNotch', () => {
