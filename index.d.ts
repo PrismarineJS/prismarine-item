@@ -1,11 +1,10 @@
 /// <reference types="node" />
 
 import { Tags, TagType } from 'prismarine-nbt'
-import { Block } from "minecraft-data"
 
 export type ItemLike = Item | null
 
-declare class Item {
+export class Item {
   constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number);
   type: number;
   slot: number;
