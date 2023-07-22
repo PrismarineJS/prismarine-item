@@ -68,7 +68,7 @@ function loader (registryOrVersion) {
     }
 
     static toNotch (item, serverAuthoritative = true) {
-      const hasNBT = item.nbt && Object.keys(item.nbt.value).length > 0
+      const hasNBT = item && item.nbt && Object.keys(item.nbt.value).length > 0
 
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemSerializationAllowsPresent')) {
