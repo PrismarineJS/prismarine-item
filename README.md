@@ -19,27 +19,31 @@ console.log(Item.fromNotch(notchItem))
 
 ## API
 
-### Item(type, count[, metadata], nbt)
+### Item(type, count[, metadata, nbt, stackId])
 
-#### Item.toNotch(item)
+#### Item.toNotch(item[, serverAuthoritative])
+
+Take an `Item` instance and returns it in the format of the minecraft packets.
+- serverAuthoritative: Whether the server is using server authoritative inventory (whether or not to write a Stack ID)
+
+#### Item.fromNotch(item[, stackId])
 
 Take an `item` in the format of the minecraft packets and return an `Item` instance.
-
-#### Item.fromNotch(item)
-
-Take an `Item` instance and return it in the format of the minecraft packets.
+- stackId for bedrock items before 1.16.220
 
 ### Item.anvil(itemOne, itemTwo, creative[, newName])
 
 Take two seperate `item` instances, and makes one item using the same combining done by the vanilla anvil
 
-### Item.equal(itemOne, itemTwo[, matchStackSize])
+### Item.equal(itemOne, itemTwo[, matchStackSize, matchNbt])
 
 `itemOne` - first item
 
 `itemTwo` - second item
 
 `matchStackSize` - whether to check for count equality
+
+`matchNbt` - wether to check for NBT equality
 
 Checks equality between two items based on itemType, count, metadata, and stringified nbt
 
@@ -57,6 +61,10 @@ See http://www.minecraftwiki.net/wiki/Data_values#Data
 #### item.nbt
 
 Buffer.
+
+#### item.stackId
+
+The stack ID of the item, if the version supports Stack IDs.
 
 #### item.name
 
@@ -82,7 +90,22 @@ the item's custom lore (ie. set in give command)
 
 #### item.enchants
 
-A getter/setter for abstracting the underlying nbt (does calculations) 
+#### get item.enchants(): { name: string, lvl: number }[]
+
+Returns an array of enchants on the Item with their name and level
+
+#### set item.enchants({ name: string, lvl: number }[])
+
+Updates the Item's NBT enchantments based on assigned array
+
+#### get item.blocksCanPlaceOn(): [name][]
+#### set item.blocksCanPlaceOn(blockNames: string[])
+In adventure mode, the list of block names (as strings) that this Item can be placed on
+
+#### get item.blocksCanDestroy(): [name][]
+#### set item.blocksCanDestroy(blockNames: string[])
+
+In adventure mode, the list of block names (as strings) that this Item can be used to break
 
 #### item.repairCost
 
@@ -91,7 +114,7 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 #### item.spawnEggMobName
 
-A getter for abstracting the underlying nbt, get's the mob name from a spawn egg Item. e.g. a zombie spawn egg on 1.8 will return `Zombie`
+If the current item is a type of Spawn Egg, the protocol name of the entity that will be spawned. For example, a zombie spawn egg on 1.8 will return `Zombie`.
 
 
 ## History
