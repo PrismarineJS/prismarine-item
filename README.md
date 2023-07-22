@@ -119,6 +119,9 @@ If the current item is a type of Spawn Egg, the protocol name of the entity that
 
 ## History
 
+### 1.13.1
+* [Fix null item handling in toNotch (#103)](https://github.com/PrismarineJS/prismarine-item/commit/0fd5781c1c539207aa932bb637c074e671196f60) (thanks @extremeheat)
+
 ### 1.13.0
 * [Bedrock support (#86)](https://github.com/PrismarineJS/prismarine-item/commit/854c357c4835cff74d9c9812b599528103bf2976) (thanks @CreeperG16)
 
