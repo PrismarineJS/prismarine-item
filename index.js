@@ -68,8 +68,7 @@ function loader (registryOrVersion) {
     }
 
     static toNotch (item, serverAuthoritative = true) {
-      const hasNBT = item && item.nbt && Object.keys(item.nbt.value).length > 0
-
+      const hasNBT = !!(item && item.nbt && Object.keys(item.nbt.value).length > 0)
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (item == null) return { present: false }
@@ -311,10 +310,8 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
-        if (!this?.nbt) {
-          if (!value) return
-          this.nbt = nbt.comp({})
-        }
+        if (!value || value === 0) return
+        if (!this?.nbt) this.nbt = nbt.comp({})
         this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {
         this.metadata = value
