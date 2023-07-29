@@ -310,7 +310,7 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
-        if (!value || value === 0) return
+        if (!value) return
         if (!this?.nbt) this.nbt = nbt.comp({})
         this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {
