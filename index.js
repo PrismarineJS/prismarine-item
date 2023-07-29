@@ -36,7 +36,7 @@ function loader (registryOrVersion) {
         }
 
         // The 'itemEnum.maxDurability' checks to see if this item can lose durability
-        if (itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
+        if (registry.supportFeature('explicitMaxDurability') && itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
@@ -310,7 +310,6 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
-        if (!value) return
         if (!this?.nbt) this.nbt = nbt.comp({})
         this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {
