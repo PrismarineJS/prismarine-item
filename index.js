@@ -34,9 +34,6 @@ function loader (registryOrVersion) {
           const variation = itemEnum.variations.find((item) => item.metadata === metadata)
           if (variation) this.displayName = variation.displayName
         }
-
-        // The 'itemEnum.maxDurability' checks to see if this item can lose durability
-        if (registry.supportFeature('explicitMaxDurability') && itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
