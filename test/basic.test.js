@@ -8,7 +8,7 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(256, 1)
 
     it('constructor makes item correctly', () => {
-      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: null }
+      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: null, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(val)
     })
 
@@ -19,7 +19,7 @@ describe('test based on examples', () => {
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256, stackId: null, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -28,19 +28,19 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(472, 1)
 
     it('constructor makes item correctly', () => {
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: 472, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(expectedObj)
     })
 
     it('use .toNotch', () => {
-      const expectedObj = { itemCount: 1, itemId: 472, present: true, nbtData: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } } }
+      const expectedObj = { itemCount: 1, itemId: 472, present: true, nbtData: undefined }
       expect(Item.toNotch(ironShovelItem)).toStrictEqual(expectedObj)
     })
 
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: 472, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -50,7 +50,7 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(registry.itemsByName.iron_shovel.id, 1)
 
     it('constructor makes item correctly', () => {
-      const val = { type: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: 0 }
+      const val = { type: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: 0, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(val)
     })
 
@@ -61,7 +61,7 @@ describe('test based on examples', () => {
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: registry.itemsByName.iron_shovel.id, stackId: 0 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: registry.itemsByName.iron_shovel.id, stackId: 0, maxDurability: 250 }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -350,14 +350,14 @@ describe('set item.enchants', () => {
     const Item = require('prismarine-item')(registry)
 
     it('unenchanted stone sword', () => {
-      const newItem = new Item(704, 1)
+      const newItem = new Item(704, 1, undefined, undefined, 0, true)
       const item = Item.fromNotch({ network_id: 704, count: 1, metadata: 0, stack_id: 0, has_stack_id: true, extra: { has_nbt: false, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
       expect(newItem).toStrictEqual(item)
     })
     it('unbreaking 1 iron pickaxe', () => {
-      const newItem = new Item(716, 1)
+      const newItem = new Item(716, 1, undefined, undefined, 1, true)
       const item = Item.fromNotch({ network_id: 716, count: 1, metadata: 0, stack_id: 1, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 17 }, lvl: { type: 'short', value: 1 } }] } }, RepairCost: { type: 'int', value: 3 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
@@ -365,7 +365,7 @@ describe('set item.enchants', () => {
       expect(newItem).toStrictEqual(item)
     })
     it('efficiency 5 diamond shovel', () => {
-      const newItem = new Item(720, 1)
+      const newItem = new Item(720, 1, undefined, undefined, 2, true)
       const item = Item.fromNotch({ network_id: 720, count: 1, metadata: 0, stack_id: 2, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 15 }, lvl: { type: 'short', value: 5 } }] } }, RepairCost: { type: 'int', value: 2 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
@@ -373,7 +373,7 @@ describe('set item.enchants', () => {
       expect(newItem).toStrictEqual(item)
     })
     it('protection 4, mending diamond leggings', () => {
-      const newItem = new Item(752, 1)
+      const newItem = new Item(752, 1, undefined, undefined, 3, true)
       const item = Item.fromNotch({ network_id: 752, count: 1, metadata: 0, stack_id: 3, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 0 }, lvl: { type: 'short', value: 4 } }, { id: { type: 'short', value: 26 }, lvl: { type: 'short', value: 1 } }] } }, RepairCost: { type: 'int', value: 3 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
@@ -385,14 +385,14 @@ describe('set item.enchants', () => {
     const Item = require('prismarine-item')('bedrock_1.19.1')
 
     it('unenchanted iron hoe', () => {
-      const newItem = new Item(754, 1)
+      const newItem = new Item(754, 1, undefined, undefined, 0, true)
       const item = Item.fromNotch({ network_id: 754, count: 1, metadata: 0, stack_id: 0, has_stack_id: true, extra: { has_nbt: false, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
       expect(newItem).toStrictEqual(item)
     })
     it('silk touch stone axe', () => {
-      const newItem = new Item(743, 1)
+      const newItem = new Item(743, 1, undefined, undefined, 1, true)
       const item = Item.fromNotch({ network_id: 743, count: 1, metadata: 0, stack_id: 1, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 16 }, lvl: { type: 'short', value: 1 } }] } }, RepairCost: { type: 'int', value: 1 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
@@ -400,7 +400,7 @@ describe('set item.enchants', () => {
       expect(newItem).toStrictEqual(item)
     })
     it('lure 3 fishing rod', () => {
-      const newItem = new Item(836, 1)
+      const newItem = new Item(836, 1, undefined, undefined, 2, true)
       const item = Item.fromNotch({ network_id: 836, count: 1, metadata: 0, stack_id: 2, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 24 }, lvl: { type: 'short', value: 3 } }] } }, RepairCost: { type: 'int', value: 2 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs
@@ -408,7 +408,7 @@ describe('set item.enchants', () => {
       expect(newItem).toStrictEqual(item)
     })
     it('fire prot 3, unbreaking 2, respiration 3 diamond helmet', () => {
-      const newItem = new Item(786, 1)
+      const newItem = new Item(786, 1, undefined, undefined, 3, true)
       const item = Item.fromNotch({ network_id: 786, count: 1, metadata: 0, stack_id: 3, has_stack_id: true, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { ench: { type: 'list', value: { type: 'compound', value: [{ id: { type: 'short', value: 1 }, lvl: { type: 'short', value: 3 } }, { id: { type: 'short', value: 17 }, lvl: { type: 'short', value: 2 } }, { id: { type: 'short', value: 6 }, lvl: { type: 'short', value: 3 } }] } }, RepairCost: { type: 'int', value: 3 } } } }, can_place_on: [], can_destroy: [] } })
       const enchs = item.enchants
       newItem.enchants = enchs

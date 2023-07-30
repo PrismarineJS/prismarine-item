@@ -19,7 +19,11 @@ console.log(Item.fromNotch(notchItem))
 
 ## API
 
-### Item(type, count[, metadata, nbt, stackId])
+### Item(type, count[, metadata, nbt, stackId, sentByServer])
+
+* sentByServer - whether this item was sent by the server to the client, so default 
+  initialization will not be done on the item. For example, tools will not have the
+  default item NBT written to them.
 
 #### Item.toNotch(item[, serverAuthoritative])
 
@@ -116,6 +120,9 @@ See https://minecraft.gamepedia.com/Anvil_mechanics#Anvil_Uses
 
 If the current item is a type of Spawn Egg, the protocol name of the entity that will be spawned. For example, a zombie spawn egg on 1.8 will return `Zombie`.
 
+#### item.maxDurability
+
+Max durability for the item, if it supports durability
 
 ## History
 

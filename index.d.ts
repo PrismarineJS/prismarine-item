@@ -5,7 +5,7 @@ import { Tags, TagType } from 'prismarine-nbt'
 export type ItemLike = Item | null
 
 export class Item {
-  constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number);
+  constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number, sentByServer?: boolean);
   type: number;
   slot: number;
   count: number;
@@ -15,6 +15,7 @@ export class Item {
   name: string;
   displayName: string;
   stackSize: number;
+  maxDurability: number;
   durabilityUsed: number;
   get enchants(): { name: string; lvl: number }[];
   set enchants(enchantments: { name: string; lvl: number }[]);
