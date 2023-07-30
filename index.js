@@ -34,6 +34,8 @@ function loader (registryOrVersion) {
           const variation = itemEnum.variations.find((item) => item.metadata === metadata)
           if (variation) this.displayName = variation.displayName
         }
+
+        if (itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
@@ -307,6 +309,7 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
+        if (!this?.nbt?.value?.Damage && value === 0 && !registry.supportFeature('explicitMaxDurability')) return
         if (!this?.nbt) this.nbt = nbt.comp({})
         this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {
