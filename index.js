@@ -3,10 +3,11 @@ const nbt = require('prismarine-nbt')
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
-    constructor (type, count, metadata, nbt, stackId) {
+    constructor (type, count, metadata, nbt, stackId, sentByServer) {
       if (type == null) return
 
       if (metadata instanceof Object) {
+        sentByServer = stackId
         stackId = nbt
         nbt = metadata
         metadata = 0
@@ -19,7 +20,8 @@ function loader (registryOrVersion) {
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
       if (registry.type === 'bedrock') {
-        this.stackId = stackId ?? Item.nextStackId()
+        if (stackId == null && !sentByServer) stackId = Item.nextStackId()
+        this.stackId = stackId
       } else {
         this.stackId = null
       }
@@ -29,14 +31,18 @@ function loader (registryOrVersion) {
         this.name = itemEnum.name
         this.displayName = itemEnum.displayName
         this.stackSize = itemEnum.stackSize
+        this.maxDurability = itemEnum.maxDurability
 
         if ('variations' in itemEnum) {
           const variation = itemEnum.variations.find((item) => item.metadata === metadata)
           if (variation) this.displayName = variation.displayName
         }
 
-        // The 'itemEnum.maxDurability' checks to see if this item can lose durability
-        if (itemEnum.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
+        // Can't initialize fields if the item was sent by the server
+        if (!sentByServer) {
+          // The 'itemEnum.maxDurability' checks to see if this item can lose durability
+          if (registry.supportFeature('explicitMaxDurability') && this.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
+        }
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
@@ -126,24 +132,24 @@ function loader (registryOrVersion) {
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           if (networkItem.present === false) return null
-          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (networkItem.itemId === -1 || networkItem.present === false) return null
-          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData)
+          return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
           if (networkItem.blockId === -1) return null
-          return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData)
+          return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData, null, true)
         }
       } else if (registry.type === 'bedrock') {
         if (networkItem.network_id === 0) return null
 
         if (registry.supportFeature('itemSerializeUsesAuxValue')) {
-          const item = new Item(networkItem.network_id, networkItem.auxiliary_value & 0xff, networkItem.auxiliary_value >> 8, networkItem.nbt?.nbt, stackId)
+          const item = new Item(networkItem.network_id, networkItem.auxiliary_value & 0xff, networkItem.auxiliary_value >> 8, networkItem.nbt?.nbt, stackId, true)
           if (networkItem.can_place_on.length > 0) item.blocksCanPlaceOn = networkItem.can_place_on
           if (networkItem.can_destroy.length > 0) item.blocksCanDestroy = networkItem.can_destroy
           return item
         } else {
-          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id)
+          const item = new Item(networkItem.network_id, networkItem.count, networkItem.metadata, networkItem.extra.nbt?.nbt, networkItem.stack_id, true)
           if (networkItem.extra.can_place_on.length > 0) item.blocksCanPlaceOn = networkItem.extra.can_place_on
           if (networkItem.extra.can_destroy.length > 0) item.blocksCanDestroy = networkItem.extra.can_destroy
           return item
@@ -298,14 +304,12 @@ function loader (registryOrVersion) {
     }
 
     get durabilityUsed () {
-      if (Object.keys(this).length === 0) return null
       const where = registry.supportFeature('whereDurabilityIsSerialized')
-      if (where === 'Damage') {
-        return this?.nbt?.value?.Damage?.value ?? 0
-      } else if (where === 'metadata') {
-        return this.metadata ?? 0
-      }
-      throw new Error("Don't know how to get item durability for this mc version")
+      let ret
+      if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
+      else if (where === 'metadata') ret = this.metadata
+      else throw new Error('unknown durability location')
+      return ret ?? (this.maxDurability ? 0 : null)
     }
 
     set durabilityUsed (value) {
