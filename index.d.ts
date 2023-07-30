@@ -5,13 +5,14 @@ import { Tags, TagType } from 'prismarine-nbt'
 export type ItemLike = Item | null
 
 export class Item {
-  constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number);
+  constructor(type: number, count: number, metadata?: number, nbt?: object, stackId?: number, fromServer = false);
   type: number;
   slot: number;
   count: number;
   metadata: number;
   nbt: Tags[TagType] | null;
   stackId: number | null;
+  fromServer: boolean;
   name: string;
   displayName: string;
   stackSize: number;

@@ -8,7 +8,7 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(256, 1)
 
     it('constructor makes item correctly', () => {
-      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: null }
+      const val = { type: 256, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: null, fromServer: false }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(val)
     })
 
@@ -19,7 +19,7 @@ describe('test based on examples', () => {
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 256, stackId: null, fromServer: false }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -28,7 +28,7 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(472, 1)
 
     it('constructor makes item correctly', () => {
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null, fromServer: false }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(expectedObj)
     })
 
@@ -40,7 +40,7 @@ describe('test based on examples', () => {
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: 472, stackId: null, fromServer: false }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })
@@ -50,18 +50,18 @@ describe('test based on examples', () => {
     const ironShovelItem = new Item(registry.itemsByName.iron_shovel.id, 1)
 
     it('constructor makes item correctly', () => {
-      const val = { type: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: 0 }
+      const val = { type: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, nbt: null, name: 'iron_shovel', displayName: 'Iron Shovel', stackSize: 1, stackId: 0, fromServer: false }
       expect(JSON.parse(JSON.stringify(ironShovelItem))).toStrictEqual(val)
     })
 
     it('use .toNotch', () => {
-      expect(Item.toNotch(ironShovelItem)).toStrictEqual({ network_id: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, has_stack_id: true, stack_id: 0, block_runtime_id: 0, extra: { has_nbt: true, nbt: { version: 1, nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } } }, can_place_on: [], can_destroy: [], blocking_tick: 0 } })
+      expect(Item.toNotch(ironShovelItem)).toStrictEqual({ network_id: registry.itemsByName.iron_shovel.id, count: 1, metadata: 0, has_stack_id: true, stack_id: 0, block_runtime_id: 0, extra: { has_nbt: false, nbt: null, can_place_on: [], can_destroy: [], blocking_tick: 0 } })
     })
 
     it('use .fromNotch', () => {
       const toNotch = Item.toNotch(ironShovelItem)
       const fromNotch = Item.fromNotch(toNotch)
-      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: { name: '', type: 'compound', value: { Damage: { type: 'int', value: 0 } } }, stackSize: 1, type: registry.itemsByName.iron_shovel.id, stackId: 0 }
+      const expectedObj = { count: 1, displayName: 'Iron Shovel', metadata: 0, name: 'iron_shovel', nbt: null, stackSize: 1, type: registry.itemsByName.iron_shovel.id, stackId: 0, fromServer: false }
       expect(JSON.parse(JSON.stringify(fromNotch))).toStrictEqual(expectedObj)
     })
   })

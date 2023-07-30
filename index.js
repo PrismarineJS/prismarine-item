@@ -3,10 +3,11 @@ const nbt = require('prismarine-nbt')
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
-    constructor (type, count, metadata, nbt, stackId) {
+    constructor (type, count, metadata, nbt, stackId, fromServer = false) {
       if (type == null) return
 
       if (metadata instanceof Object) {
+        fromServer = stackId ?? false
         stackId = nbt
         nbt = metadata
         metadata = 0
@@ -16,6 +17,7 @@ function loader (registryOrVersion) {
       this.count = count
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
+      this.fromServer = fromServer
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
       if (registry.type === 'bedrock') {
@@ -97,7 +99,7 @@ function loader (registryOrVersion) {
             can_destroy: item.blocksCanDestroy,
             blocking_tick: 0,
             has_nbt: hasNBT,
-            nbt: hasNBT ? { version: 1, nbt: item.nbt } : undefined
+            nbt: hasNBT ? { version: 1, nbt: item.nbt } : null
           }
         } else {
           return {
@@ -112,7 +114,7 @@ function loader (registryOrVersion) {
               can_destroy: item.blocksCanDestroy,
               blocking_tick: 0,
               has_nbt: hasNBT,
-              nbt: hasNBT ? { version: 1, nbt: item.nbt } : undefined
+              nbt: hasNBT ? { version: 1, nbt: item.nbt } : null
             }
           }
         }
@@ -309,7 +311,7 @@ function loader (registryOrVersion) {
     set durabilityUsed (value) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
-        if (!this?.nbt?.value?.Damage && value === 0 && !registry.supportFeature('explicitMaxDurability')) return
+        if (!this?.nbt?.value?.Damage && value === 0 && !this.fromServer) return
         if (!this?.nbt) this.nbt = nbt.comp({})
         this.nbt.value.Damage = nbt.int(value)
       } else if (where === 'metadata') {

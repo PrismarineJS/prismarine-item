@@ -19,7 +19,7 @@ console.log(Item.fromNotch(notchItem))
 
 ## API
 
-### Item(type, count[, metadata, nbt, stackId])
+### Item(type, count[[, metadata], nbt, stackId, fromServer = false])
 
 #### Item.toNotch(item[, serverAuthoritative])
 
