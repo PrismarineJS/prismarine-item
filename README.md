@@ -126,6 +126,9 @@ Max durability for the item, if it supports durability
 
 ## History
 
+### 1.14.0
+* [Add `maxDurability` field, fix handling item sent by server with new `sentByServer` arg (#106)](https://github.com/PrismarineJS/prismarine-item/commit/d36111d1a754ed9a3db152465b7a930b6582474f) (thanks @extremeheat)
+
 ### 1.13.1
 * [Fix null item handling in toNotch (#103)](https://github.com/PrismarineJS/prismarine-item/commit/0fd5781c1c539207aa932bb637c074e671196f60) (thanks @extremeheat)
 
