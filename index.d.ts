@@ -15,7 +15,7 @@ export class Item {
   name: string;
   displayName: string;
   stackSize: number;
-  maxDurability: boolean;
+  maxDurability: number;
   durabilityUsed: number;
   get enchants(): { name: string; lvl: number }[];
   set enchants(enchantments: { name: string; lvl: number }[]);
