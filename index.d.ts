@@ -23,6 +23,7 @@ export class Item {
   set blocksCanPlaceOn(blockNames: string[]);
   get blocksCanDestroy(): [string][];
   set blocksCanDestroy(blockNames: string[]);
+  getMaxStackSize: () => number
   repairCost: number;
   customName: string | null;
   customLore: string | string[] | null;

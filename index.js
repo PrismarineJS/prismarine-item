@@ -182,6 +182,10 @@ function loader (registryOrVersion) {
         : nbt.list(nbt.string(newLore))
     }
 
+    getMaxStackSize () {
+      return registry.items[this.type].stackSize
+    }
+
     // gets the cost based on previous anvil uses
     get repairCost () {
       return this?.nbt?.value?.RepairCost?.value ?? 0
