@@ -158,6 +158,14 @@ function loader (registryOrVersion) {
       throw new Error("Don't know how to deserialize for this mc version ")
     }
 
+    grow (amount) {
+      this.count += amount
+    }
+
+    shrink (amount) {
+      this.grow(-amount)
+    }
+
     get customName () {
       return this?.nbt?.value?.display?.value?.Name?.value ?? null
     }
