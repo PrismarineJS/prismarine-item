@@ -158,6 +158,14 @@ function loader (registryOrVersion) {
       throw new Error("Don't know how to deserialize for this mc version ")
     }
 
+    getItemEnchantmentLevel (enchantName) {
+      if (!this.enchants) return 0
+      for (const enchant of this.enchants) {
+        if (enchant.name === enchantName) return enchant.lvl
+      }
+      return 0
+    }
+
     get customName () {
       return this?.nbt?.value?.display?.value?.Name?.value ?? null
     }
