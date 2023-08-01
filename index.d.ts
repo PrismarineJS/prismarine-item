@@ -24,7 +24,7 @@ export class Item {
   get blocksCanDestroy(): [string][];
   set blocksCanDestroy(blockNames: string[]);
   repairCost: number;
-  getItemEnchantmentLevel: (enchantName: string) => number
+  getItemEnchantmentLevel(enchantName: string): number
   customName: string | null;
   customLore: string | string[] | null;
   readonly spawnEggMobName: string;
