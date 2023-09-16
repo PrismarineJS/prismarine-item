@@ -33,6 +33,7 @@ function loader (registryOrVersion) {
         this.stackSize = itemEnum.stackSize
         this.maxDurability = itemEnum.maxDurability
 
+        const blockEnum = registry.blocks[type]
         const variations = itemEnum.variations ?? blockEnum.variations
         if (variations) {
           const variation = variations.find(variation => variation.metadata === metadata)
