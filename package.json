@@ -15,7 +15,7 @@
     "url": "git+https://github.com/PrismarineJS/prismarine-item.git"
   },
   "devDependencies": {
-    "@types/node": "^20.2.1",
+    "@types/node": "^22.2.0",
     "expect": "^29.1.2",
     "mocha": "^10.0.0",
     "prismarine-item": "file:.",
