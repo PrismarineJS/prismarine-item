@@ -18,6 +18,10 @@ function loader (registryOrVersion) {
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
 
+      // pc 1.20.5, TODO: properly implement...
+      this.components = []
+      this.removedComponents = []
+
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
       if (registry.type === 'bedrock') {
         if (stackId == null && !sentByServer) stackId = Item.nextStackId()
@@ -77,7 +81,17 @@ function loader (registryOrVersion) {
       const hasNBT = item && item.nbt && Object.keys(item.nbt.value).length > 0
 
       if (registry.type === 'pc') {
-        if (registry.supportFeature('itemSerializationAllowsPresent')) {
+        if (registry.version['>=']('1.20.5')) {
+          if (!item) return { itemCount: 0 }
+          return {
+            itemCount: item.count,
+            itemId: item.type,
+            addedComponentCount: item.components.length,
+            removedComponentCount: item.removedComponents.length,
+            components: item.components,
+            removeComponents: item.removedComponents
+          }
+        } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (item == null) return { present: false }
           return {
             present: true,
@@ -130,7 +144,13 @@ function loader (registryOrVersion) {
 
     static fromNotch (networkItem, stackId) {
       if (registry.type === 'pc') {
-        if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
+        if (registry.version['>=']('1.20.5')) {
+          if (networkItem.itemCount === 0) return null
+          const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
+          item.components = networkItem.components
+          item.removedComponents = networkItem.removeComponents
+          return item
+        } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           if (networkItem.present === false) return null
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
