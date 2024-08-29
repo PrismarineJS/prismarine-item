@@ -19,8 +19,10 @@ function loader (registryOrVersion) {
       this.nbt = nbt || null
 
       // pc 1.20.5, TODO: properly implement...
-      this.components = []
-      this.removedComponents = []
+      if (registry.supportFeature('itemsWithComponents')) {
+        this.components = []
+        this.removedComponents = []
+      }
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
       if (registry.type === 'bedrock') {
@@ -81,7 +83,7 @@ function loader (registryOrVersion) {
       const hasNBT = item && item.nbt && Object.keys(item.nbt.value).length > 0
 
       if (registry.type === 'pc') {
-        if (registry.version['>=']('1.20.5')) {
+        if (registry.supportFeature('itemsWithComponents')) {
           if (!item) return { itemCount: 0 }
           return {
             itemCount: item.count,
@@ -144,7 +146,7 @@ function loader (registryOrVersion) {
 
     static fromNotch (networkItem, stackId) {
       if (registry.type === 'pc') {
-        if (registry.version['>=']('1.20.5')) {
+        if (registry.supportFeature('itemsWithComponents')) {
           if (networkItem.itemCount === 0) return null
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
           item.components = networkItem.components
