@@ -145,7 +145,6 @@ function loader (registryOrVersion) {
     }
 
     static fromNotch (networkItem, stackId) {
-      console.log('fromNotch', arguments)
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
           if (networkItem.itemCount === 0) return null
