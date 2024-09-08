@@ -145,6 +145,7 @@ function loader (registryOrVersion) {
     }
 
     static fromNotch (networkItem, stackId) {
+      console.log('fromNotch', arguments)
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
           console.trace('fromNotch itemsWithComponents')
@@ -165,6 +166,8 @@ function loader (registryOrVersion) {
           console.trace('fromNotch itemSerializationUsesBlockId')
           if (networkItem.blockId === -1) return null
           return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData, null, true)
+        } else {
+          throw new Error('Unknown Minecraft item version')
         }
       } else if (registry.type === 'bedrock') {
         if (networkItem.network_id === 0) return null
