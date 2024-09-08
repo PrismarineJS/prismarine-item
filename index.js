@@ -148,22 +148,18 @@ function loader (registryOrVersion) {
       console.log('fromNotch', arguments)
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
-          console.trace('fromNotch itemsWithComponents')
           if (networkItem.itemCount === 0) return null
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
           item.components = networkItem.components
           item.removedComponents = networkItem.removeComponents
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
-          console.trace('fromNotch itemSerializationWillOnlyUsePresent')
           if (networkItem.present === false) return null
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
-          console.trace('fromNotch itemSerializationAllowsPresent')
           if (networkItem.itemId === -1 || networkItem.present === false) return null
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationUsesBlockId')) {
-          console.trace('fromNotch itemSerializationUsesBlockId')
           if (networkItem.blockId === -1) return null
           return new Item(networkItem.blockId, networkItem.itemCount, networkItem.itemDamage, networkItem.nbtData, null, true)
         } else {
