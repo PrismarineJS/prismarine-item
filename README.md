@@ -126,6 +126,10 @@ Max durability for the item, if it supports durability
 
 ## History
 
+### 1.15.0
+* [1.20.5 (#118)](https://github.com/PrismarineJS/prismarine-item/commit/09815d2778dec72665a16bf6d60ae75d53fb7988) (thanks @extremeheat)
+* [Bump @types/node from 20.14.15 to 22.3.0 (#117)](https://github.com/PrismarineJS/prismarine-item/commit/094e32a5b2f7c581ddea4a8d605276aa389c9285) (thanks @dependabot[bot])
+
 ### 1.14.0
 * [Add `maxDurability` field, fix handling item sent by server with new `sentByServer` arg (#106)](https://github.com/PrismarineJS/prismarine-item/commit/d36111d1a754ed9a3db152465b7a930b6582474f) (thanks @extremeheat)
 
