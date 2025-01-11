@@ -126,6 +126,11 @@ Max durability for the item, if it supports durability
 
 ## History
 
+### 1.16.0
+* [Fix durabilityUsed for items with components (#123)](https://github.com/PrismarineJS/prismarine-item/commit/70fc068ffe73706d97b5b0dced0f15056e369fa4) (thanks @rom1504)
+* [Bump mocha from 10.8.2 to 11.0.1 (#120)](https://github.com/PrismarineJS/prismarine-item/commit/5f72f300f431406fa3804b24efe06b9a84610960) (thanks @dependabot[bot])
+* [Fix typing error in loader function (#122)](https://github.com/PrismarineJS/prismarine-item/commit/7d4cd63f5ffdc50670a3a2f817653c7a58d66725) (thanks @extremeheat)
+
 ### 1.15.0
 * [1.20.5 (#118)](https://github.com/PrismarineJS/prismarine-item/commit/09815d2778dec72665a16bf6d60ae75d53fb7988) (thanks @extremeheat)
 * [Bump @types/node from 20.14.15 to 22.3.0 (#117)](https://github.com/PrismarineJS/prismarine-item/commit/094e32a5b2f7c581ddea4a8d605276aa389c9285) (thanks @dependabot[bot])
