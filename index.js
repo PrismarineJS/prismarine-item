@@ -153,8 +153,10 @@ function loader (registryOrVersion) {
           item.components = networkItem.components
           item.removedComponents = networkItem.removeComponents
           item.componentMap = new Map() // Pf146
-          for (const component of item.components) {
-            item.componentMap.set(component.type, component)
+          if (item.components) {
+            for (const component of item.components) {
+              item.componentMap.set(component.type, component)
+            }
           }
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
