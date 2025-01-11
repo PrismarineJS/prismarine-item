@@ -447,3 +447,21 @@ describe('use Item.equal', () => {
     expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
   })
 })
+
+describe('durabilityUsed with damage component', () => {
+  const Item = require('prismarine-item')('1.20.5')
+
+  it('should return correct durabilityUsed for item with damage component', () => {
+    const item = Item.fromNotch({
+      itemId: 830,
+      itemCount: 1,
+      components: [
+        {
+          type: 'damage',
+          data: 15
+        }
+      ]
+    })
+    expect(item.durabilityUsed).toBe(15)
+  })
+})

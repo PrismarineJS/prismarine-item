@@ -22,6 +22,7 @@ function loader (registryOrVersion) {
       if (registry.supportFeature('itemsWithComponents')) {
         this.components = []
         this.removedComponents = []
+        this.componentMap = new Map() // Pf146
       }
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
@@ -151,6 +152,12 @@ function loader (registryOrVersion) {
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
           item.components = networkItem.components
           item.removedComponents = networkItem.removeComponents
+          item.componentMap = new Map() // Pf146
+          if (item.components) {
+            for (const component of item.components) {
+              item.componentMap.set(component.type, component)
+            }
+          }
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           if (networkItem.present === false) return null
@@ -330,9 +337,17 @@ function loader (registryOrVersion) {
     get durabilityUsed () {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       let ret
-      if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
-      else if (where === 'metadata') ret = this.metadata
-      else throw new Error('unknown durability location')
+
+      if (this.componentMap && this.componentMap.has('damage')) { // Pf146
+        ret = this.componentMap.get('damage').data // Pdaf7
+      }
+
+      if (ret === undefined) {
+        if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
+        else if (where === 'metadata') ret = this.metadata
+        else throw new Error('unknown durability location')
+      }
+
       return ret ?? (this.maxDurability ? 0 : null)
     }
 
