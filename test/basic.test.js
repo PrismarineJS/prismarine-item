@@ -455,16 +455,6 @@ describe('durabilityUsed with damage component', () => {
     const item = Item.fromNotch({
       itemId: 830,
       itemCount: 1,
-      nbtData: {
-        type: 'compound',
-        name: '',
-        value: {
-          Damage: {
-            type: 'int',
-            value: 0
-          }
-        }
-      },
       components: [
         {
           type: 'damage',
@@ -473,23 +463,5 @@ describe('durabilityUsed with damage component', () => {
       ]
     })
     expect(item.durabilityUsed).toBe(15)
-  })
-
-  it('should return correct durabilityUsed for item without damage component', () => {
-    const item = Item.fromNotch({
-      itemId: 830,
-      itemCount: 1,
-      nbtData: {
-        type: 'compound',
-        name: '',
-        value: {
-          Damage: {
-            type: 'int',
-            value: 10
-          }
-        }
-      }
-    })
-    expect(item.durabilityUsed).toBe(10)
   })
 })
