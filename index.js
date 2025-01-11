@@ -22,6 +22,7 @@ function loader (registryOrVersion) {
       if (registry.supportFeature('itemsWithComponents')) {
         this.components = []
         this.removedComponents = []
+        this.componentMap = new Map() // Pf146
       }
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
@@ -151,6 +152,10 @@ function loader (registryOrVersion) {
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
           item.components = networkItem.components
           item.removedComponents = networkItem.removeComponents
+          item.componentMap = new Map() // Pf146
+          for (const component of item.components) {
+            item.componentMap.set(component.type, component)
+          }
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           if (networkItem.present === false) return null
@@ -331,11 +336,8 @@ function loader (registryOrVersion) {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       let ret
 
-      if (this.components && this.components.length > 0) {
-        const damageComponent = this.components.find(component => component.type === 'damage')
-        if (damageComponent) {
-          ret = damageComponent.data
-        }
+      if (this.componentMap && this.componentMap.has('damage')) { // Pf146
+        ret = this.componentMap.get('damage').data // Pdaf7
       }
 
       if (ret === undefined) {
