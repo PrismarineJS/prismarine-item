@@ -452,33 +452,41 @@ describe('durabilityUsed with damage component', () => {
   const Item = require('prismarine-item')('1.20.5')
 
   it('should return correct durabilityUsed for item with damage component', () => {
-    const item = new Item(830, 1, 0, {
-      type: 'compound',
-      name: '',
-      value: {
-        Damage: {
-          type: 'int',
-          value: 0
+    const item = Item.fromNotch({
+      itemId: 830,
+      itemCount: 1,
+      nbtData: {
+        type: 'compound',
+        name: '',
+        value: {
+          Damage: {
+            type: 'int',
+            value: 0
+          }
         }
-      }
+      },
+      components: [
+        {
+          type: 'damage',
+          data: 15
+        }
+      ]
     })
-    item.components = [
-      {
-        type: 'damage',
-        data: 15
-      }
-    ]
     expect(item.durabilityUsed).toBe(15)
   })
 
   it('should return correct durabilityUsed for item without damage component', () => {
-    const item = new Item(830, 1, 0, {
-      type: 'compound',
-      name: '',
-      value: {
-        Damage: {
-          type: 'int',
-          value: 10
+    const item = Item.fromNotch({
+      itemId: 830,
+      itemCount: 1,
+      nbtData: {
+        type: 'compound',
+        name: '',
+        value: {
+          Damage: {
+            type: 'int',
+            value: 10
+          }
         }
       }
     })
