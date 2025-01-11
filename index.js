@@ -330,9 +330,20 @@ function loader (registryOrVersion) {
     get durabilityUsed () {
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       let ret
-      if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
-      else if (where === 'metadata') ret = this.metadata
-      else throw new Error('unknown durability location')
+
+      if (this.components && this.components.length > 0) {
+        const damageComponent = this.components.find(component => component.type === 'damage')
+        if (damageComponent) {
+          ret = damageComponent.data
+        }
+      }
+
+      if (ret === undefined) {
+        if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
+        else if (where === 'metadata') ret = this.metadata
+        else throw new Error('unknown durability location')
+      }
+
       return ret ?? (this.maxDurability ? 0 : null)
     }
 
