@@ -40,4 +40,4 @@ export class Item {
   static nextStackId(): number;
 }
 
-export default function loader(mcVersion: string): typeof Item;
+export default function loader(mcVersion: string | object): typeof Item;
