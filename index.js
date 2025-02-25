@@ -242,7 +242,7 @@ function loader (registryOrVersion) {
         }
 
         return itemEnch.map((ench) => ({ lvl: ench.lvl, name: registry.enchantments[ench.id]?.name || null }))
-      } else if (typeOfEnchantLevelValue === 'string' && enchantNbtKey === 'Enchantments') {
+      } else if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'Enchantments') {
         let itemEnch = []
 
         if (useStoredEnchantments && this?.nbt?.value?.StoredEnchantments) {
@@ -256,6 +256,21 @@ function loader (registryOrVersion) {
         return itemEnch.map((ench) => ({
           lvl: ench.lvl,
           name: typeof ench.id === 'string' ? ench.id.replace('minecraft:', '') : null
+        }))
+      } else if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'componentEnchantments') {
+        let itemEnch = []
+
+        if (useStoredEnchantments && this?.components?.some(c => c.type === "stored_enchantments")) {
+          itemEnch = this.components.find(c => c.type === "stored_enchantments").data.enchantments;
+        } else if (this?.components?.some(c => c.type === "enchantments")) {
+          itemEnch = this.components.find(c => c.type === "enchantments").data.enchantments;
+        } else {
+          itemEnch = []
+        }
+
+        return itemEnch.map((ench) => ({
+          lvl: ench.level,
+          name: registry.enchantments[ench.id]?.name || null
         }))
       }
       throw new Error("Don't know how to get the enchants from an item on this mc version")
