@@ -260,10 +260,10 @@ function loader (registryOrVersion) {
       } else if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'componentEnchantments') {
         let itemEnch = []
 
-        if (useStoredEnchantments && this?.components?.some(c => c.type === "stored_enchantments")) {
-          itemEnch = this.components.find(c => c.type === "stored_enchantments").data.enchantments;
-        } else if (this?.components?.some(c => c.type === "enchantments")) {
-          itemEnch = this.components.find(c => c.type === "enchantments").data.enchantments;
+        if (useStoredEnchantments && this?.components?.some(c => c.type === 'stored_enchantments')) {
+          itemEnch = this.components.find(c => c.type === 'stored_enchantments').data.enchantments
+        } else if (this?.components?.some(c => c.type === 'enchantments')) {
+          itemEnch = this.components.find(c => c.type === 'enchantments').data.enchantments
         } else {
           itemEnch = []
         }
