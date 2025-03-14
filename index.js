@@ -244,7 +244,7 @@ function loader (registryOrVersion) {
       this.nbt.value.RepairCost = nbt.int(newRepairCost)
     }
 
-    get customModel() {
+    get customModel () {
       if (this.componentMap?.has('custom_model')) {
         return this.componentMap.get('custom_model').data
       }
