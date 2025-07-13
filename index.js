@@ -84,7 +84,21 @@ function loader (registryOrVersion) {
       const hasNBT = item && item.nbt && Object.keys(item.nbt.value).length > 0
 
       if (registry.type === 'pc') {
-        if (registry.supportFeature('itemsWithComponents')) {
+        if (registry.supportFeature('creativeSetSlotUsesUntrustedSlot')) {
+          // 1.21.5+ uses UntrustedSlot format for creative set slot
+          if (item == null) return { present: false }
+          return {
+            present: true,
+            item: {
+              itemId: item.type,
+              itemCount: item.count,
+              addedComponentCount: 0,
+              removedComponentCount: 0,
+              components: [],
+              removeComponents: []
+            }
+          }
+        } else if (registry.supportFeature('itemsWithComponents')) {
           if (!item) return { itemCount: 0 }
           return {
             itemCount: item.count,
@@ -147,7 +161,12 @@ function loader (registryOrVersion) {
 
     static fromNotch (networkItem, stackId) {
       if (registry.type === 'pc') {
-        if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
+        if (registry.supportFeature('creativeSetSlotUsesUntrustedSlot')) {
+          // 1.21.5+ uses UntrustedSlot format for creative set slot
+          if (networkItem.present === false) return null
+          if (!networkItem.item) return null
+          return new Item(networkItem.item.itemId, networkItem.item.itemCount, null, null, true)
+        } else if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
           if (networkItem.itemCount === 0) return null
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
           item.components = networkItem.components
