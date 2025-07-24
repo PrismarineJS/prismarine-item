@@ -85,7 +85,7 @@ function loader (registryOrVersion) {
 
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemsWithComponents')) {
-          if (!item) return { itemCount: 0 }
+          if (!item) return { itemCount: 0, components: [], removeComponents: [] }
           return {
             present: true,
             itemCount: item.count,
