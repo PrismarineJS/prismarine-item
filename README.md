@@ -126,6 +126,11 @@ Max durability for the item, if it supports durability
 
 ## History
 
+### 1.17.0
+* [Bump @types/node from 22.16.5 to 24.1.0 (#144)](https://github.com/PrismarineJS/prismarine-item/commit/db0c77fcd747467cd256f0786d252d617745fbe7) (thanks @dependabot[bot])
+* [support untrusted slot for 1.21.5 (#141)](https://github.com/PrismarineJS/prismarine-item/commit/9a539f79b67f750b75fc106042a4d096f9e2ede7) (thanks @rom1504)
+* [node 22 (#125)](https://github.com/PrismarineJS/prismarine-item/commit/e808e997b7aa3e017755eb9aba593d5d1924453a) (thanks @rom1504)
+
 ### 1.16.0
 * [Fix durabilityUsed for items with components (#123)](https://github.com/PrismarineJS/prismarine-item/commit/70fc068ffe73706d97b5b0dced0f15056e369fa4) (thanks @rom1504)
 * [Bump mocha from 10.8.2 to 11.0.1 (#120)](https://github.com/PrismarineJS/prismarine-item/commit/5f72f300f431406fa3804b24efe06b9a84610960) (thanks @dependabot[bot])
