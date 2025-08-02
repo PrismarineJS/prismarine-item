@@ -191,21 +191,35 @@ function loader (registryOrVersion) {
     }
 
     get customName () {
+      if (this.componentMap?.has('custom_name')) {
+        return this.componentMap.get('custom_name').data
+      }
       return this?.nbt?.value?.display?.value?.Name?.value ?? null
     }
 
     set customName (newName) {
+      if (this.componentMap) {
+        this.componentMap.set('custom_name', { type: 'custom_name', data: newName })
+        return
+      }
       if (!this.nbt) this.nbt = nbt.comp({})
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       this.nbt.value.display.value.Name = nbt.string(newName)
     }
 
     get customLore () {
+      if (this.componentMap?.has('lore')) {
+        return this.componentMap.get('lore').data
+      }
       if (!this.nbt?.value?.display) return null
       return nbt.simplify(this.nbt).display.Lore ?? null
     }
 
     set customLore (newLore) {
+      if (this.componentMap) {
+        this.componentMap.set('lore', { type: 'lore', data: newLore })
+        return
+      }
       if (!this.nbt) this.nbt = nbt.comp({})
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
 
@@ -216,13 +230,26 @@ function loader (registryOrVersion) {
 
     // gets the cost based on previous anvil uses
     get repairCost () {
+      if (this.componentMap?.has('repair_cost')) {
+        return this.componentMap.get('repair_cost').data
+      }
       return this?.nbt?.value?.RepairCost?.value ?? 0
     }
 
     set repairCost (newRepairCost) {
+      if (this.componentMap) {
+        this.componentMap.set('repair_cost', { type: 'repair_cost', data: newRepairCost })
+        return
+      }
       if (!this?.nbt) this.nbt = nbt.comp({})
-
       this.nbt.value.RepairCost = nbt.int(newRepairCost)
+    }
+
+    get customModel () {
+      if (this.componentMap?.has('custom_model')) {
+        return this.componentMap.get('custom_model').data
+      }
+      return this?.nbt?.value?.CustomModelData?.value ?? null
     }
 
     get enchants () {
@@ -230,6 +257,10 @@ function loader (registryOrVersion) {
       const enchantNbtKey = registry.supportFeature('nbtNameForEnchant')
       const typeOfEnchantLevelValue = registry.supportFeature('typeOfValueForEnchantLevel')
       const useStoredEnchantments = registry.supportFeature('booksUseStoredEnchantments') && this.name === 'enchanted_book'
+
+      if (this.componentMap?.has('enchantments')) {
+        return this.componentMap.get('enchantments').data
+      }
 
       if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'ench') {
         let itemEnch = []
