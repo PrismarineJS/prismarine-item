@@ -85,8 +85,9 @@ function loader (registryOrVersion) {
 
       if (registry.type === 'pc') {
         if (registry.supportFeature('itemsWithComponents')) {
-          if (!item) return { itemCount: 0 }
+          if (!item) return { itemCount: 0, components: [], removeComponents: [] }
           return {
+            present: true,
             itemCount: item.count,
             itemId: item.type,
             addedComponentCount: item.components.length,
@@ -147,6 +148,7 @@ function loader (registryOrVersion) {
 
     static fromNotch (networkItem, stackId) {
       if (registry.type === 'pc') {
+        if (networkItem.present === false) return null
         if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
           if (networkItem.itemCount === 0) return null
           const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
@@ -160,7 +162,6 @@ function loader (registryOrVersion) {
           }
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
-          if (networkItem.present === false) return null
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
         } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (networkItem.itemId === -1 || networkItem.present === false) return null
