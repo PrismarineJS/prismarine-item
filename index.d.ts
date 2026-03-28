@@ -26,6 +26,7 @@ export class Item {
   repairCost: number;
   customName: string | null;
   customLore: string | string[] | null;
+  get customModel(): string | null;
   readonly spawnEggMobName: string;
   static equal(item1: Item, item2: Item, matchStackSize?: boolean, matchNbt?: boolean): boolean;
   static toNotch(item: ItemLike, serverAuthoritative?: boolean): object;
