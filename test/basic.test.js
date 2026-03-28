@@ -465,3 +465,175 @@ describe('durabilityUsed with damage component', () => {
     expect(item.durabilityUsed).toBe(15)
   })
 })
+
+describe('componentMap getters (1.20.5+)', () => {
+  const Item = require('prismarine-item')('1.20.5')
+
+  describe('customName', () => {
+    it('reads from componentMap when custom_name is present', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'custom_name', data: '{"text":"My Sword"}' }
+        ]
+      })
+      expect(item.customName).toBe('{"text":"My Sword"}')
+    })
+
+    it('falls back to null when componentMap has no custom_name and no nbt', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: []
+      })
+      expect(item.customName).toBe(null)
+    })
+  })
+
+  describe('customLore', () => {
+    it('reads from componentMap when lore is present', () => {
+      const loreData = ['{"text":"Line 1"}', '{"text":"Line 2"}']
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'lore', data: loreData }
+        ]
+      })
+      expect(item.customLore).toStrictEqual(loreData)
+    })
+
+    it('falls back to null when componentMap has no lore and no nbt', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: []
+      })
+      expect(item.customLore).toBe(null)
+    })
+  })
+
+  describe('repairCost', () => {
+    it('reads from componentMap when repair_cost is present', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'repair_cost', data: 7 }
+        ]
+      })
+      expect(item.repairCost).toBe(7)
+    })
+
+    it('falls back to 0 when componentMap has no repair_cost and no nbt', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: []
+      })
+      expect(item.repairCost).toBe(0)
+    })
+  })
+
+  describe('enchants', () => {
+    it('reads from componentMap when enchantments is present', () => {
+      const enchData = [{ name: 'sharpness', lvl: 5 }]
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'enchantments', data: enchData }
+        ]
+      })
+      expect(item.enchants).toStrictEqual(enchData)
+    })
+
+    it('returns empty array when componentMap has no enchantments and no nbt', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: []
+      })
+      expect(item.enchants).toStrictEqual([])
+    })
+  })
+
+  describe('customModel', () => {
+    it('reads from componentMap when custom_model is present', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'custom_model', data: 'my_model' }
+        ]
+      })
+      expect(item.customModel).toBe('my_model')
+    })
+
+    it('falls back to null when componentMap has no custom_model and no nbt', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: []
+      })
+      expect(item.customModel).toBe(null)
+    })
+  })
+})
+
+describe('componentMap setters (1.20.5+)', () => {
+  const Item = require('prismarine-item')('1.20.5')
+  const registry = require('prismarine-registry')('1.20.5')
+
+  it('customName setter writes to componentMap when it exists', () => {
+    const item = new Item(registry.itemsByName.diamond_sword.id, 1)
+    item.customName = '{"text":"Cool Sword"}'
+    expect(item.componentMap.get('custom_name')).toStrictEqual({ type: 'custom_name', data: '{"text":"Cool Sword"}' })
+    expect(item.customName).toBe('{"text":"Cool Sword"}')
+  })
+
+  it('customLore setter writes to componentMap when it exists', () => {
+    const item = new Item(registry.itemsByName.diamond_sword.id, 1)
+    const lore = ['{"text":"Lore line"}']
+    item.customLore = lore
+    expect(item.componentMap.get('lore')).toStrictEqual({ type: 'lore', data: lore })
+    expect(item.customLore).toStrictEqual(lore)
+  })
+
+  it('repairCost setter writes to componentMap when it exists', () => {
+    const item = new Item(registry.itemsByName.diamond_sword.id, 1)
+    item.repairCost = 5
+    expect(item.componentMap.get('repair_cost')).toStrictEqual({ type: 'repair_cost', data: 5 })
+    expect(item.repairCost).toBe(5)
+  })
+})
+
+describe('componentMap preferred over nbt (1.20.5+)', () => {
+  const Item = require('prismarine-item')('1.20.5')
+
+  it('customName from componentMap takes priority over nbt', () => {
+    const item = Item.fromNotch({
+      itemId: 830,
+      itemCount: 1,
+      components: [
+        { type: 'custom_name', data: '{"text":"From Components"}' }
+      ]
+    })
+    // Manually set nbt to simulate both being present
+    item.nbt = { value: { display: { value: { Name: { value: '{"text":"From NBT"}' } } } } }
+    expect(item.customName).toBe('{"text":"From Components"}')
+  })
+
+  it('repairCost from componentMap takes priority over nbt', () => {
+    const item = Item.fromNotch({
+      itemId: 830,
+      itemCount: 1,
+      components: [
+        { type: 'repair_cost', data: 10 }
+      ]
+    })
+    item.nbt = { value: { RepairCost: { value: 3 } } }
+    expect(item.repairCost).toBe(10)
+  })
+})
