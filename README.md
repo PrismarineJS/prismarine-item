@@ -126,6 +126,12 @@ Max durability for the item, if it supports durability
 
 ## History
 
+### 1.18.0
+* [Update CI to Node 24 (#174)](https://github.com/PrismarineJS/prismarine-item/commit/7793423620c73ec00caa60650937ab9e67a91cab) (thanks @rom1504)
+* [fix: use components instead of nbt when available (fix latest versions) (#127)](https://github.com/PrismarineJS/prismarine-item/commit/029a6738402b1471831258a60aff05ecd5c753c0) (thanks @zardoy)
+* [Fix publish condition for npm-publish v4 (#173)](https://github.com/PrismarineJS/prismarine-item/commit/37126428a32694524945f7f51e0dbac32f026b07) (thanks @rom1504)
+* [Switch to trusted publishing via OIDC (#172)](https://github.com/PrismarineJS/prismarine-item/commit/07878824718d3db2643e1b379a2691a2f62b96ff) (thanks @rom1504)
+
 ### 1.17.0
 * [Bump @types/node from 22.16.5 to 24.1.0 (#144)](https://github.com/PrismarineJS/prismarine-item/commit/db0c77fcd747467cd256f0786d252d617745fbe7) (thanks @dependabot[bot])
 * [support untrusted slot for 1.21.5 (#141)](https://github.com/PrismarineJS/prismarine-item/commit/9a539f79b67f750b75fc106042a4d096f9e2ede7) (thanks @rom1504)
