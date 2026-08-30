@@ -24,14 +24,27 @@ jobs:
     - run: npm install
     - run: npm test
 
-  e2e:
+  prepare-e2e-versions:
 
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - id: set-matrix
+      run: echo "matrix=$(node -p "JSON.stringify(require('./test/e2e/testedVersions.json'))")" >> $GITHUB_OUTPUT
+
+  e2e:
+
+    needs: prepare-e2e-versions
+    runs-on: ubuntu-latest
+    name: MC ${{ matrix.version }}
 
     strategy:
       fail-fast: false
       matrix:
-        version: ['1.21.5', '1.21.11']
+        version: ${{ fromJson(needs.prepare-e2e-versions.outputs.matrix) }}
 
     steps:
     - uses: actions/checkout@v2
