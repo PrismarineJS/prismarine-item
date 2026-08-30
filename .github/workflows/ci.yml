@@ -23,3 +23,27 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm test
+
+  e2e:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['1.21.5', '1.21.11']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 24.x
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 21
+    - run: npm install
+    - run: npm run e2e
+      env:
+        MC_VERSION: ${{ matrix.version }}
