@@ -78,6 +78,17 @@ describe('hashed slot', () => {
         }
       })
     }
+
+    // A hasher no vector exercises is only tested against itself. Exempt are
+    // hashers for components no vectored version has (add a vectors key for
+    // the version that introduces them).
+    it('exercises every hasher in at least one vector', () => {
+      const { hashedTypes } = hashedSlot(require('prismarine-registry')(Object.keys(vectors)[0]))
+      const tested = new Set(Object.values(vectors).flat().flatMap(vector => vector.components.map(c => c.type)))
+      const available = new Set(Object.keys(vectors).flatMap(version =>
+        Object.values(require('prismarine-registry')(version).protocol.types.SlotComponentType[1].mappings)))
+      expect(hashedTypes.filter(type => available.has(type) && !tested.has(type))).toStrictEqual([])
+    })
   })
 
   it('toHashedNotch throws before 1.21.5', () => {

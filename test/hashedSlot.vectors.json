@@ -726,6 +726,248 @@
    "hashes": {
     "charged_projectiles": 1004030535
    }
+  },
+  {
+   "give": "chest[container_loot={loot_table:\"minecraft:chests/simple_dungeon\"}]",
+   "components": [
+    {
+     "type": "container_loot",
+     "data": {
+      "type": "compound",
+      "value": {
+       "loot_table": {
+        "type": "string",
+        "value": "minecraft:chests/simple_dungeon"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "container_loot": -2040272502
+   }
+  },
+  {
+   "give": "debug_stick[debug_stick_state={\"minecraft:oak_log\":\"axis\"}]",
+   "components": [
+    {
+     "type": "debug_stick_state",
+     "data": {
+      "type": "compound",
+      "value": {
+       "minecraft:oak_log": {
+        "type": "string",
+        "value": "axis"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "debug_stick_state": -292554263
+   }
+  },
+  {
+   "give": "axolotl_bucket[bucket_entity_data={Health:14f,Variant:2}]",
+   "components": [
+    {
+     "type": "bucket_entity_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "Variant": {
+        "type": "int",
+        "value": 2
+       },
+       "Health": {
+        "type": "float",
+        "value": 14
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "bucket_entity_data": -1382229666
+   }
+  },
+  {
+   "give": "knowledge_book[recipes=[\"minecraft:crafting_table\",\"minecraft:oak_planks\"]]",
+   "components": [
+    {
+     "type": "recipes",
+     "data": {
+      "type": "list",
+      "value": {
+       "type": "string",
+       "value": [
+        "minecraft:crafting_table",
+        "minecraft:oak_planks"
+       ]
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "recipes": -271537018
+   }
+  },
+  {
+   "give": "chest[block_entity_data={id:\"minecraft:chest\",CustomName:\"locked\"}]",
+   "components": [
+    {
+     "type": "block_entity_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "CustomName": {
+        "type": "string",
+        "value": "locked"
+       },
+       "id": {
+        "type": "string",
+        "value": "minecraft:chest"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "block_entity_data": 1780057539
+   }
+  },
+  {
+   "give": "stone[glider={}]",
+   "components": [
+    {
+     "type": "glider"
+    }
+   ],
+   "hashes": {
+    "glider": -982207288
+   }
+  },
+  {
+   "give": "player_head[note_block_sound=\"minecraft:block.note_block.bell\"]",
+   "components": [
+    {
+     "type": "note_block_sound",
+     "data": "minecraft:block.note_block.bell"
+    }
+   ],
+   "hashes": {
+    "note_block_sound": -1881406566
+   }
+  },
+  {
+   "give": "stone[item_name={text:\"n\",color:\"blue\"}]",
+   "components": [
+    {
+     "type": "item_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "color": {
+        "type": "string",
+        "value": "blue"
+       },
+       "text": {
+        "type": "string",
+        "value": "n"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "item_name": -1566961137
+   }
+  },
+  {
+   "give": "wolf_spawn_egg[wolf/collar=blue]",
+   "components": [
+    {
+     "type": "wolf/collar",
+     "data": 11
+    }
+   ],
+   "hashes": {
+    "wolf/collar": 199633461
+   }
+  },
+  {
+   "give": "cat_spawn_egg[cat/collar=lime]",
+   "components": [
+    {
+     "type": "cat/collar",
+     "data": 5
+    }
+   ],
+   "hashes": {
+    "cat/collar": -1201809287
+   }
+  },
+  {
+   "give": "sheep_spawn_egg[sheep/color=pink]",
+   "components": [
+    {
+     "type": "sheep/color",
+     "data": 6
+    }
+   ],
+   "hashes": {
+    "sheep/color": -906736439
+   }
+  },
+  {
+   "give": "shulker_spawn_egg[shulker/color=cyan]",
+   "components": [
+    {
+     "type": "shulker/color",
+     "data": 9
+    }
+   ],
+   "hashes": {
+    "shulker/color": -458829651
+   }
+  },
+  {
+   "give": "tropical_fish_bucket[tropical_fish/base_color=orange,tropical_fish/pattern_color=purple]",
+   "components": [
+    {
+     "type": "tropical_fish/base_color",
+     "data": 1
+    },
+    {
+     "type": "tropical_fish/pattern_color",
+     "data": 10
+    }
+   ],
+   "hashes": {
+    "tropical_fish/base_color": 1688618917,
+    "tropical_fish/pattern_color": 484716633
+   }
+  },
+  {
+   "give": "player_head[profile={name:\"e2e\",id:[I;1,2,3,4],properties:[{name:\"textures\",value:\"e30=\"}]}]",
+   "components": [
+    {
+     "type": "profile",
+     "data": {
+      "name": "e2e",
+      "uuid": "00000001-0000-0002-0000-000300000004",
+      "properties": [
+       {
+        "name": "textures",
+        "value": "e30="
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "profile": 988113531
+   }
   }
  ],
  "1.21.11": [
@@ -1664,6 +1906,18 @@
    ],
    "hashes": {
     "lock": -982207288
+   }
+  },
+  {
+   "give": "stone[minimum_attack_charge=0.5f]",
+   "components": [
+    {
+     "type": "minimum_attack_charge",
+     "data": 0.5
+    }
+   ],
+   "hashes": {
+    "minimum_attack_charge": -1631070359
    }
   }
  ]
