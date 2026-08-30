@@ -30,6 +30,12 @@ console.log(Item.fromNotch(notchItem))
 Take an `Item` instance and returns it in the format of the minecraft packets.
 - serverAuthoritative: Whether the server is using server authoritative inventory (whether or not to write a Stack ID)
 
+#### Item.toHashedNotch(item)
+
+Take an `Item` instance and return it as the `HashedSlot` that 1.21.5+ `window_click` packets carry: the item id, count, a CRC32C hash per added component (as the vanilla client computes it) and the removed component types. Returns `null` for an empty slot. Throws on versions whose protocol has no `HashedSlot`.
+
+Components whose hash can't be reproduced (see `lib/hashedSlot.js`) are sent with hash 0, which makes the server resend that slot after the click.
+
 #### Item.fromNotch(item[, stackId])
 
 Take an `item` in the format of the minecraft packets and return an `Item` instance.
