@@ -1,0 +1,97 @@
+{
+  "types": {
+    "item_stack": ["map", { "id": "string", "count": "int" }],
+    "filterable_string": ["map", { "raw": "string", "filtered": { "type": "string", "optional": true } }],
+    "filterable_text": ["map", { "raw": "text", "filtered": { "type": "text", "optional": true } }],
+    "profile_property": ["map", {
+      "name": "string",
+      "value": "string",
+      "signature": { "type": "string", "optional": true }
+    }],
+    "attribute_modifier": ["map", {
+      "type": "string",
+      "id": "string",
+      "amount": "double",
+      "operation": "string",
+      "slot": { "type": "string", "default": "any" },
+      "display": { "type": "attribute_modifier_display", "optional": true, "default": { "type": "default" } }
+    }],
+    "attribute_modifier_display": ["map", { "type": "string", "value": { "type": "text", "optional": true } }]
+  },
+  "components": {
+    "custom_data": "nbt",
+    "map_decorations": "nbt",
+    "lock": "nbt",
+    "container_loot": "nbt",
+    "debug_stick_state": "nbt",
+    "bucket_entity_data": "nbt",
+    "recipes": "nbt",
+    "entity_data": "nbt",
+    "block_entity_data": "nbt",
+    "max_stack_size": "int",
+    "max_damage": "int",
+    "damage": "int",
+    "repair_cost": "int",
+    "dyed_color": "int",
+    "map_color": "int",
+    "map_id": "int",
+    "ominous_bottle_amplifier": "int",
+    "unbreakable": ["map", {}],
+    "glider": ["map", {}],
+    "intangible_projectile": ["map", {}],
+    "enchantment_glint_override": "boolean",
+    "potion_duration_scale": "float",
+    "minimum_attack_charge": "float",
+    "item_model": "string",
+    "tooltip_style": "string",
+    "note_block_sound": "string",
+    "rarity": "string",
+    "custom_name": "text",
+    "item_name": "text",
+    "lore": ["list", "text"],
+    "enchantments": ["dict", "int"],
+    "stored_enchantments": ["dict", "int"],
+    "base_color": "string",
+    "wolf/collar": "string",
+    "cat/collar": "string",
+    "sheep/color": "string",
+    "shulker/color": "string",
+    "tropical_fish/base_color": "string",
+    "tropical_fish/pattern_color": "string",
+    "block_state": ["dict", "string"],
+    "food": ["map", {
+      "nutrition": "int",
+      "saturation": "float",
+      "can_always_eat": { "type": "boolean", "default": false }
+    }],
+    "tooltip_display": ["map", {
+      "hide_tooltip": { "type": "boolean", "default": false },
+      "hidden_components": { "type": ["list", "string"], "default": [] }
+    }],
+    "custom_model_data": ["map", {
+      "floats": { "type": ["list", "float"], "default": [] },
+      "flags": { "type": ["list", "boolean"], "default": [] },
+      "strings": { "type": ["list", "string"], "default": [] },
+      "colors": { "type": ["list", "int"], "default": [] }
+    }],
+    "writable_book_content": ["map", {
+      "pages": { "type": ["list", "filterable_string"], "default": [] }
+    }],
+    "written_book_content": ["map", {
+      "title": "filterable_string",
+      "author": "string",
+      "generation": { "type": "int", "default": 0 },
+      "pages": { "type": ["list", "filterable_text"], "default": [] },
+      "resolved": { "type": "boolean", "default": false }
+    }],
+    "charged_projectiles": ["list", "item_stack"],
+    "bundle_contents": ["list", "item_stack"],
+    "container": ["list", ["map", { "slot": "int", "item": "item_stack" }]],
+    "profile": ["map", {
+      "name": { "type": "string", "optional": true },
+      "id": { "type": "int_array", "optional": true },
+      "properties": { "type": ["list", "profile_property"], "default": [] }
+    }],
+    "attribute_modifiers": ["list", "attribute_modifier"]
+  }
+}
