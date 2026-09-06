@@ -37,6 +37,7 @@
   "homepage": "https://github.com/PrismarineJS/prismarine-item#readme",
   "dependencies": {
     "prismarine-nbt": "^2.0.0",
-    "prismarine-registry": "^1.4.0"
+    "prismarine-registry": "^1.4.0",
+    "protodef": "^1.20.0"
   }
 }

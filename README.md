@@ -34,7 +34,7 @@ Take an `Item` instance and returns it in the format of the minecraft packets.
 
 Take an `Item` instance and return it as the `HashedSlot` that 1.21.5+ `window_click` packets carry: the item id, count, a CRC32C hash per added component (as the vanilla client computes it) and the removed component types. Returns `null` for an empty slot. Throws on versions whose protocol has no `HashedSlot`.
 
-Components whose hash can't be reproduced (see `lib/hashedSlot.js`) are sent with hash 0, which makes the server resend that slot after the click.
+Hashes are taken over each component's codec form (the shape a data pack writes), described as protodef types in `lib/hashedSlot.json` on top of the `hash` datatype; `lib/hashedSlot.js` maps the network form onto it. Components whose hash can't be reproduced are sent with hash 0, which makes the server resend that slot after the click.
 
 #### Item.fromNotch(item[, stackId])
 
