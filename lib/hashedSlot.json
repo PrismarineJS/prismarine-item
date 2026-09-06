@@ -1,113 +1,97 @@
 {
   "types": {
-    "item_stack": ["hashops_map", [
-      { "name": "id", "type": "hashops_string" },
-      { "name": "count", "type": "hashops_int" }
-    ]],
-    "filterable_string": ["hashops_map", [
-      { "name": "raw", "type": "hashops_string" },
-      { "name": "filtered", "type": "hashops_string", "optional": true }
-    ]],
-    "filterable_text": ["hashops_map", [
-      { "name": "raw", "type": "hashops_text" },
-      { "name": "filtered", "type": "hashops_text", "optional": true }
-    ]],
-    "profile_property": ["hashops_map", [
-      { "name": "name", "type": "hashops_string" },
-      { "name": "value", "type": "hashops_string" },
-      { "name": "signature", "type": "hashops_string", "optional": true }
-    ]],
-    "attribute_modifier": ["hashops_map", [
-      { "name": "type", "type": "hashops_string" },
-      { "name": "id", "type": "hashops_string" },
-      { "name": "amount", "type": "hashops_double" },
-      { "name": "operation", "type": "hashops_string" },
-      { "name": "slot", "type": "hashops_string", "default": "any" },
-      { "name": "display", "type": "attribute_modifier_display", "optional": true, "default": { "type": "default" } }
-    ]],
-    "attribute_modifier_display": ["hashops_map", [
-      { "name": "type", "type": "hashops_string" },
-      { "name": "value", "type": "hashops_text", "optional": true }
-    ]],
-    "enchantment_levels": ["hashops_dict", { "key": "hashops_string", "value": "hashops_int" }]
+    "item_stack": ["map", { "id": "string", "count": "int" }],
+    "filterable_string": ["map", { "raw": "string", "filtered": { "type": "string", "optional": true } }],
+    "filterable_text": ["map", { "raw": "text", "filtered": { "type": "text", "optional": true } }],
+    "profile_property": ["map", {
+      "name": "string",
+      "value": "string",
+      "signature": { "type": "string", "optional": true }
+    }],
+    "attribute_modifier": ["map", {
+      "type": "string",
+      "id": "string",
+      "amount": "double",
+      "operation": "string",
+      "slot": { "type": "string", "default": "any" },
+      "display": { "type": "attribute_modifier_display", "optional": true, "default": { "type": "default" } }
+    }],
+    "attribute_modifier_display": ["map", { "type": "string", "value": { "type": "text", "optional": true } }]
   },
   "components": {
-    "custom_data": "hashops_nbt",
-    "map_decorations": "hashops_nbt",
-    "lock": "hashops_nbt",
-    "container_loot": "hashops_nbt",
-    "debug_stick_state": "hashops_nbt",
-    "bucket_entity_data": "hashops_nbt",
-    "recipes": "hashops_nbt",
-    "entity_data": "hashops_nbt",
-    "block_entity_data": "hashops_nbt",
-    "max_stack_size": "hashops_int",
-    "max_damage": "hashops_int",
-    "damage": "hashops_int",
-    "repair_cost": "hashops_int",
-    "dyed_color": "hashops_int",
-    "map_color": "hashops_int",
-    "map_id": "hashops_int",
-    "ominous_bottle_amplifier": "hashops_int",
-    "unbreakable": ["hashops_map", []],
-    "glider": ["hashops_map", []],
-    "intangible_projectile": ["hashops_map", []],
-    "enchantment_glint_override": "hashops_bool",
-    "potion_duration_scale": "hashops_float",
-    "minimum_attack_charge": "hashops_float",
-    "item_model": "hashops_string",
-    "tooltip_style": "hashops_string",
-    "note_block_sound": "hashops_string",
-    "rarity": "hashops_string",
-    "custom_name": "hashops_text",
-    "item_name": "hashops_text",
-    "lore": ["hashops_list", { "type": "hashops_text" }],
-    "enchantments": "enchantment_levels",
-    "stored_enchantments": "enchantment_levels",
-    "base_color": "hashops_string",
-    "wolf/collar": "hashops_string",
-    "cat/collar": "hashops_string",
-    "sheep/color": "hashops_string",
-    "shulker/color": "hashops_string",
-    "tropical_fish/base_color": "hashops_string",
-    "tropical_fish/pattern_color": "hashops_string",
-    "block_state": ["hashops_dict", { "key": "hashops_string", "value": "hashops_string" }],
-    "food": ["hashops_map", [
-      { "name": "nutrition", "type": "hashops_int" },
-      { "name": "saturation", "from": "saturationModifier", "type": "hashops_float" },
-      { "name": "can_always_eat", "from": "canAlwaysEat", "type": "hashops_bool", "default": false }
-    ]],
-    "tooltip_display": ["hashops_map", [
-      { "name": "hide_tooltip", "from": "hideTooltip", "type": "hashops_bool", "default": false },
-      { "name": "hidden_components", "type": ["hashops_list", { "type": "hashops_string" }], "default": [] }
-    ]],
-    "custom_model_data": ["hashops_map", [
-      { "name": "floats", "type": ["hashops_list", { "type": "hashops_float" }], "default": [] },
-      { "name": "flags", "type": ["hashops_list", { "type": "hashops_bool" }], "default": [] },
-      { "name": "strings", "type": ["hashops_list", { "type": "hashops_string" }], "default": [] },
-      { "name": "colors", "type": ["hashops_list", { "type": "hashops_int" }], "default": [] }
-    ]],
-    "writable_book_content": ["hashops_map", [
-      { "name": "pages", "type": ["hashops_list", { "type": "filterable_string" }], "default": [] }
-    ]],
-    "written_book_content": ["hashops_map", [
-      { "name": "title", "type": "filterable_string" },
-      { "name": "author", "type": "hashops_string" },
-      { "name": "generation", "type": "hashops_int", "default": 0 },
-      { "name": "pages", "type": ["hashops_list", { "type": "filterable_text" }], "default": [] },
-      { "name": "resolved", "type": "hashops_bool", "default": false }
-    ]],
-    "charged_projectiles": ["hashops_list", { "type": "item_stack" }],
-    "bundle_contents": ["hashops_list", { "type": "item_stack" }],
-    "container": ["hashops_list", { "type": ["hashops_map", [
-      { "name": "slot", "type": "hashops_int" },
-      { "name": "item", "type": "item_stack" }
-    ]] }],
-    "profile": ["hashops_map", [
-      { "name": "name", "type": "hashops_string", "optional": true },
-      { "name": "id", "type": "hashops_int_array", "optional": true },
-      { "name": "properties", "type": ["hashops_list", { "type": "profile_property" }], "default": [] }
-    ]],
-    "attribute_modifiers": ["hashops_list", { "type": "attribute_modifier" }]
+    "custom_data": "nbt",
+    "map_decorations": "nbt",
+    "lock": "nbt",
+    "container_loot": "nbt",
+    "debug_stick_state": "nbt",
+    "bucket_entity_data": "nbt",
+    "recipes": "nbt",
+    "entity_data": "nbt",
+    "block_entity_data": "nbt",
+    "max_stack_size": "int",
+    "max_damage": "int",
+    "damage": "int",
+    "repair_cost": "int",
+    "dyed_color": "int",
+    "map_color": "int",
+    "map_id": "int",
+    "ominous_bottle_amplifier": "int",
+    "unbreakable": ["map", {}],
+    "glider": ["map", {}],
+    "intangible_projectile": ["map", {}],
+    "enchantment_glint_override": "boolean",
+    "potion_duration_scale": "float",
+    "minimum_attack_charge": "float",
+    "item_model": "string",
+    "tooltip_style": "string",
+    "note_block_sound": "string",
+    "rarity": "string",
+    "custom_name": "text",
+    "item_name": "text",
+    "lore": ["list", "text"],
+    "enchantments": ["dict", "int"],
+    "stored_enchantments": ["dict", "int"],
+    "base_color": "string",
+    "wolf/collar": "string",
+    "cat/collar": "string",
+    "sheep/color": "string",
+    "shulker/color": "string",
+    "tropical_fish/base_color": "string",
+    "tropical_fish/pattern_color": "string",
+    "block_state": ["dict", "string"],
+    "food": ["map", {
+      "nutrition": "int",
+      "saturation": "float",
+      "can_always_eat": { "type": "boolean", "default": false }
+    }],
+    "tooltip_display": ["map", {
+      "hide_tooltip": { "type": "boolean", "default": false },
+      "hidden_components": { "type": ["list", "string"], "default": [] }
+    }],
+    "custom_model_data": ["map", {
+      "floats": { "type": ["list", "float"], "default": [] },
+      "flags": { "type": ["list", "boolean"], "default": [] },
+      "strings": { "type": ["list", "string"], "default": [] },
+      "colors": { "type": ["list", "int"], "default": [] }
+    }],
+    "writable_book_content": ["map", {
+      "pages": { "type": ["list", "filterable_string"], "default": [] }
+    }],
+    "written_book_content": ["map", {
+      "title": "filterable_string",
+      "author": "string",
+      "generation": { "type": "int", "default": 0 },
+      "pages": { "type": ["list", "filterable_text"], "default": [] },
+      "resolved": { "type": "boolean", "default": false }
+    }],
+    "charged_projectiles": ["list", "item_stack"],
+    "bundle_contents": ["list", "item_stack"],
+    "container": ["list", ["map", { "slot": "int", "item": "item_stack" }]],
+    "profile": ["map", {
+      "name": { "type": "string", "optional": true },
+      "id": { "type": "int_array", "optional": true },
+      "properties": { "type": ["list", "profile_property"], "default": [] }
+    }],
+    "attribute_modifiers": ["list", "attribute_modifier"]
   }
 }
