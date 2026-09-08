@@ -64,7 +64,7 @@ See http://www.minecraftwiki.net/wiki/Data_values#Data
 
 #### item.nbt
 
-Buffer.
+The item's NBT compound (prismarine-nbt shape), or `null`. On 1.20.5+ this is the `custom_data` component's compound, so consumers that read `item.nbt` keep working on servers that store display/lore data there.
 
 #### item.stackId
 
