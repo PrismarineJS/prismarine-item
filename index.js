@@ -158,6 +158,8 @@ function loader (registryOrVersion) {
           if (item.components) {
             for (const component of item.components) {
               item.componentMap.set(component.type, component)
+              // custom_data is the item's NBT compound; item.nbt aliases it (same shape as pre-1.20.5 nbt)
+              if (component.type === 'custom_data') item.nbt = component.data
             }
           }
           return item

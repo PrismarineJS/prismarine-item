@@ -637,3 +637,76 @@ describe('componentMap preferred over nbt (1.20.5+)', () => {
     expect(item.repairCost).toBe(10)
   })
 })
+
+describe('custom_data component exposed as item.nbt (1.20.5+)', () => {
+  const nbt = require('prismarine-nbt')
+  const displayName = '{"text":"Factions Immortal","color":"green"}'
+  const customData = nbt.comp({
+    display: nbt.comp({ Name: nbt.string(displayName), Lore: nbt.list(nbt.string(['{"text":"line 1"}'])) }),
+    RepairCost: nbt.int(3)
+  })
+
+  for (const version of ['1.20.5', '1.21.4', '26.1']) {
+    describe(version, () => {
+      const Item = require('prismarine-item')(version)
+      const bannerId = require('prismarine-registry')(version).itemsByName.green_banner.id
+
+      it('item.nbt is the custom_data compound', () => {
+        const item = Item.fromNotch({
+          itemId: bannerId,
+          itemCount: 1,
+          components: [{ type: 'custom_data', data: customData }],
+          removeComponents: []
+        })
+        expect(item.nbt).toBe(customData)
+        expect(item.nbt.value.display.value.Name.value).toBe(displayName)
+        expect(item.componentMap.get('custom_data').data).toBe(customData)
+      })
+
+      it('nbt-based getters read through custom_data when no dedicated component exists', () => {
+        const item = Item.fromNotch({
+          itemId: bannerId,
+          itemCount: 1,
+          components: [{ type: 'custom_data', data: customData }],
+          removeComponents: []
+        })
+        expect(item.customName).toBe(displayName)
+        expect(item.customLore).toStrictEqual(['{"text":"line 1"}'])
+        expect(item.repairCost).toBe(3)
+      })
+
+      it('dedicated components still take priority over custom_data', () => {
+        const item = Item.fromNotch({
+          itemId: bannerId,
+          itemCount: 1,
+          components: [
+            { type: 'custom_name', data: '{"text":"From Component"}' },
+            { type: 'custom_data', data: customData }
+          ],
+          removeComponents: []
+        })
+        expect(item.customName).toBe('{"text":"From Component"}')
+      })
+
+      it('item.nbt stays null without custom_data', () => {
+        const item = Item.fromNotch({
+          itemId: bannerId,
+          itemCount: 1,
+          components: [{ type: 'damage', data: 1 }],
+          removeComponents: []
+        })
+        expect(item.nbt).toBe(null)
+      })
+
+      it('toNotch round-trips custom_data unchanged', () => {
+        const item = Item.fromNotch({
+          itemId: bannerId,
+          itemCount: 1,
+          components: [{ type: 'custom_data', data: customData }],
+          removeComponents: []
+        })
+        expect(Item.toNotch(item).components).toStrictEqual([{ type: 'custom_data', data: customData }])
+      })
+    })
+  }
+})
