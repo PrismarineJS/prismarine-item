@@ -395,6 +395,19 @@ function loader (registryOrVersion) {
       }
     }
 
+    get remainingDurability () {
+      let maxDurability = this.maxDurability
+
+      if (this.componentMap?.has('max_damage')) {
+        maxDurability = this.componentMap.get('max_damage').data
+      } else if (this.removedComponents?.includes('max_damage')) {
+        return null
+      }
+
+      if (!maxDurability) return null
+      return Math.max(0, maxDurability - (this.durabilityUsed ?? 0))
+    }
+
     get spawnEggMobName () {
       if (registry.supportFeature('spawnEggsHaveSpawnedEntityInName')) {
         return this.name.replace('_spawn_egg', '')

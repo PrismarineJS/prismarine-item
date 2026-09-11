@@ -84,6 +84,10 @@ Return true if items are equal.
 
 A getter/setter for abstracting the underlying nbt
 
+#### item.remainingDurability
+
+Returns the item's remaining durability, or `null` if the item is not damageable.
+
 #### item.customName
 
 the item's custom name (ie. anvil name)
