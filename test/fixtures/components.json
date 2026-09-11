@@ -1,0 +1,242 @@
+[
+  {
+    "version": "1.20.6",
+    "original": {
+      "itemCount": 1,
+      "itemId": 837,
+      "addedComponentCount": 2,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 25
+        }
+      ],
+      "removeComponents": []
+    },
+    "edited": {
+      "itemCount": 1,
+      "itemId": 837,
+      "addedComponentCount": 5,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 40
+        },
+        {
+          "type": "custom_name",
+          "data": {
+            "type": "string",
+            "value": "Component round trip"
+          }
+        },
+        {
+          "type": "lore",
+          "data": [
+            {
+              "type": "string",
+              "value": "Server verified"
+            }
+          ]
+        },
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": []
+    },
+    "removed": {
+      "itemCount": 1,
+      "itemId": 837,
+      "addedComponentCount": 1,
+      "removedComponentCount": 3,
+      "components": [
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": [
+        {
+          "type": "max_damage"
+        },
+        {
+          "type": "damage"
+        },
+        {
+          "type": "lore"
+        }
+      ]
+    }
+  },
+  {
+    "version": "1.21.11",
+    "original": {
+      "itemCount": 1,
+      "itemId": 936,
+      "addedComponentCount": 2,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 25
+        }
+      ],
+      "removeComponents": []
+    },
+    "edited": {
+      "itemCount": 1,
+      "itemId": 936,
+      "addedComponentCount": 5,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 40
+        },
+        {
+          "type": "custom_name",
+          "data": {
+            "type": "string",
+            "value": "Component round trip"
+          }
+        },
+        {
+          "type": "lore",
+          "data": [
+            {
+              "type": "string",
+              "value": "Server verified"
+            }
+          ]
+        },
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": []
+    },
+    "removed": {
+      "itemCount": 1,
+      "itemId": 936,
+      "addedComponentCount": 1,
+      "removedComponentCount": 3,
+      "components": [
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": [
+        {
+          "type": "max_damage"
+        },
+        {
+          "type": "damage"
+        },
+        {
+          "type": "lore"
+        }
+      ]
+    }
+  },
+  {
+    "version": "26.1",
+    "original": {
+      "itemCount": 1,
+      "itemId": 937,
+      "addedComponentCount": 2,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 25
+        }
+      ],
+      "removeComponents": []
+    },
+    "edited": {
+      "itemCount": 1,
+      "itemId": 937,
+      "addedComponentCount": 5,
+      "removedComponentCount": 0,
+      "components": [
+        {
+          "type": "max_damage",
+          "data": 100
+        },
+        {
+          "type": "damage",
+          "data": 40
+        },
+        {
+          "type": "custom_name",
+          "data": {
+            "type": "string",
+            "value": "Component round trip"
+          }
+        },
+        {
+          "type": "lore",
+          "data": [
+            {
+              "type": "string",
+              "value": "Server verified"
+            }
+          ]
+        },
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": []
+    },
+    "removed": {
+      "itemCount": 1,
+      "itemId": 937,
+      "addedComponentCount": 1,
+      "removedComponentCount": 3,
+      "components": [
+        {
+          "type": "repair_cost",
+          "data": 7
+        }
+      ],
+      "removeComponents": [
+        {
+          "type": "max_damage"
+        },
+        {
+          "type": "damage"
+        },
+        {
+          "type": "lore"
+        }
+      ]
+    }
+  }
+]

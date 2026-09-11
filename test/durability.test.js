@@ -51,7 +51,7 @@ describe('remainingDurability', () => {
       itemId: registry.itemsByName.diamond_sword.id,
       itemCount: 1,
       components: [],
-      removeComponents: ['max_damage']
+      removeComponents: [{ type: 'max_damage' }]
     })
 
     expect(item.remainingDurability).toBe(null)
