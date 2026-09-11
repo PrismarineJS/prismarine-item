@@ -1,7 +1,9 @@
 const nbt = require('prismarine-nbt')
+const ItemComponents = require('./lib/components')
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  const componentStates = new WeakMap()
   class Item {
     constructor (type, count, metadata, nbt, stackId, sentByServer) {
       if (type == null) return
@@ -18,11 +20,44 @@ function loader (registryOrVersion) {
       this.metadata = metadata == null ? 0 : metadata
       this.nbt = nbt || null
 
-      // pc 1.20.5, TODO: properly implement...
       if (registry.supportFeature('itemsWithComponents')) {
-        this.components = []
-        this.removedComponents = []
-        this.componentMap = new Map() // Pf146
+        const state = new ItemComponents(type => {
+          const item = registry.items[this.type]
+          switch (type) {
+            case 'max_damage': return item?.maxDurability
+            case 'damage': return item?.maxDurability ? 0 : undefined
+            case 'max_stack_size': return item?.stackSize ?? 1
+            case 'repair_cost': return 0
+          }
+        })
+        componentStates.set(this, state)
+        Object.defineProperties(this, {
+          componentMap: {
+            enumerable: true,
+            get: () => { state.map.sync(); return state.map },
+            set: map => { state.added = Array.from(map.values()) }
+          },
+          components: {
+            enumerable: true,
+            get: () => state.added,
+            set: components => { state.added = components ?? [] }
+          },
+          removedComponents: {
+            enumerable: true,
+            get: () => state.removed,
+            set: removed => { state.removed = removed ?? [] }
+          },
+          maxDurability: {
+            enumerable: true,
+            get: () => state.get('max_damage'),
+            set: data => data == null ? state.remove('max_damage') : state.set('max_damage', data)
+          },
+          stackSize: {
+            enumerable: true,
+            get: () => state.get('max_stack_size'),
+            set: data => state.set('max_stack_size', data)
+          }
+        })
       }
 
       // Probably add a new feature to mcdata, e.g itemsCanHaveStackId
@@ -37,8 +72,10 @@ function loader (registryOrVersion) {
       if (itemEnum) {
         this.name = itemEnum.name
         this.displayName = itemEnum.displayName
-        this.stackSize = itemEnum.stackSize
-        this.maxDurability = itemEnum.maxDurability
+        if (!this.componentMap) {
+          this.stackSize = itemEnum.stackSize
+          this.maxDurability = itemEnum.maxDurability
+        }
 
         if ('variations' in itemEnum) {
           const variation = itemEnum.variations.find((item) => item.metadata === metadata)
@@ -48,12 +85,12 @@ function loader (registryOrVersion) {
         // Can't initialize fields if the item was sent by the server
         if (!sentByServer) {
           // The 'itemEnum.maxDurability' checks to see if this item can lose durability
-          if (registry.supportFeature('explicitMaxDurability') && this.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
+          if (!this.componentMap && registry.supportFeature('explicitMaxDurability') && this.maxDurability && !this.durabilityUsed) this.durabilityUsed = 0
         }
       } else {
         this.name = 'unknown'
         this.displayName = 'unknown'
-        this.stackSize = 1
+        if (!this.componentMap) this.stackSize = 1
       }
     }
 
@@ -90,10 +127,7 @@ function loader (registryOrVersion) {
             present: true,
             itemCount: item.count,
             itemId: item.type,
-            addedComponentCount: item.components.length,
-            removedComponentCount: item.removedComponents.length,
-            components: item.components,
-            removeComponents: item.removedComponents
+            ...(componentStates.get(item) ?? new ItemComponents(() => undefined, item.components, item.removedComponents)).toNotch()
           }
         } else if (registry.supportFeature('itemSerializationAllowsPresent')) {
           if (item == null) return { present: false }
@@ -151,15 +185,9 @@ function loader (registryOrVersion) {
         if (networkItem.present === false) return null
         if (registry.supportFeature('itemsWithComponents')) { // 1.20.5+
           if (networkItem.itemCount === 0) return null
-          const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, true)
-          item.components = networkItem.components
-          item.removedComponents = networkItem.removeComponents
-          item.componentMap = new Map() // Pf146
-          if (item.components) {
-            for (const component of item.components) {
-              item.componentMap.set(component.type, component)
-            }
-          }
+          const item = new Item(networkItem.itemId, networkItem.itemCount, null, null, undefined, true)
+          item.components = networkItem.components?.map(component => ({ ...component }))
+          item.removedComponents = networkItem.removeComponents?.slice()
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
@@ -191,15 +219,15 @@ function loader (registryOrVersion) {
     }
 
     get customName () {
-      if (this.componentMap?.has('custom_name')) {
-        return this.componentMap.get('custom_name').data
-      }
-      return this?.nbt?.value?.display?.value?.Name?.value ?? null
+      const fallback = () => this?.nbt?.value?.display?.value?.Name?.value ?? null
+      return componentStates.has(this) ? componentStates.get(this).get('custom_name', fallback) ?? null : fallback()
     }
 
     set customName (newName) {
       if (this.componentMap) {
-        this.componentMap.set('custom_name', { type: 'custom_name', data: newName })
+        const state = componentStates.get(this)
+        if (newName == null) state.remove('custom_name')
+        else state.set('custom_name', newName)
         return
       }
       if (!this.nbt) this.nbt = nbt.comp({})
@@ -208,16 +236,15 @@ function loader (registryOrVersion) {
     }
 
     get customLore () {
-      if (this.componentMap?.has('lore')) {
-        return this.componentMap.get('lore').data
-      }
-      if (!this.nbt?.value?.display) return null
-      return nbt.simplify(this.nbt).display.Lore ?? null
+      const fallback = () => this.nbt?.value?.display ? nbt.simplify(this.nbt).display.Lore ?? null : null
+      return componentStates.has(this) ? componentStates.get(this).get('lore', fallback) ?? null : fallback()
     }
 
     set customLore (newLore) {
       if (this.componentMap) {
-        this.componentMap.set('lore', { type: 'lore', data: newLore })
+        const state = componentStates.get(this)
+        if (newLore == null) state.remove('lore')
+        else state.set('lore', newLore)
         return
       }
       if (!this.nbt) this.nbt = nbt.comp({})
@@ -230,15 +257,13 @@ function loader (registryOrVersion) {
 
     // gets the cost based on previous anvil uses
     get repairCost () {
-      if (this.componentMap?.has('repair_cost')) {
-        return this.componentMap.get('repair_cost').data
-      }
+      if (componentStates.has(this)) return componentStates.get(this).get('repair_cost', () => this?.nbt?.value?.RepairCost?.value) ?? 0
       return this?.nbt?.value?.RepairCost?.value ?? 0
     }
 
     set repairCost (newRepairCost) {
       if (this.componentMap) {
-        this.componentMap.set('repair_cost', { type: 'repair_cost', data: newRepairCost })
+        componentStates.get(this).set('repair_cost', newRepairCost)
         return
       }
       if (!this?.nbt) this.nbt = nbt.comp({})
@@ -367,23 +392,26 @@ function loader (registryOrVersion) {
     }
 
     get durabilityUsed () {
+      if (componentStates.has(this)) {
+        return componentStates.get(this).get('damage') ?? null
+      }
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       let ret
 
-      if (this.componentMap && this.componentMap.has('damage')) { // Pf146
-        ret = this.componentMap.get('damage').data // Pdaf7
-      }
-
-      if (ret === undefined) {
-        if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
-        else if (where === 'metadata') ret = this.metadata
-        else throw new Error('unknown durability location')
-      }
+      if (where === 'Damage') ret = this.nbt?.value?.Damage?.value
+      else if (where === 'metadata') ret = this.metadata
+      else throw new Error('unknown durability location')
 
       return ret ?? (this.maxDurability ? 0 : null)
     }
 
     set durabilityUsed (value) {
+      if (this.componentMap) {
+        const state = componentStates.get(this)
+        if (value == null) state.remove('damage')
+        else state.set('damage', value)
+        return
+      }
       const where = registry.supportFeature('whereDurabilityIsSerialized')
       if (where === 'Damage') {
         if (!this?.nbt) this.nbt = nbt.comp({})
@@ -393,6 +421,14 @@ function loader (registryOrVersion) {
       } else {
         throw new Error("Don't know how to set item durability for this mc version")
       }
+    }
+
+    get remainingDurability () {
+      const maxDurability = this.maxDurability
+      if (!maxDurability) return null
+      const durabilityUsed = this.durabilityUsed
+      if (durabilityUsed == null) return null
+      return Math.max(0, maxDurability - durabilityUsed)
     }
 
     get spawnEggMobName () {
