@@ -1,5 +1,33 @@
 const nbt = require('prismarine-nbt')
 
+// Strips prismarine-nbt wrappers down to plain JS values; every nbt tag arrives as {type, value}.
+function nbtValue (v) {
+  if (v == null || typeof v !== 'object') return v
+  if (Array.isArray(v)) return v.map(nbtValue)
+  if (typeof v.type === 'string' && 'value' in v) return nbtValue(v.value)
+  const out = {}
+  for (const k of Object.keys(v)) out[k] = nbtValue(v[k])
+  return out
+}
+
+function safeJson (s) {
+  try { return JSON.parse(s) } catch { return s }
+}
+
+// Plain text of a chat component (an NBT compound/value, a parsed JSON object, a JSON string, or a
+// plain string); returns null when the input holds no component at all.
+function chatToText (c) {
+  if (c == null) return null
+  const v = nbtValue(typeof c === 'string' ? safeJson(c) : c)
+  if (typeof v === 'string') return v
+  if (Array.isArray(v)) return v.map(x => chatToText(x) ?? '').join('')
+  if (typeof v !== 'object' || v === null) return null
+  let out = ''
+  if (typeof v.text === 'string') out += v.text
+  if (v.extra != null) out += chatToText(v.extra) ?? ''
+  return out
+}
+
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
@@ -45,6 +73,8 @@ function loader (registryOrVersion) {
           if (variation) this.displayName = variation.displayName
         }
 
+        this.applyCustomName()
+
         // Can't initialize fields if the item was sent by the server
         if (!sentByServer) {
           // The 'itemEnum.maxDurability' checks to see if this item can lose durability
@@ -55,6 +85,14 @@ function loader (registryOrVersion) {
         this.displayName = 'unknown'
         this.stackSize = 1
       }
+    }
+
+    // Vanilla renders an item's custom name (1.20.5+ `custom_name` component, NBT `display.Name`
+    // before that) everywhere the item's name is shown, so displayName reflects it too: the plain
+    // text of the chat component, falling back to the item's own display name.
+    applyCustomName () {
+      const text = chatToText(this.customName)
+      if (text !== null) this.displayName = text
     }
 
     static equal (item1, item2, matchStackSize = true, matchNbt = true) {
@@ -160,6 +198,7 @@ function loader (registryOrVersion) {
               item.componentMap.set(component.type, component)
             }
           }
+          item.applyCustomName()
           return item
         } else if (registry.supportFeature('itemSerializationWillOnlyUsePresent')) {
           return new Item(networkItem.itemId, networkItem.itemCount, networkItem.nbtData, null, true)
@@ -200,11 +239,13 @@ function loader (registryOrVersion) {
     set customName (newName) {
       if (this.componentMap) {
         this.componentMap.set('custom_name', { type: 'custom_name', data: newName })
+        this.applyCustomName()
         return
       }
       if (!this.nbt) this.nbt = nbt.comp({})
       if (!this.nbt.value.display) this.nbt.value.display = { type: 'compound', value: {} }
       this.nbt.value.display.value.Name = nbt.string(newName)
+      this.applyCustomName()
     }
 
     get customLore () {
