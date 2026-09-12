@@ -1,5 +1,15 @@
 const nbt = require('prismarine-nbt')
 
+// 1.20.5 moved the custom name and the lore into data components, which carry a chat component as
+// NBT; the display.Name and display.Lore tags they replaced carried the same component as the JSON
+// string the server wrote. Read the NBT back as that string so customName and customLore have one
+// shape on every version, the one index.d.ts promises.
+function chatComponentJson (component) {
+  if (component == null || typeof component === 'string') return component
+  const value = typeof component.type === 'string' && 'value' in component ? nbt.simplify(component) : component
+  return typeof value === 'string' ? value : JSON.stringify(value)
+}
+
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
@@ -192,7 +202,7 @@ function loader (registryOrVersion) {
 
     get customName () {
       if (this.componentMap?.has('custom_name')) {
-        return this.componentMap.get('custom_name').data
+        return chatComponentJson(this.componentMap.get('custom_name').data)
       }
       return this?.nbt?.value?.display?.value?.Name?.value ?? null
     }
@@ -209,7 +219,8 @@ function loader (registryOrVersion) {
 
     get customLore () {
       if (this.componentMap?.has('lore')) {
-        return this.componentMap.get('lore').data
+        const lore = this.componentMap.get('lore').data
+        return Array.isArray(lore) ? lore.map(chatComponentJson) : chatComponentJson(lore)
       }
       if (!this.nbt?.value?.display) return null
       return nbt.simplify(this.nbt).display.Lore ?? null
