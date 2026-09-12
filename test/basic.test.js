@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 
 const expect = require('expect').default
+const nbt = require('prismarine-nbt')
 
 describe('test based on examples', () => {
   describe('1.8 iron shovel', () => {
@@ -481,6 +482,28 @@ describe('componentMap getters (1.20.5+)', () => {
       expect(item.customName).toBe('{"text":"My Sword"}')
     })
 
+    it('reads the NBT component the protocol sends as the JSON string', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'custom_name', data: nbt.comp({ text: nbt.string('My Sword'), color: nbt.string('gold') }) }
+        ]
+      })
+      expect(item.customName).toBe('{"text":"My Sword","color":"gold"}')
+    })
+
+    it('reads a plain-text NBT component as the text, like the display.Name path', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          { type: 'custom_name', data: nbt.string('My Sword') }
+        ]
+      })
+      expect(item.customName).toBe('My Sword')
+    })
+
     it('falls back to null when componentMap has no custom_name and no nbt', () => {
       const item = Item.fromNotch({
         itemId: 830,
@@ -502,6 +525,23 @@ describe('componentMap getters (1.20.5+)', () => {
         ]
       })
       expect(item.customLore).toStrictEqual(loreData)
+    })
+
+    it('reads the NBT components the protocol sends as JSON strings', () => {
+      const item = Item.fromNotch({
+        itemId: 830,
+        itemCount: 1,
+        components: [
+          {
+            type: 'lore',
+            data: [
+              nbt.comp({ text: nbt.string('Line 1') }),
+              nbt.comp({ text: nbt.string('Line 2'), italic: nbt.byte(0) })
+            ]
+          }
+        ]
+      })
+      expect(item.customLore).toStrictEqual(['{"text":"Line 1"}', '{"text":"Line 2","italic":0}'])
     })
 
     it('falls back to null when componentMap has no lore and no nbt', () => {
