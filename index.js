@@ -1,5 +1,22 @@
 const nbt = require('prismarine-nbt')
 
+// pc 1.20.5+: item data lives in components instead of nbt, so equality must compare them too
+function componentsEqual (item1, item2) {
+  const map1 = item1.componentMap
+  const map2 = item2.componentMap
+  if (map1 === undefined && map2 === undefined) return true
+  if (map1 === undefined || map2 === undefined) return false
+  if (map1.size !== map2.size) return false
+  for (const [type, component1] of map1) {
+    const component2 = map2.get(type)
+    if (component2 === undefined || JSON.stringify(component1) !== JSON.stringify(component2)) return false
+  }
+  const removed1 = item1.removedComponents ?? []
+  const removed2 = item2.removedComponents ?? []
+  if (removed1.length !== removed2.length) return false
+  return JSON.stringify([...removed1].sort()) === JSON.stringify([...removed2].sort())
+}
+
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   class Item {
@@ -69,7 +86,8 @@ function loader (registryOrVersion) {
           item1.type === item2.type &&
           item1.metadata === item2.metadata &&
           (matchStackSize ? item1.count === item2.count : true) &&
-          (matchNbt ? JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt) : true)
+          (matchNbt ? JSON.stringify(item1.nbt) === JSON.stringify(item2.nbt) : true) &&
+          (matchNbt ? componentsEqual(item1, item2) : true)
         )
       }
     }

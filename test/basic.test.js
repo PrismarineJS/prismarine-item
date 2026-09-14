@@ -448,6 +448,48 @@ describe('use Item.equal', () => {
   })
 })
 
+describe('use Item.equal with components (1.20.5+)', () => {
+  const Item = require('prismarine-item')('1.20.5')
+  const registry = require('prismarine-registry')('1.20.5')
+  const swordId = registry.itemsByName.diamond_sword.id
+
+  it('different custom_name component', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'custom_name', data: 'Excalibur' }] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [] })
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
+
+  it('different damage component', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'damage', data: 100 }] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'damage', data: 0 }] })
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
+
+  it('different enchantments component', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'enchantments', data: [{ name: 'sharpness', lvl: 5 }] }] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [] })
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
+
+  it('identical components', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'custom_name', data: 'Excalibur' }] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'custom_name', data: 'Excalibur' }] })
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(true)
+  })
+
+  it('different removedComponents', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [], removeComponents: ['custom_name'] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [] })
+    expect(Item.equal(itemOne, itemTwo)).toStrictEqual(false)
+  })
+
+  it('matchNbt=false skips component comparison', () => {
+    const itemOne = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [{ type: 'custom_name', data: 'Excalibur' }] })
+    const itemTwo = Item.fromNotch({ itemId: swordId, itemCount: 1, components: [] })
+    expect(Item.equal(itemOne, itemTwo, true, false)).toStrictEqual(true)
+  })
+})
+
 describe('durabilityUsed with damage component', () => {
   const Item = require('prismarine-item')('1.20.5')
 
