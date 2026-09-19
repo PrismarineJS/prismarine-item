@@ -56,6 +56,40 @@ describe('displayName follows the custom name', () => {
       item.customName = { type: 'compound', value: { text: { type: 'string', value: '' } } }
       expect(item.displayName).toBe('')
     })
+
+    it('renders a translated name and its arguments', () => {
+      const registry = require('prismarine-registry')('1.21.4')
+      const item = Item.fromNotch({
+        itemCount: 1,
+        itemId: registry.itemsByName.stone.id,
+        addedComponentCount: 1,
+        removedComponentCount: 0,
+        components: [{
+          type: 'custom_name',
+          data: { type: 'compound', value: { translate: { type: 'string', value: 'item.minecraft.diamond_sword' } } }
+        }],
+        removeComponents: []
+      })
+      expect(item.displayName).toBe('Diamond Sword')
+
+      item.customName = {
+        type: 'compound',
+        value: {
+          translate: { type: 'string', value: 'container.shulkerBox.more' },
+          with: { type: 'list', value: { type: 'int', value: [3] } }
+        }
+      }
+      expect(item.displayName).toBe('and 3 more...')
+    })
+
+    it('restores the registry name when the custom name is cleared', () => {
+      const item = new Item(require('prismarine-registry')('1.21.4').itemsByName.stone.id, 1)
+      item.customName = 'Shop'
+      expect(item.displayName).toBe('Shop')
+      item.customName = null
+      expect(item.customName).toBe(null)
+      expect(item.displayName).toBe('Stone')
+    })
   })
 
   describe('1.16.5 (display.Name NBT)', () => {
@@ -80,6 +114,17 @@ describe('displayName follows the custom name', () => {
       const item = new Item(registry.itemsByName.stone.id, 1)
       item.customName = 'Shop'
       expect(item.displayName).toBe('Shop')
+    })
+
+    it('restores the metadata variation name when the custom name is cleared', () => {
+      const Item18 = require('prismarine-item')('1.8.9')
+      const wool = require('prismarine-registry')('1.8.9').itemsByName.wool
+      const item = new Item18(wool.id, 1, 14)
+      expect(item.displayName).toBe('Red Wool')
+      item.customName = 'Shop'
+      expect(item.displayName).toBe('Shop')
+      item.customName = null
+      expect(item.displayName).toBe('Red Wool')
     })
   })
 })

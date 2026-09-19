@@ -26,22 +26,17 @@ function safeJson (s) {
   try { return JSON.parse(s) } catch { return s }
 }
 
-// Plain text of a chat component (an NBT compound/value, a parsed JSON object, a JSON string, or a
-// plain string); returns null when the input holds no component at all.
-function chatToText (c) {
+// Normalizes a chat component (an NBT compound/value, a parsed JSON object, a JSON string, or a
+// plain string) to the JSON shape prismarine-chat takes; null when the input holds no component.
+function chatJson (c) {
   if (c == null) return null
   const v = nbtValue(typeof c === 'string' ? safeJson(c) : c)
-  if (typeof v === 'string') return v
-  if (Array.isArray(v)) return v.map(x => chatToText(x) ?? '').join('')
-  if (typeof v !== 'object' || v === null) return null
-  let out = ''
-  if (typeof v.text === 'string') out += v.text
-  if (v.extra != null) out += chatToText(v.extra) ?? ''
-  return out
+  return typeof v === 'string' || typeof v === 'object' ? v : null
 }
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  let ChatMessage
   class Item {
     constructor (type, count, metadata, nbt, stackId, sentByServer) {
       if (type == null) return
@@ -76,16 +71,9 @@ function loader (registryOrVersion) {
       const itemEnum = registry.items[type]
       if (itemEnum) {
         this.name = itemEnum.name
-        this.displayName = itemEnum.displayName
+        this.applyCustomName()
         this.stackSize = itemEnum.stackSize
         this.maxDurability = itemEnum.maxDurability
-
-        if ('variations' in itemEnum) {
-          const variation = itemEnum.variations.find((item) => item.metadata === metadata)
-          if (variation) this.displayName = variation.displayName
-        }
-
-        this.applyCustomName()
 
         // Can't initialize fields if the item was sent by the server
         if (!sentByServer) {
@@ -103,8 +91,15 @@ function loader (registryOrVersion) {
     // before that) everywhere the item's name is shown, so displayName reflects it too: the plain
     // text of the chat component, falling back to the item's own display name.
     applyCustomName () {
-      const text = chatToText(this.customName)
-      if (text !== null) this.displayName = text
+      const json = chatJson(this.customName)
+      if (json === null) {
+        const itemEnum = registry.items[this.type]
+        const variation = itemEnum?.variations?.find((item) => item.metadata === this.metadata)
+        this.displayName = variation?.displayName ?? itemEnum?.displayName ?? 'unknown'
+        return
+      }
+      ChatMessage ??= require('prismarine-chat')(registry)
+      this.displayName = new ChatMessage(json).toString()
     }
 
     static equal (item1, item2, matchStackSize = true, matchNbt = true) {

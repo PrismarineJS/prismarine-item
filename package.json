@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/PrismarineJS/prismarine-item#readme",
   "dependencies": {
+    "prismarine-chat": "^1.13.0",
     "prismarine-nbt": "^2.0.0",
     "prismarine-registry": "^1.4.0"
   }
