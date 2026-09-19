@@ -41,6 +41,12 @@ describe('hashed slot', () => {
         .toBe(hash({ 'minecraft:sharpness': 5 }, ['dict', 'int']))
     })
 
+    it('reports enchantments the registry lacks as unhashable', () => {
+      const unknown = Math.max(...Object.keys(registry.enchantments).map(Number)) + 1
+      expect(hashComponent('enchantments', { enchantments: [{ id: unknown, level: 1 }] })).toBeUndefined()
+      expect(hashComponent('stored_enchantments', { enchantments: [{ id: unknown, level: 1 }] })).toBeUndefined()
+    })
+
     it('omits codec defaults', () => {
       expect(hashComponent('written_book_content', { rawTitle: 't', filteredTitle: undefined, author: 'a', generation: 0, pages: [], resolved: false }))
         .toBe(hash({ title: { raw: 't' }, author: 'a' }, ['map', { title: ['map', { raw: 'string' }], author: 'string' }]))
