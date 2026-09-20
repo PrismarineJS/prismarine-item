@@ -28,15 +28,21 @@ function safeJson (s) {
 
 // Normalizes a chat component (an NBT compound/value, a parsed JSON object, a JSON string, or a
 // plain string) to the JSON shape prismarine-chat takes; null when the input holds no component.
-function chatJson (c) {
+// `serialized` says whether a string is a serialized component; when it isn't, the string is the
+// name itself and is passed through untouched.
+function chatJson (c, serialized) {
   if (c == null) return null
-  const v = nbtValue(typeof c === 'string' ? safeJson(c) : c)
+  const v = nbtValue(serialized && typeof c === 'string' ? safeJson(c) : c)
   return typeof v === 'string' || typeof v === 'object' ? v : null
 }
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   let ChatMessage
+  // 18w01a made an item's name a serialized chat component; before 1.13, and on bedrock at every
+  // version, `display.Name` holds the name verbatim. A literal name has to stay literal: parsing
+  // it would turn `{"text":"Hello"}` into `Hello` and make `{"extra":{}}` an invalid component.
+  const customNameIsSerialized = registry.type !== 'bedrock' && registry.version['>=']('1.13')
   class Item {
     constructor (type, count, metadata, nbt, stackId, sentByServer) {
       if (type == null) return
@@ -91,7 +97,7 @@ function loader (registryOrVersion) {
     // before that) everywhere the item's name is shown, so displayName reflects it too: the plain
     // text of the chat component, falling back to the item's own display name.
     applyCustomName () {
-      const json = chatJson(this.customName)
+      const json = chatJson(this.customName, customNameIsSerialized)
       if (json === null) {
         const itemEnum = registry.items[this.type]
         const variation = itemEnum?.variations?.find((item) => item.metadata === this.metadata)

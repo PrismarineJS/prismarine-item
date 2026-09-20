@@ -92,6 +92,46 @@ describe('displayName follows the custom name', () => {
     })
   })
 
+  describe('pre-1.13 (display.Name is literal text)', () => {
+    // 18w01a made display.Name a serialized component; before that the field is the name itself,
+    // so a name that happens to look like JSON has to survive verbatim.
+    for (const version of ['1.8.9', '1.12.2']) {
+      describe(version, () => {
+        const Item = require('prismarine-item')(version)
+        const registry = require('prismarine-registry')(version)
+
+        const named = (name) => Item.fromNotch({
+          blockId: registry.itemsByName.stone.id,
+          itemCount: 1,
+          itemDamage: 0,
+          nbtData: {
+            type: 'compound',
+            name: '',
+            value: { display: { type: 'compound', value: { Name: { type: 'string', value: name } } } }
+          }
+        })
+
+        it('keeps a name that looks like a component', () => {
+          expect(named('{"text":"Hello"}').displayName).toBe('{"text":"Hello"}')
+        })
+
+        it('does not throw on a name that is not a valid component', () => {
+          expect(named('{"extra":{}}').displayName).toBe('{"extra":{}}')
+        })
+
+        it('renders legacy color codes as plain text', () => {
+          expect(named('§aShop').displayName).toBe('Shop')
+        })
+
+        it('reads a name set through the setter', () => {
+          const item = new Item(registry.itemsByName.stone.id, 1)
+          item.customName = '{"text":"Hello"}'
+          expect(item.displayName).toBe('{"text":"Hello"}')
+        })
+      })
+    }
+  })
+
   describe('1.16.5 (display.Name NBT)', () => {
     const Item = require('prismarine-item')('1.16.5')
     const registry = require('prismarine-registry')('1.16.5')
