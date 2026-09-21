@@ -23,3 +23,40 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm test
+
+  prepare-e2e-versions:
+
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - id: set-matrix
+      run: echo "matrix=$(node -p "JSON.stringify(require('./test/e2e/testedVersions.json'))")" >> $GITHUB_OUTPUT
+
+  e2e:
+
+    needs: prepare-e2e-versions
+    runs-on: ubuntu-latest
+    name: MC ${{ matrix.version }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ${{ fromJson(needs.prepare-e2e-versions.outputs.matrix) }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 24.x
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 21
+    - run: npm install
+    - run: npm run e2e
+      env:
+        MC_VERSION: ${{ matrix.version }}

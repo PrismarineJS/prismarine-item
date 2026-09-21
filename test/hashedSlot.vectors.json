@@ -1,0 +1,1924 @@
+{
+ "1.21.5": [
+  {
+   "give": "diamond_sword[enchantments={sharpness:5,unbreaking:3},damage=10,repair_cost=3]",
+   "components": [
+    {
+     "type": "enchantments",
+     "data": {
+      "enchantments": [
+       {
+        "id": 32,
+        "level": 5
+       },
+       {
+        "id": 39,
+        "level": 3
+       }
+      ]
+     }
+    },
+    {
+     "type": "damage",
+     "data": 10
+    },
+    {
+     "type": "repair_cost",
+     "data": 3
+    }
+   ],
+   "hashes": {
+    "enchantments": 1231404551,
+    "damage": -919192125,
+    "repair_cost": -499649379
+   }
+  },
+  {
+   "give": "stone[custom_data={a:1,b:\"x\",c:[I;1,2],d:1.5f,e:[1b,2b],f:{g:2L},h:[{i:1},{i:2}],j:[L;1L,2L],k:[B;1b],l:2s,m:2.5d}]",
+   "components": [
+    {
+     "type": "custom_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "a": {
+        "type": "int",
+        "value": 1
+       },
+       "b": {
+        "type": "string",
+        "value": "x"
+       },
+       "c": {
+        "type": "intArray",
+        "value": [
+         1,
+         2
+        ]
+       },
+       "d": {
+        "type": "float",
+        "value": 1.5
+       },
+       "e": {
+        "type": "list",
+        "value": {
+         "type": "byte",
+         "value": [
+          1,
+          2
+         ]
+        }
+       },
+       "f": {
+        "type": "compound",
+        "value": {
+         "g": {
+          "type": "long",
+          "value": [
+           0,
+           2
+          ]
+         }
+        }
+       },
+       "h": {
+        "type": "list",
+        "value": {
+         "type": "compound",
+         "value": [
+          {
+           "i": {
+            "type": "int",
+            "value": 1
+           }
+          },
+          {
+           "i": {
+            "type": "int",
+            "value": 2
+           }
+          }
+         ]
+        }
+       },
+       "j": {
+        "type": "longArray",
+        "value": [
+         [
+          0,
+          1
+         ],
+         [
+          0,
+          2
+         ]
+        ]
+       },
+       "k": {
+        "type": "byteArray",
+        "value": [
+         1
+        ]
+       },
+       "l": {
+        "type": "short",
+        "value": 2
+       },
+       "m": {
+        "type": "double",
+        "value": 2.5
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_data": 1675253826
+   }
+  },
+  {
+   "give": "stone[custom_name={text:\"Sw\",italic:false,color:\"red\",bold:true}]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "color": {
+        "type": "string",
+        "value": "red"
+       },
+       "text": {
+        "type": "string",
+        "value": "Sw"
+       },
+       "bold": {
+        "type": "byte",
+        "value": 1
+       },
+       "italic": {
+        "type": "byte",
+        "value": 0
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_name": 161836921
+   }
+  },
+  {
+   "give": "stone[custom_name=\"plain\",lore=[\"a\",{text:\"b\",bold:true},{text:\"c\",extra:[\"d\",{text:\"e\",italic:true}]}]]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "string",
+      "value": "plain"
+     }
+    },
+    {
+     "type": "lore",
+     "data": [
+      {
+       "type": "string",
+       "value": "a"
+      },
+      {
+       "type": "compound",
+       "value": {
+        "text": {
+         "type": "string",
+         "value": "b"
+        },
+        "bold": {
+         "type": "byte",
+         "value": 1
+        }
+       }
+      },
+      {
+       "type": "compound",
+       "value": {
+        "extra": {
+         "type": "list",
+         "value": {
+          "type": "compound",
+          "value": [
+           {
+            "": {
+             "type": "string",
+             "value": "d"
+            }
+           },
+           {
+            "text": {
+             "type": "string",
+             "value": "e"
+            },
+            "italic": {
+             "type": "byte",
+             "value": 1
+            }
+           }
+          ]
+         }
+        },
+        "text": {
+         "type": "string",
+         "value": "c"
+        }
+       }
+      }
+     ]
+    }
+   ],
+   "hashes": {
+    "custom_name": 1718800843,
+    "lore": -132831427
+   }
+  },
+  {
+   "give": "stone[custom_name={translate:\"item.minecraft.stone\",with:[\"x\",{text:\"y\"}]}]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "with": {
+        "type": "list",
+        "value": {
+         "type": "string",
+         "value": [
+          "x",
+          "y"
+         ]
+        }
+       },
+       "translate": {
+        "type": "string",
+        "value": "item.minecraft.stone"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_name": 258179657
+   }
+  },
+  {
+   "give": "written_book[written_book_content={title:\"T\",author:\"A\",pages:[\"p1\",{text:\"p2\",bold:true}]}]",
+   "components": [
+    {
+     "type": "written_book_content",
+     "data": {
+      "rawTitle": "T",
+      "author": "A",
+      "generation": 0,
+      "pages": [
+       {
+        "content": {
+         "type": "string",
+         "value": "p1"
+        }
+       },
+       {
+        "content": {
+         "type": "compound",
+         "value": {
+          "text": {
+           "type": "string",
+           "value": "p2"
+          },
+          "bold": {
+           "type": "byte",
+           "value": 1
+          }
+         }
+        }
+       }
+      ],
+      "resolved": false
+     }
+    }
+   ],
+   "hashes": {
+    "written_book_content": -816033539
+   }
+  },
+  {
+   "give": "written_book[written_book_content={title:\"T\",author:\"A\",generation:2,resolved:true,pages:[\"p1\"]}]",
+   "components": [
+    {
+     "type": "written_book_content",
+     "data": {
+      "rawTitle": "T",
+      "author": "A",
+      "generation": 2,
+      "pages": [
+       {
+        "content": {
+         "type": "string",
+         "value": "p1"
+        }
+       }
+      ],
+      "resolved": true
+     }
+    }
+   ],
+   "hashes": {
+    "written_book_content": -703750909
+   }
+  },
+  {
+   "give": "writable_book[writable_book_content={pages:[\"a\",\"b\"]}]",
+   "components": [
+    {
+     "type": "writable_book_content",
+     "data": {
+      "pages": [
+       {
+        "content": "a"
+       },
+       {
+        "content": "b"
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "writable_book_content": -1477403382
+   }
+  },
+  {
+   "give": "diamond_pickaxe[unbreakable={}]",
+   "components": [
+    {
+     "type": "unbreakable"
+    }
+   ],
+   "hashes": {
+    "unbreakable": -982207288
+   }
+  },
+  {
+   "give": "diamond_pickaxe[max_damage=50,damage=5]",
+   "components": [
+    {
+     "type": "max_damage",
+     "data": 50
+    },
+    {
+     "type": "damage",
+     "data": 5
+    }
+   ],
+   "hashes": {
+    "max_damage": 20183955,
+    "damage": 645064431
+   }
+  },
+  {
+   "give": "leather_chestplate[dyed_color=16711680]",
+   "components": [
+    {
+     "type": "dyed_color",
+     "data": 16711680
+    }
+   ],
+   "hashes": {
+    "dyed_color": 603347239
+   }
+  },
+  {
+   "give": "stone[rarity=epic,max_stack_size=16,item_model=\"minecraft:diamond\",enchantment_glint_override=true,tooltip_style=\"minecraft:x\"]",
+   "components": [
+    {
+     "type": "rarity",
+     "data": "epic"
+    },
+    {
+     "type": "max_stack_size",
+     "data": 16
+    },
+    {
+     "type": "item_model",
+     "data": "minecraft:diamond"
+    },
+    {
+     "type": "enchantment_glint_override",
+     "data": true
+    },
+    {
+     "type": "tooltip_style",
+     "data": "minecraft:x"
+    }
+   ],
+   "hashes": {
+    "rarity": -292715907,
+    "max_stack_size": 1769065625,
+    "item_model": 58140582,
+    "enchantment_glint_override": -1019818302,
+    "tooltip_style": 829793204
+   }
+  },
+  {
+   "give": "stone[attribute_modifiers=[{type:\"minecraft:armor\",id:\"x:y\",amount:2.5,operation:\"add_value\",slot:\"head\"}]]",
+   "components": [
+    {
+     "type": "attribute_modifiers",
+     "data": [
+      {
+       "typeId": 0,
+       "name": "x:y",
+       "value": 2.5,
+       "operation": "add",
+       "slot": "head"
+      }
+     ]
+    }
+   ],
+   "hashes": {
+    "attribute_modifiers": 1664024130
+   }
+  },
+  {
+   "give": "stone[attribute_modifiers=[{type:\"minecraft:attack_speed\",id:\"x:z\",amount:-1.5,operation:\"add_multiplied_base\"}]]",
+   "components": [
+    {
+     "type": "attribute_modifiers",
+     "data": [
+      {
+       "typeId": 4,
+       "name": "x:z",
+       "value": -1.5,
+       "operation": "multiply_base",
+       "slot": "any"
+      }
+     ]
+    }
+   ],
+   "hashes": {
+    "attribute_modifiers": 910231243
+   }
+  },
+  {
+   "give": "enchanted_book[stored_enchantments={sharpness:1}]",
+   "components": [
+    {
+     "type": "stored_enchantments",
+     "data": {
+      "enchantments": [
+       {
+        "id": 32,
+        "level": 1
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "stored_enchantments": -1201233444
+   }
+  },
+  {
+   "give": "stone[tooltip_display={hide_tooltip:true,hidden_components:[\"minecraft:lore\"]}]",
+   "components": [
+    {
+     "type": "tooltip_display",
+     "data": {
+      "hideTooltip": true,
+      "hiddenComponents": [
+       8
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "tooltip_display": 1370755610
+   }
+  },
+  {
+   "give": "cooked_beef[food={nutrition:3,saturation:0.5f,can_always_eat:true}]",
+   "components": [
+    {
+     "type": "food",
+     "data": {
+      "nutrition": 3,
+      "saturationModifier": 0.5,
+      "canAlwaysEat": true
+     }
+    }
+   ],
+   "hashes": {
+    "food": 1385739095
+   }
+  },
+  {
+   "give": "stone[custom_model_data={floats:[1.5f],strings:[\"s\"],flags:[true],colors:[5]}]",
+   "components": [
+    {
+     "type": "custom_model_data",
+     "data": {
+      "floats": [
+       1.5
+      ],
+      "flags": [
+       true
+      ],
+      "strings": [
+       "s"
+      ],
+      "colors": [
+       5
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "custom_model_data": 1643691889
+   }
+  },
+  {
+   "give": "oak_sign[block_state={rotation:\"3\"}]",
+   "components": [
+    {
+     "type": "block_state",
+     "data": {
+      "properties": [
+       {
+        "name": "rotation",
+        "value": "3"
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "block_state": -1872050104
+   }
+  },
+  {
+   "give": "white_banner[base_color=red]",
+   "components": [
+    {
+     "type": "base_color",
+     "data": 14
+    }
+   ],
+   "hashes": {
+    "base_color": -1939582294
+   }
+  },
+  {
+   "give": "stone[map_id=3,map_color=255,ominous_bottle_amplifier=2]",
+   "components": [
+    {
+     "type": "map_id",
+     "data": 3
+    },
+    {
+     "type": "map_color",
+     "data": 255
+    },
+    {
+     "type": "ominous_bottle_amplifier",
+     "data": 2
+    }
+   ],
+   "hashes": {
+    "map_id": -499649379,
+    "map_color": -1474914842,
+    "ominous_bottle_amplifier": 1064459813
+   }
+  },
+  {
+   "give": "elytra[glider={},intangible_projectile={}]",
+   "components": [
+    {
+     "type": "intangible_projectile"
+    }
+   ],
+   "hashes": {
+    "intangible_projectile": -982207288
+   }
+  },
+  {
+   "give": "stone[potion_duration_scale=2.5f]",
+   "components": [
+    {
+     "type": "potion_duration_scale",
+     "data": 2.5
+    }
+   ],
+   "hashes": {
+    "potion_duration_scale": -825795518
+   }
+  },
+  {
+   "give": "filled_map[map_decorations={a:{type:\"minecraft:player\",x:1.0d,z:2.0d,rotation:3.0f}}]",
+   "components": [
+    {
+     "type": "map_decorations",
+     "data": {
+      "type": "compound",
+      "value": {
+       "a": {
+        "type": "compound",
+        "value": {
+         "rotation": {
+          "type": "float",
+          "value": 3
+         },
+         "x": {
+          "type": "double",
+          "value": 1
+         },
+         "z": {
+          "type": "double",
+          "value": 2
+         },
+         "type": {
+          "type": "string",
+          "value": "minecraft:player"
+         }
+        }
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "map_decorations": 1757442925
+   }
+  },
+  {
+   "give": "stone[lock={components:{}}]",
+   "components": [
+    {
+     "type": "lock",
+     "data": {
+      "type": "compound",
+      "value": {}
+     }
+    }
+   ],
+   "hashes": {
+    "lock": -982207288
+   }
+  },
+  {
+   "give": "bundle[bundle_contents=[{id:\"minecraft:stone\",count:3},{id:\"minecraft:dirt\"}]]",
+   "components": [
+    {
+     "type": "bundle_contents",
+     "data": {
+      "contents": [
+       {
+        "itemCount": 3,
+        "itemId": 1,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       },
+       {
+        "itemCount": 1,
+        "itemId": 28,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "bundle_contents": -1520863797
+   }
+  },
+  {
+   "give": "crossbow[charged_projectiles=[{id:\"minecraft:arrow\"}]]",
+   "components": [
+    {
+     "type": "charged_projectiles",
+     "data": {
+      "projectiles": [
+       {
+        "itemCount": 1,
+        "itemId": 842,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "charged_projectiles": 1004030535
+   }
+  },
+  {
+   "give": "chest[container_loot={loot_table:\"minecraft:chests/simple_dungeon\"}]",
+   "components": [
+    {
+     "type": "container_loot",
+     "data": {
+      "type": "compound",
+      "value": {
+       "loot_table": {
+        "type": "string",
+        "value": "minecraft:chests/simple_dungeon"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "container_loot": -2040272502
+   }
+  },
+  {
+   "give": "debug_stick[debug_stick_state={\"minecraft:oak_log\":\"axis\"}]",
+   "components": [
+    {
+     "type": "debug_stick_state",
+     "data": {
+      "type": "compound",
+      "value": {
+       "minecraft:oak_log": {
+        "type": "string",
+        "value": "axis"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "debug_stick_state": -292554263
+   }
+  },
+  {
+   "give": "axolotl_bucket[bucket_entity_data={Health:14f,Variant:2}]",
+   "components": [
+    {
+     "type": "bucket_entity_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "Variant": {
+        "type": "int",
+        "value": 2
+       },
+       "Health": {
+        "type": "float",
+        "value": 14
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "bucket_entity_data": -1382229666
+   }
+  },
+  {
+   "give": "knowledge_book[recipes=[\"minecraft:crafting_table\",\"minecraft:oak_planks\"]]",
+   "components": [
+    {
+     "type": "recipes",
+     "data": {
+      "type": "list",
+      "value": {
+       "type": "string",
+       "value": [
+        "minecraft:crafting_table",
+        "minecraft:oak_planks"
+       ]
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "recipes": -271537018
+   }
+  },
+  {
+   "give": "chest[block_entity_data={id:\"minecraft:chest\",CustomName:\"locked\"}]",
+   "components": [
+    {
+     "type": "block_entity_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "CustomName": {
+        "type": "string",
+        "value": "locked"
+       },
+       "id": {
+        "type": "string",
+        "value": "minecraft:chest"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "block_entity_data": 1780057539
+   }
+  },
+  {
+   "give": "stone[glider={}]",
+   "components": [
+    {
+     "type": "glider"
+    }
+   ],
+   "hashes": {
+    "glider": -982207288
+   }
+  },
+  {
+   "give": "player_head[note_block_sound=\"minecraft:block.note_block.bell\"]",
+   "components": [
+    {
+     "type": "note_block_sound",
+     "data": "minecraft:block.note_block.bell"
+    }
+   ],
+   "hashes": {
+    "note_block_sound": -1881406566
+   }
+  },
+  {
+   "give": "stone[item_name={text:\"n\",color:\"blue\"}]",
+   "components": [
+    {
+     "type": "item_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "color": {
+        "type": "string",
+        "value": "blue"
+       },
+       "text": {
+        "type": "string",
+        "value": "n"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "item_name": -1566961137
+   }
+  },
+  {
+   "give": "wolf_spawn_egg[wolf/collar=blue]",
+   "components": [
+    {
+     "type": "wolf/collar",
+     "data": 11
+    }
+   ],
+   "hashes": {
+    "wolf/collar": 199633461
+   }
+  },
+  {
+   "give": "cat_spawn_egg[cat/collar=lime]",
+   "components": [
+    {
+     "type": "cat/collar",
+     "data": 5
+    }
+   ],
+   "hashes": {
+    "cat/collar": -1201809287
+   }
+  },
+  {
+   "give": "sheep_spawn_egg[sheep/color=pink]",
+   "components": [
+    {
+     "type": "sheep/color",
+     "data": 6
+    }
+   ],
+   "hashes": {
+    "sheep/color": -906736439
+   }
+  },
+  {
+   "give": "shulker_spawn_egg[shulker/color=cyan]",
+   "components": [
+    {
+     "type": "shulker/color",
+     "data": 9
+    }
+   ],
+   "hashes": {
+    "shulker/color": -458829651
+   }
+  },
+  {
+   "give": "tropical_fish_bucket[tropical_fish/base_color=orange,tropical_fish/pattern_color=purple]",
+   "components": [
+    {
+     "type": "tropical_fish/base_color",
+     "data": 1
+    },
+    {
+     "type": "tropical_fish/pattern_color",
+     "data": 10
+    }
+   ],
+   "hashes": {
+    "tropical_fish/base_color": 1688618917,
+    "tropical_fish/pattern_color": 484716633
+   }
+  },
+  {
+   "give": "player_head[profile={name:\"e2e\",id:[I;1,2,3,4],properties:[{name:\"textures\",value:\"e30=\"}]}]",
+   "components": [
+    {
+     "type": "profile",
+     "data": {
+      "name": "e2e",
+      "uuid": "00000001-0000-0002-0000-000300000004",
+      "properties": [
+       {
+        "name": "textures",
+        "value": "e30="
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "profile": 988113531
+   }
+  }
+ ],
+ "1.21.11": [
+  {
+   "give": "diamond_sword[enchantments={sharpness:5,unbreaking:3},damage=10,repair_cost=3]",
+   "components": [
+    {
+     "type": "enchantments",
+     "data": {
+      "enchantments": [
+       {
+        "id": 33,
+        "level": 5
+       },
+       {
+        "id": 40,
+        "level": 3
+       }
+      ]
+     }
+    },
+    {
+     "type": "damage",
+     "data": 10
+    },
+    {
+     "type": "repair_cost",
+     "data": 3
+    }
+   ],
+   "hashes": {
+    "enchantments": 1231404551,
+    "damage": -919192125,
+    "repair_cost": -499649379
+   }
+  },
+  {
+   "give": "stone[custom_data={a:1,b:\"x\",c:[I;1,2],d:1.5f,e:[1b,2b],f:{g:2L},h:[{i:1},{i:2}],j:[L;1L,2L],k:[B;1b],l:2s,m:2.5d}]",
+   "components": [
+    {
+     "type": "custom_data",
+     "data": {
+      "type": "compound",
+      "value": {
+       "a": {
+        "type": "int",
+        "value": 1
+       },
+       "b": {
+        "type": "string",
+        "value": "x"
+       },
+       "c": {
+        "type": "intArray",
+        "value": [
+         1,
+         2
+        ]
+       },
+       "d": {
+        "type": "float",
+        "value": 1.5
+       },
+       "e": {
+        "type": "list",
+        "value": {
+         "type": "byte",
+         "value": [
+          1,
+          2
+         ]
+        }
+       },
+       "f": {
+        "type": "compound",
+        "value": {
+         "g": {
+          "type": "long",
+          "value": [
+           0,
+           2
+          ]
+         }
+        }
+       },
+       "h": {
+        "type": "list",
+        "value": {
+         "type": "compound",
+         "value": [
+          {
+           "i": {
+            "type": "int",
+            "value": 1
+           }
+          },
+          {
+           "i": {
+            "type": "int",
+            "value": 2
+           }
+          }
+         ]
+        }
+       },
+       "j": {
+        "type": "longArray",
+        "value": [
+         [
+          0,
+          1
+         ],
+         [
+          0,
+          2
+         ]
+        ]
+       },
+       "k": {
+        "type": "byteArray",
+        "value": [
+         1
+        ]
+       },
+       "l": {
+        "type": "short",
+        "value": 2
+       },
+       "m": {
+        "type": "double",
+        "value": 2.5
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_data": 1675253826
+   }
+  },
+  {
+   "give": "stone[custom_name={text:\"Sw\",italic:false,color:\"red\",bold:true}]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "color": {
+        "type": "string",
+        "value": "red"
+       },
+       "text": {
+        "type": "string",
+        "value": "Sw"
+       },
+       "bold": {
+        "type": "byte",
+        "value": 1
+       },
+       "italic": {
+        "type": "byte",
+        "value": 0
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_name": 161836921
+   }
+  },
+  {
+   "give": "stone[custom_name=\"plain\",lore=[\"a\",{text:\"b\",bold:true},{text:\"c\",extra:[\"d\",{text:\"e\",italic:true}]}]]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "string",
+      "value": "plain"
+     }
+    },
+    {
+     "type": "lore",
+     "data": [
+      {
+       "type": "string",
+       "value": "a"
+      },
+      {
+       "type": "compound",
+       "value": {
+        "text": {
+         "type": "string",
+         "value": "b"
+        },
+        "bold": {
+         "type": "byte",
+         "value": 1
+        }
+       }
+      },
+      {
+       "type": "compound",
+       "value": {
+        "extra": {
+         "type": "list",
+         "value": {
+          "type": "compound",
+          "value": [
+           {
+            "": {
+             "type": "string",
+             "value": "d"
+            }
+           },
+           {
+            "text": {
+             "type": "string",
+             "value": "e"
+            },
+            "italic": {
+             "type": "byte",
+             "value": 1
+            }
+           }
+          ]
+         }
+        },
+        "text": {
+         "type": "string",
+         "value": "c"
+        }
+       }
+      }
+     ]
+    }
+   ],
+   "hashes": {
+    "custom_name": 1718800843,
+    "lore": -132831427
+   }
+  },
+  {
+   "give": "stone[custom_name={translate:\"item.minecraft.stone\",with:[\"x\",{text:\"y\"}]}]",
+   "components": [
+    {
+     "type": "custom_name",
+     "data": {
+      "type": "compound",
+      "value": {
+       "with": {
+        "type": "list",
+        "value": {
+         "type": "string",
+         "value": [
+          "x",
+          "y"
+         ]
+        }
+       },
+       "translate": {
+        "type": "string",
+        "value": "item.minecraft.stone"
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "custom_name": 258179657
+   }
+  },
+  {
+   "give": "written_book[written_book_content={title:\"T\",author:\"A\",pages:[\"p1\",{text:\"p2\",bold:true}]}]",
+   "components": [
+    {
+     "type": "written_book_content",
+     "data": {
+      "rawTitle": "T",
+      "author": "A",
+      "generation": 0,
+      "pages": [
+       {
+        "content": {
+         "type": "string",
+         "value": "p1"
+        }
+       },
+       {
+        "content": {
+         "type": "compound",
+         "value": {
+          "text": {
+           "type": "string",
+           "value": "p2"
+          },
+          "bold": {
+           "type": "byte",
+           "value": 1
+          }
+         }
+        }
+       }
+      ],
+      "resolved": false
+     }
+    }
+   ],
+   "hashes": {
+    "written_book_content": -816033539
+   }
+  },
+  {
+   "give": "written_book[written_book_content={title:\"T\",author:\"A\",generation:2,resolved:true,pages:[\"p1\"]}]",
+   "components": [
+    {
+     "type": "written_book_content",
+     "data": {
+      "rawTitle": "T",
+      "author": "A",
+      "generation": 2,
+      "pages": [
+       {
+        "content": {
+         "type": "string",
+         "value": "p1"
+        }
+       }
+      ],
+      "resolved": true
+     }
+    }
+   ],
+   "hashes": {
+    "written_book_content": -703750909
+   }
+  },
+  {
+   "give": "writable_book[writable_book_content={pages:[\"a\",\"b\"]}]",
+   "components": [
+    {
+     "type": "writable_book_content",
+     "data": {
+      "pages": [
+       {
+        "content": "a"
+       },
+       {
+        "content": "b"
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "writable_book_content": -1477403382
+   }
+  },
+  {
+   "give": "diamond_pickaxe[unbreakable={}]",
+   "components": [
+    {
+     "type": "unbreakable"
+    }
+   ],
+   "hashes": {
+    "unbreakable": -982207288
+   }
+  },
+  {
+   "give": "diamond_pickaxe[max_damage=50,damage=5]",
+   "components": [
+    {
+     "type": "max_damage",
+     "data": 50
+    },
+    {
+     "type": "damage",
+     "data": 5
+    }
+   ],
+   "hashes": {
+    "max_damage": 20183955,
+    "damage": 645064431
+   }
+  },
+  {
+   "give": "leather_chestplate[dyed_color=16711680]",
+   "components": [
+    {
+     "type": "dyed_color",
+     "data": 16711680
+    }
+   ],
+   "hashes": {
+    "dyed_color": 603347239
+   }
+  },
+  {
+   "give": "stone[rarity=epic,max_stack_size=16,item_model=\"minecraft:diamond\",enchantment_glint_override=true,tooltip_style=\"minecraft:x\"]",
+   "components": [
+    {
+     "type": "rarity",
+     "data": "epic"
+    },
+    {
+     "type": "max_stack_size",
+     "data": 16
+    },
+    {
+     "type": "item_model",
+     "data": "minecraft:diamond"
+    },
+    {
+     "type": "enchantment_glint_override",
+     "data": true
+    },
+    {
+     "type": "tooltip_style",
+     "data": "minecraft:x"
+    }
+   ],
+   "hashes": {
+    "rarity": -292715907,
+    "max_stack_size": 1769065625,
+    "item_model": 58140582,
+    "enchantment_glint_override": -1019818302,
+    "tooltip_style": 829793204
+   }
+  },
+  {
+   "give": "stone[attribute_modifiers=[{type:\"minecraft:armor\",id:\"x:y\",amount:2.5,operation:\"add_value\",slot:\"head\"}]]",
+   "components": [
+    {
+     "type": "attribute_modifiers",
+     "data": {
+      "attributes": [
+       {
+        "typeId": 0,
+        "name": "x:y",
+        "value": 2.5,
+        "operation": "add",
+        "slot": "head"
+       }
+      ],
+      "display": {
+       "type": "default"
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "attribute_modifiers": 1664024130
+   }
+  },
+  {
+   "give": "stone[attribute_modifiers=[{type:\"minecraft:attack_speed\",id:\"x:z\",amount:-1.5,operation:\"add_multiplied_base\"}]]",
+   "components": [
+    {
+     "type": "attribute_modifiers",
+     "data": {
+      "attributes": [
+       {
+        "typeId": 4,
+        "name": "x:z",
+        "value": -1.5,
+        "operation": "multiply_base",
+        "slot": "any"
+       }
+      ],
+      "display": {
+       "type": "default"
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "attribute_modifiers": 910231243
+   }
+  },
+  {
+   "give": "enchanted_book[stored_enchantments={sharpness:1}]",
+   "components": [
+    {
+     "type": "stored_enchantments",
+     "data": {
+      "enchantments": [
+       {
+        "id": 33,
+        "level": 1
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "stored_enchantments": -1201233444
+   }
+  },
+  {
+   "give": "stone[tooltip_display={hide_tooltip:true,hidden_components:[\"minecraft:lore\"]}]",
+   "components": [
+    {
+     "type": "tooltip_display",
+     "data": {
+      "hideTooltip": true,
+      "hiddenComponents": [
+       11
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "tooltip_display": 1370755610
+   }
+  },
+  {
+   "give": "cooked_beef[food={nutrition:3,saturation:0.5f,can_always_eat:true}]",
+   "components": [
+    {
+     "type": "food",
+     "data": {
+      "nutrition": 3,
+      "saturationModifier": 0.5,
+      "canAlwaysEat": true
+     }
+    }
+   ],
+   "hashes": {
+    "food": 1385739095
+   }
+  },
+  {
+   "give": "stone[custom_model_data={floats:[1.5f],strings:[\"s\"],flags:[true],colors:[5]}]",
+   "components": [
+    {
+     "type": "custom_model_data",
+     "data": {
+      "floats": [
+       1.5
+      ],
+      "flags": [
+       true
+      ],
+      "strings": [
+       "s"
+      ],
+      "colors": [
+       5
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "custom_model_data": 1643691889
+   }
+  },
+  {
+   "give": "oak_sign[block_state={rotation:\"3\"}]",
+   "components": [
+    {
+     "type": "block_state",
+     "data": {
+      "properties": [
+       {
+        "name": "rotation",
+        "value": "3"
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "block_state": -1872050104
+   }
+  },
+  {
+   "give": "white_banner[base_color=red]",
+   "components": [
+    {
+     "type": "base_color",
+     "data": 14
+    }
+   ],
+   "hashes": {
+    "base_color": -1939582294
+   }
+  },
+  {
+   "give": "pig_spawn_egg[entity_data={id:\"minecraft:pig\",CustomName:\"x\",Health:5f}]",
+   "components": [
+    {
+     "type": "entity_data",
+     "data": {
+      "type": 100,
+      "data": {
+       "type": "compound",
+       "value": {
+        "CustomName": {
+         "type": "string",
+         "value": "x"
+        },
+        "Health": {
+         "type": "float",
+         "value": 5
+        }
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "entity_data": 1738651830
+   }
+  },
+  {
+   "give": "stone[map_id=3,map_color=255,ominous_bottle_amplifier=2]",
+   "components": [
+    {
+     "type": "map_id",
+     "data": 3
+    },
+    {
+     "type": "map_color",
+     "data": 255
+    },
+    {
+     "type": "ominous_bottle_amplifier",
+     "data": 2
+    }
+   ],
+   "hashes": {
+    "map_id": -499649379,
+    "map_color": -1474914842,
+    "ominous_bottle_amplifier": 1064459813
+   }
+  },
+  {
+   "give": "elytra[glider={},intangible_projectile={}]",
+   "components": [
+    {
+     "type": "intangible_projectile"
+    }
+   ],
+   "hashes": {
+    "intangible_projectile": -982207288
+   }
+  },
+  {
+   "give": "stone[potion_duration_scale=2.5f]",
+   "components": [
+    {
+     "type": "potion_duration_scale",
+     "data": 2.5
+    }
+   ],
+   "hashes": {
+    "potion_duration_scale": -825795518
+   }
+  },
+  {
+   "give": "filled_map[map_decorations={a:{type:\"minecraft:player\",x:1.0d,z:2.0d,rotation:3.0f}}]",
+   "components": [
+    {
+     "type": "map_decorations",
+     "data": {
+      "type": "compound",
+      "value": {
+       "a": {
+        "type": "compound",
+        "value": {
+         "rotation": {
+          "type": "float",
+          "value": 3
+         },
+         "x": {
+          "type": "double",
+          "value": 1
+         },
+         "z": {
+          "type": "double",
+          "value": 2
+         },
+         "type": {
+          "type": "string",
+          "value": "minecraft:player"
+         }
+        }
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "map_decorations": 1757442925
+   }
+  },
+  {
+   "give": "stone[lock={components:{}}]",
+   "components": [
+    {
+     "type": "lock",
+     "data": {
+      "type": "compound",
+      "value": {}
+     }
+    }
+   ],
+   "hashes": {
+    "lock": -982207288
+   }
+  },
+  {
+   "give": "bundle[bundle_contents=[{id:\"minecraft:stone\",count:3},{id:\"minecraft:dirt\"}]]",
+   "components": [
+    {
+     "type": "bundle_contents",
+     "data": {
+      "contents": [
+       {
+        "itemCount": 3,
+        "itemId": 1,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       },
+       {
+        "itemCount": 1,
+        "itemId": 28,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "bundle_contents": -1520863797
+   }
+  },
+  {
+   "give": "crossbow[charged_projectiles=[{id:\"minecraft:arrow\"}]]",
+   "components": [
+    {
+     "type": "charged_projectiles",
+     "data": {
+      "projectiles": [
+       {
+        "itemCount": 1,
+        "itemId": 895,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "charged_projectiles": 1004030535
+   }
+  },
+  {
+   "give": "shulker_box[container=[{slot:0,item:{id:\"minecraft:stone\",count:2}},{slot:3,item:{id:\"minecraft:dirt\"}}]]",
+   "components": [
+    {
+     "type": "container",
+     "data": {
+      "contents": [
+       {
+        "itemCount": 2,
+        "itemId": 1,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       },
+       {
+        "itemCount": 0
+       },
+       {
+        "itemCount": 0
+       },
+       {
+        "itemCount": 1,
+        "itemId": 28,
+        "addedComponentCount": 0,
+        "removedComponentCount": 0,
+        "components": [],
+        "removeComponents": []
+       }
+      ]
+     }
+    }
+   ],
+   "hashes": {
+    "container": -808115028
+   }
+  },
+  {
+   "give": "white_banner[base_color=red]",
+   "components": [
+    {
+     "type": "base_color",
+     "data": 14
+    }
+   ],
+   "hashes": {
+    "base_color": -1939582294
+   }
+  },
+  {
+   "give": "pig_spawn_egg[entity_data={id:\"minecraft:pig\",CustomName:\"x\",Health:5f}]",
+   "components": [
+    {
+     "type": "entity_data",
+     "data": {
+      "type": 100,
+      "data": {
+       "type": "compound",
+       "value": {
+        "CustomName": {
+         "type": "string",
+         "value": "x"
+        },
+        "Health": {
+         "type": "float",
+         "value": 5
+        }
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "entity_data": 1738651830
+   }
+  },
+  {
+   "give": "stone[map_id=3,map_color=255,ominous_bottle_amplifier=2]",
+   "components": [
+    {
+     "type": "map_id",
+     "data": 3
+    },
+    {
+     "type": "map_color",
+     "data": 255
+    },
+    {
+     "type": "ominous_bottle_amplifier",
+     "data": 2
+    }
+   ],
+   "hashes": {
+    "map_id": -499649379,
+    "map_color": -1474914842,
+    "ominous_bottle_amplifier": 1064459813
+   }
+  },
+  {
+   "give": "elytra[glider={},intangible_projectile={}]",
+   "components": [
+    {
+     "type": "intangible_projectile"
+    }
+   ],
+   "hashes": {
+    "intangible_projectile": -982207288
+   }
+  },
+  {
+   "give": "stone[potion_duration_scale=2.5f]",
+   "components": [
+    {
+     "type": "potion_duration_scale",
+     "data": 2.5
+    }
+   ],
+   "hashes": {
+    "potion_duration_scale": -825795518
+   }
+  },
+  {
+   "give": "filled_map[map_decorations={a:{type:\"minecraft:player\",x:1.0d,z:2.0d,rotation:3.0f}}]",
+   "components": [
+    {
+     "type": "map_decorations",
+     "data": {
+      "type": "compound",
+      "value": {
+       "a": {
+        "type": "compound",
+        "value": {
+         "rotation": {
+          "type": "float",
+          "value": 3
+         },
+         "x": {
+          "type": "double",
+          "value": 1
+         },
+         "z": {
+          "type": "double",
+          "value": 2
+         },
+         "type": {
+          "type": "string",
+          "value": "minecraft:player"
+         }
+        }
+       }
+      }
+     }
+    }
+   ],
+   "hashes": {
+    "map_decorations": 1757442925
+   }
+  },
+  {
+   "give": "stone[lock={components:{}}]",
+   "components": [
+    {
+     "type": "lock",
+     "data": {
+      "type": "compound",
+      "value": {}
+     }
+    }
+   ],
+   "hashes": {
+    "lock": -982207288
+   }
+  },
+  {
+   "give": "stone[minimum_attack_charge=0.5f]",
+   "components": [
+    {
+     "type": "minimum_attack_charge",
+     "data": 0.5
+    }
+   ],
+   "hashes": {
+    "minimum_attack_charge": -1631070359
+   }
+  }
+ ]
+}

@@ -30,6 +30,7 @@ export class Item {
   readonly spawnEggMobName: string;
   static equal(item1: Item, item2: Item, matchStackSize?: boolean, matchNbt?: boolean): boolean;
   static toNotch(item: ItemLike, serverAuthoritative?: boolean): object;
+  static toHashedNotch(item: ItemLike | null): object | null;
   static fromNotch(item: object, stackId?: number): ItemLike;
   static anvil(
     itemOne: ItemLike,

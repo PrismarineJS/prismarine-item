@@ -1,4 +1,5 @@
 const nbt = require('prismarine-nbt')
+const hashedSlotLoader = require('./lib/hashedSlot')
 
 // 1.20.5 moved the custom name and the lore into data components, which carry a chat component as
 // NBT; the display.Name and display.Lore tags they replaced carried the same component as the JSON
@@ -14,6 +15,7 @@ function chatComponentJson (component) {
 
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
+  const hashedSlot = registry.type === 'pc' && registry.protocol?.types?.HashedSlot ? hashedSlotLoader(registry) : null
   class Item {
     constructor (type, count, metadata, nbt, stackId, sentByServer) {
       if (type == null) return
@@ -90,6 +92,23 @@ function loader (registryOrVersion) {
     static currentStackId = 0
     static nextStackId () {
       return Item.currentStackId++
+    }
+
+    // 1.21.5+ window_click claims slot contents as HashedSlot: the item id,
+    // count and a CRC32C per changed component instead of the components
+    // themselves. A component the hasher can't reproduce is sent with hash 0,
+    // which just makes the server resend that slot.
+    static toHashedNotch (item) {
+      if (!hashedSlot) throw new Error('HashedSlot is not part of this version\'s protocol')
+      if (!item) return null
+      return {
+        itemId: item.type,
+        itemCount: item.count,
+        components: item.components
+          .filter(component => !hashedSlot.NOT_HASHED.has(component.type))
+          .map(component => ({ type: component.type, hash: hashedSlot.hashComponent(component.type, component.data) ?? 0 })),
+        removeComponents: item.removedComponents
+      }
     }
 
     static toNotch (item, serverAuthoritative = true) {
