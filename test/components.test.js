@@ -11,11 +11,13 @@ describe('component mutations survive serialization', () => {
       const sword = registry.itemsByName.diamond_sword.id
       const read = (components = [], removed = []) => Item.fromNotch({ itemId: sword, itemCount: 1, components, removeComponents: removed.map(type => ({ type })) })
 
-      for (const [property, type, value] of [
-        ['customName', 'custom_name', nbt.string('Changed')],
-        ['customLore', 'lore', [nbt.string('Changed lore')]],
-        ['repairCost', 'repair_cost', 7],
-        ['durabilityUsed', 'damage', 25]
+      // `readBack` is what the getter returns after the round-trip. The wire keeps the raw component (asserted below), but
+      // customName/customLore read back as the JSON-string chat-component shape (#189), while repair_cost/damage read raw.
+      for (const [property, type, value, readBack] of [
+        ['customName', 'custom_name', nbt.string('Changed'), '"Changed"'],
+        ['customLore', 'lore', [nbt.string('Changed lore')], ['"Changed lore"']],
+        ['repairCost', 'repair_cost', 7, 7],
+        ['durabilityUsed', 'damage', 25, 25]
       ]) {
         it(`serializes ${property} after replacing a removal`, () => {
           const item = read([], [type])
@@ -25,7 +27,7 @@ describe('component mutations survive serialization', () => {
           expect(encoded.removeComponents).not.toContainEqual({ type })
           expect(encoded.addedComponentCount).toBe(encoded.components.length)
           expect(encoded.removedComponentCount).toBe(encoded.removeComponents.length)
-          expect(Item.fromNotch(encoded)[property]).toStrictEqual(value)
+          expect(Item.fromNotch(encoded)[property]).toStrictEqual(readBack)
         })
       }
 

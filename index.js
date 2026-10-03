@@ -1,6 +1,18 @@
 const nbt = require('prismarine-nbt')
 const ItemComponents = require('./lib/components')
 
+// 1.20.5 moved the custom name and the lore into data components, which carry a chat component as
+// NBT; the display.Name and display.Lore tags they replaced carried the same component as the JSON
+// string the server wrote. Read the NBT back as that string so customName and customLore have one
+// shape on every version, the one index.d.ts promises. A JS string is already that JSON (the setters
+// store one), but an NBT string tag is the literal text, so it is quoted like any other component:
+// nbt.string('{"text":"Hello"}') is the text {"text":"Hello"}, not a component that renders Hello.
+function chatComponentJson (component) {
+  if (component == null || typeof component === 'string') return component
+  const value = typeof component.type === 'string' && 'value' in component ? nbt.simplify(component) : component
+  return JSON.stringify(value)
+}
+
 function loader (registryOrVersion) {
   const registry = typeof registryOrVersion === 'string' ? require('prismarine-registry')(registryOrVersion) : registryOrVersion
   const componentStates = new WeakMap()
@@ -223,7 +235,9 @@ function loader (registryOrVersion) {
 
     get customName () {
       const fallback = () => this?.nbt?.value?.display?.value?.Name?.value ?? null
-      return componentStates.has(this) ? componentStates.get(this).get('custom_name', fallback) ?? null : fallback()
+      // The 1.20.5+ component value and the legacy display.Name both read back as the JSON string shape (#189):
+      // chatComponentJson converts an NBT chat component and passes an existing string (the fallback) through unchanged.
+      return componentStates.has(this) ? chatComponentJson(componentStates.get(this).get('custom_name', fallback)) ?? null : fallback()
     }
 
     set customName (newName) {
@@ -240,7 +254,12 @@ function loader (registryOrVersion) {
 
     get customLore () {
       const fallback = () => this.nbt?.value?.display ? nbt.simplify(this.nbt).display.Lore ?? null : null
-      return componentStates.has(this) ? componentStates.get(this).get('lore', fallback) ?? null : fallback()
+      if (!componentStates.has(this)) return fallback()
+      const lore = componentStates.get(this).get('lore', fallback)
+      if (lore == null) return null
+      // Lore components are an array of chat components; read each back as its JSON string (#189). The legacy fallback is
+      // already an array of strings, which chatComponentJson passes through unchanged.
+      return Array.isArray(lore) ? lore.map(chatComponentJson) : chatComponentJson(lore)
     }
 
     set customLore (newLore) {
