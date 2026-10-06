@@ -76,13 +76,34 @@ The stack ID of the item, if the version supports Stack IDs.
 
 #### item.stackSize
 
+Maximum stack size. On Java 1.20.5+, this includes the `max_stack_size` override.
+
+#### item.components / item.removedComponents / item.componentMap
+
+On Java 1.20.5+, `components` contains the protocol component overrides as
+`{ type, data }` entries; `removedComponents` contains `{ type }` entries for
+explicitly removed types (string type names are also accepted as input).
+`componentMap` provides a Map interface to the same overrides. Assigning a
+component through the map or an item setter clears a previous removal of that
+type. Changes through either the arrays or map are used by `Item.toNotch`.
+
+Deleting a map entry removes its override, allowing the item default to apply.
+To suppress a default as well, add `{ type }` to `removedComponents`.
+Payloads retain their version-specific protocol representation.
+
 #### item.equal(otherItem)
 
 Return true if items are equal.
 
 #### item.durabilityUsed
 
-A getter/setter for abstracting the underlying nbt
+A getter/setter for damage stored in metadata, NBT, or the Java `damage`
+component, depending on the version. A missing or removed damage component
+returns `null` when no item default applies.
+
+#### item.remainingDurability
+
+Returns the item's remaining durability, or `null` if the item is not damageable.
 
 #### item.customName
 
@@ -122,7 +143,8 @@ If the current item is a type of Spawn Egg, the protocol name of the entity that
 
 #### item.maxDurability
 
-Max durability for the item, if it supports durability
+Max durability for the item, if it supports durability. On Java 1.20.5+, this
+resolves the `max_damage` override or removal against the registry's item default.
 
 ## History
 

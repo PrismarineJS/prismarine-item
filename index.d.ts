@@ -17,6 +17,7 @@ export class Item {
   stackSize: number;
   maxDurability: number;
   durabilityUsed: number;
+  get remainingDurability(): number | null;
   get enchants(): { name: string; lvl: number }[];
   set enchants(enchantments: { name: string; lvl: number }[]);
   get blocksCanPlaceOn(): [string][];
