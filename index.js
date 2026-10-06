@@ -273,8 +273,12 @@ function loader (registryOrVersion) {
       const typeOfEnchantLevelValue = registry.supportFeature('typeOfValueForEnchantLevel')
       const useStoredEnchantments = registry.supportFeature('booksUseStoredEnchantments') && this.name === 'enchanted_book'
 
-      if (this.componentMap?.has('enchantments')) {
-        return this.componentMap.get('enchantments').data
+      const componentName = useStoredEnchantments ? 'stored_enchantments' : 'enchantments'
+      if (this.componentMap?.has(componentName)) {
+        return this.componentMap.get(componentName).data.enchantments.map(({ id, level }) => ({
+          name: registry.enchantments[id]?.name || null,
+          lvl: level
+        }))
       }
 
       if (typeOfEnchantLevelValue === 'short' && enchantNbtKey === 'ench') {
