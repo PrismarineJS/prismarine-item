@@ -469,6 +469,7 @@ describe('durabilityUsed with damage component', () => {
 
 describe('componentMap getters (1.20.5+)', () => {
   const Item = require('prismarine-item')('1.20.5')
+  const registry = require('prismarine-registry')('1.20.5')
 
   describe('customName', () => {
     it('reads from componentMap when custom_name is present', () => {
@@ -612,7 +613,12 @@ describe('componentMap getters (1.20.5+)', () => {
         itemId: 830,
         itemCount: 1,
         components: [
-          { type: 'enchantments', data: enchData }
+          {
+            type: 'enchantments',
+            data: {
+              enchantments: [{ id: registry.enchantmentsByName.sharpness.id, level: 5 }]
+            }
+          }
         ]
       })
       expect(item.enchants).toStrictEqual(enchData)
